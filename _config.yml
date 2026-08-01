@@ -75,6 +75,18 @@ feed:
   content: true
   order_by: -date
 
+# Server-side formula rendering. NexT's client-side MathJax/KaTeX switches stay off.
+mathjax:
+  tags: none
+  single_dollars: true
+  cjk_width: 0.9
+  normal_width: 0.6
+  append_css: true
+  every_page: false
+  packages:
+    - ams
+    - boldsymbol
+
 # Deployment
 deploy:
   type: git

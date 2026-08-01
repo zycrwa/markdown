@@ -5,6 +5,7 @@
   "description": "A Hexo blog deployed to GitHub Pages",
   "scripts": {
     "build": "hexo clean && hexo generate",
+    "check:posts": "node scripts/check-posts.js",
     "clean": "hexo clean",
     "deploy": "hexo clean && hexo generate && hexo deploy",
     "new": "hexo new",
@@ -16,6 +17,7 @@
   "dependencies": {
     "hexo": "^8.1.2",
     "hexo-deployer-git": "^4.0.0",
+    "hexo-filter-mathjax": "^0.11.1",
     "hexo-generator-archive": "^2.0.0",
     "hexo-generator-category": "^2.0.0",
     "hexo-generator-feed": "^4.0.0",

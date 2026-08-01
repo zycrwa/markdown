@@ -17,7 +17,7 @@ menu_settings:
   badges: true
 
 avatar:
-  url: https://github.com/zycrwa.png
+  url: /images/avatar.gif
   rounded: true
   rotated: false
 
