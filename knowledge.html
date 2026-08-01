@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>我的知识库</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f5f7fb;
+        --panel: #ffffff;
+        --border: #dfe7f3;
+        --text: #22324a;
+        --muted: #6b7a92;
+        --accent: #3b82f6;
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; font-family: Arial, "Microsoft YaHei", sans-serif; background: var(--bg); color: var(--text); }
+      .layout { display: grid; grid-template-columns: 280px 1fr; min-height: 100vh; }
+      .sidebar { background: #eef4ff; border-right: 1px solid var(--border); padding: 20px; }
+      .sidebar h1 { font-size: 1.2rem; margin: 0 0 8px; }
+      .sidebar p { color: var(--muted); margin: 0 0 16px; line-height: 1.6; }
+      .doc-list { display: flex; flex-direction: column; gap: 10px; }
+      .doc-item { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 12px; cursor: pointer; }
+      .doc-item.active { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(59,130,246,0.12); }
+      .doc-item strong { display: block; margin-bottom: 4px; }
+      .doc-item span { color: var(--muted); font-size: 0.9rem; }
+      .content { padding: 24px; }
+      .content-card { background: var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 24px; min-height: 80vh; }
+      .content-card h2 { margin-top: 0; }
+      .content-card pre { background: #0f172a; color: #e2e8f0; padding: 14px; border-radius: 12px; overflow-x: auto; }
+      .content-card code { font-family: Consolas, monospace; }
+      .content-card ul { padding-left: 20px; }
+      .content-card table { border-collapse: collapse; width: 100%; }
+      .content-card th, .content-card td { border: 1px solid var(--border); padding: 8px; text-align: left; }
+      @media (max-width: 900px) { .layout { grid-template-columns: 1fr; } .sidebar { border-right: none; border-bottom: 1px solid var(--border); } }
+    </style>
+  </head>
+  <body>
+    <div class="layout">
+      <aside class="sidebar">
+        <h1>我的知识库</h1>
+        <p>点击左侧文档，即可切换到对应的 Markdown 内容。</p>
+        <div id="docList" class="doc-list"></div>
+      </aside>
+      <main class="content">
+        <div class="content-card" id="contentCard">加载中...</div>
+      </main>
+    </div>
+
+    <script>
+      async function loadManifest() {
+        const response = await fetch('./docs/manifest.json');
+        const manifest = await response.json();
+        const listEl = document.getElementById('docList');
+        const contentEl = document.getElementById('contentCard');
+        const docs = manifest.documents;
+
+        function renderMarkdown(markdown) {
+          const lines = markdown.split(/\n/);
+          let html = '';
+          let inCode = false;
+          let codeBuffer = [];
+
+          const flushCode = () => {
+            if (codeBuffer.length) {
+              html += `<pre><code>${codeBuffer.join('\n')}</code></pre>`;
+              codeBuffer = [];
+            }
+          };
+
+          for (const line of lines) {
+            if (line.startsWith('```')) {
+              if (!inCode) {
+                flushCode();
+                inCode = true;
+              } else {
+                flushCode();
+                inCode = false;
+              }
+              continue;
+            }
+            if (inCode) {
+              codeBuffer.push(line);
+              continue;
+            }
+            if (/^#\s+/.test(line)) {
+              html += `<h2>${line.replace(/^#\s+/, '')}</h2>`;
+            } else if (/^##\s+/.test(line)) {
+              html += `<h3>${line.replace(/^##\s+/, '')}</h3>`;
+            } else if (/^###\s+/.test(line)) {
+              html += `<h4>${line.replace(/^###\s+/, '')}</h4>`;
+            } else if (/^-\s+/.test(line)) {
+              html += `<li>${line.replace(/^-\s+/, '')}</li>`;
+            } else if (/^\d+\.\s+/.test(line)) {
+              html += `<li>${line.replace(/^\d+\.\s+/, '')}</li>`;
+            } else if (line.trim() === '') {
+              html += '<br>';
+            } else {
+              html += `<p>${line}</p>`;
+            }
+          }
+          if (inCode) flushCode();
+          return html;
+        }
+
+        function openDoc(doc) {
+          fetch(doc.file)
+            .then((res) => res.text())
+            .then((text) => {
+              contentEl.innerHTML = `<h2>${doc.title}</h2>${renderMarkdown(text)}`;
+              document.querySelectorAll('.doc-item').forEach((el) => el.classList.remove('active'));
+              const active = Array.from(listEl.children).find((child) => child.dataset.id === doc.id);
+              if (active) active.classList.add('active');
+            });
+        }
+
+        listEl.innerHTML = docs.map((doc) => `
+          <div class="doc-item" data-id="${doc.id}">
+            <strong>${doc.title}</strong>
+            <span>${doc.summary}</span>
+          </div>
+        `).join('');
+
+        listEl.querySelectorAll('.doc-item').forEach((item) => {
+          item.addEventListener('click', () => {
+            const doc = docs.find((entry) => entry.id === item.dataset.id);
+            openDoc(doc);
+          });
+        });
+
+        openDoc(docs[0]);
+      }
+
+      loadManifest();
+    </script>
+  </body>
+</html>

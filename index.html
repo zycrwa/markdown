@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Markdown 知识库</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <p class="eyebrow">知识库</p>
+          <h1>Markdown 知识库</h1>
+          <p class="subtitle">当前仓库的说明文档会自动生成为可浏览的网页内容。</p>
+        </div>
+
+        <label class="search-box" for="searchInput">
+          <span>🔎</span>
+          <input id="searchInput" type="search" placeholder="搜索主题或内容" />
+        </label>
+
+        <div class="toc-block">
+          <div class="block-title">目录</div>
+          <nav id="toc"></nav>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="hero-card">
+          <div>
+            <p class="eyebrow">可视化阅读</p>
+            <h2>把 Markdown 变成可浏览的知识库</h2>
+            <p>你可以把仓库里的笔记、学习资料和项目文档整理成一个可搜索、可跳转的网页页面。</p>
+          </div>
+          <div class="hero-stats">
+            <div class="stat-pill">
+              <strong id="topicCount">0</strong>
+              <span>主题</span>
+            </div>
+            <div class="stat-pill">
+              <strong id="codeBlockCount">0</strong>
+              <span>代码块</span>
+            </div>
+          </div>
+        </header>
+
+        <section class="map-card">
+          <div class="block-title">知识地图</div>
+          <div id="knowledgeMap" class="knowledge-map"></div>
+        </section>
+
+        <article id="content" class="markdown-body"></article>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
