@@ -8,7 +8,7 @@ language: zh-CN
 timezone: Asia/Shanghai
 
 # URL
-url: https://zy19917620057.gitee.io/markdown
+url: https://zycrwa.github.io/markdown
 root: /markdown/
 permalink: :year/:month/:day/:title/
 permalink_defaults: {}
@@ -76,6 +76,6 @@ feed:
 # Deployment
 deploy:
   type: git
-  repo: git@gitee.com:ZY19917620057/markdown.git
-  branch: pages
+  repo: git@github.com:zycrwa/markdown.git
+  branch: gh-pages
   message: Site updated by Hexo

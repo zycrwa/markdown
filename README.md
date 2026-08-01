@@ -1,6 +1,6 @@
 # ZY 的技术笔记
 
-这是一个使用 [Hexo](https://hexo.io/zh-cn/) 生成并部署到 Gitee Pages 的静态博客。
+这是一个使用 [Hexo](https://hexo.io/zh-cn/) 生成并部署到 GitHub Pages 的静态博客。
 
 ## 环境要求
 
@@ -33,18 +33,18 @@ npm run build
 
 生成结果位于 `public/`。
 
-## 发布到 Gitee Pages
+## 发布到 GitHub Pages
 
-部署配置会将 `public/` 的内容推送到当前 Gitee 仓库的 `pages` 分支：
+部署配置会将 `public/` 的内容推送到 GitHub 仓库的 `gh-pages` 分支：
 
 ```bash
 npm run deploy
 ```
 
-首次发布后，在 Gitee 仓库的“服务 -> Gitee Pages”中选择 `pages` 分支和根目录，点击启动或更新。站点地址为：
+首次发布后，在 GitHub 仓库的 `Settings -> Pages` 中，将 `Source` 设为 `Deploy from a branch`，选择 `gh-pages` 分支和根目录 `/ (root)`。站点地址为：
 
 ```text
-https://zy19917620057.gitee.io/markdown/
+https://zycrwa.github.io/markdown/
 ```
 
-源码保存在 `master` 分支，生成的网站保存在 `pages` 分支，两者互不覆盖。
+源码保存在 `master` 分支，生成的网站保存在 `gh-pages` 分支，两者互不覆盖。
