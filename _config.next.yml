@@ -1,0 +1,85 @@
+# NexT theme
+scheme: Gemini
+darkmode: false
+
+custom_file_path:
+  style: source/_data/styles.styl
+
+menu:
+  home: / || fa fa-home
+  archives: /archives/ || fa fa-archive
+  categories: /categories/ || fa fa-th
+  tags: /tags/ || fa fa-tags
+  about: /about/ || fa fa-user
+
+menu_settings:
+  icons: true
+  badges: true
+
+avatar:
+  url: https://github.com/zycrwa.png
+  rounded: true
+  rotated: false
+
+social:
+  GitHub: https://github.com/zycrwa || fab fa-github
+
+social_icons:
+  enable: true
+  icons_only: false
+  transition: false
+
+codeblock:
+  copy_button:
+    enable: true
+    style: flat
+
+back2top:
+  enable: true
+  sidebar: false
+  scrollpercent: true
+
+reading_progress:
+  enable: true
+  color: '#37c6c0'
+  height: 3px
+
+bookmark:
+  enable: false
+
+github_banner:
+  enable: true
+  permalink: https://github.com/zycrwa/markdown
+
+local_search:
+  enable: true
+  top_n_per_article: 1
+  unescape: false
+  preload: false
+
+motion:
+  enable: true
+  async: true
+  transition:
+    post_block: fadeIn
+    post_header: fadeInDown
+    post_body: fadeInDown
+    coll_header: fadeInLeft
+    sidebar: fadeInUp
+
+pjax: false
+fancybox: true
+
+footer:
+  since: 2025
+  icon:
+    name: fa fa-heart
+    animated: false
+    color: '#d43f57'
+  powered: true
+  theme:
+    enable: true
+    version: false
+
+vendors:
+  internal: local

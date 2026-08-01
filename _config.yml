@@ -58,12 +58,14 @@ per_page: 10
 pagination_dir: page
 
 # Theme
-theme: landscape
-theme_config:
-  rss: /atom.xml
-  favicon: false
-  excerpt_link: 阅读全文
-  fancybox: false
+theme: next
+
+# Local search
+search:
+  path: search.xml
+  field: post
+  content: true
+  format: html
 
 # Feed
 feed:
