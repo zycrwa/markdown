@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 8.1.2">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/markdown/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/markdown/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/markdown/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/markdown/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/markdown/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zycrwa.github.io","root":"/markdown/","images":"/markdown/images","scheme":"Gemini","darkmode":false,"version":"8.28.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"flat"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":true,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/markdown/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/markdown/js/config.js" defer></script>
+
+    <meta name="description" content="对比 UART、I2C、SPI 和 CAN 的信号、帧格式、时序与工程注意事项。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="嵌入式通信协议：UART、I2C、SPI 与 CAN">
+<meta property="og:url" content="https://zycrwa.github.io/markdown/embedded/communication-protocols/index.html">
+<meta property="og:site_name" content="ZY 的技术笔记">
+<meta property="og:description" content="对比 UART、I2C、SPI 和 CAN 的信号、帧格式、时序与工程注意事项。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://zycrwa.github.io/markdown/images/posts/embedded-communication-protocols/001-22ac2f8060.png">
+<meta property="og:image" content="https://zycrwa.github.io/markdown/images/posts/embedded-communication-protocols/002-e183787cef.png">
+<meta property="og:image" content="https://zycrwa.github.io/markdown/images/posts/embedded-communication-protocols/003-3c10f44516.png">
+<meta property="og:image" content="https://zycrwa.github.io/markdown/images/posts/embedded-communication-protocols/004-eecdc3f40d.png">
+<meta property="og:image" content="https://zycrwa.github.io/markdown/images/posts/embedded-communication-protocols/005-6b596a829b.png">
+<meta property="article:published_time" content="2026-08-01T14:03:00.000Z">
+<meta property="article:modified_time" content="2026-08-01T15:51:19.058Z">
+<meta property="article:author" content="ZY">
+<meta property="article:tag" content="CAN">
+<meta property="article:tag" content="I2C">
+<meta property="article:tag" content="SPI">
+<meta property="article:tag" content="UART">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zycrwa.github.io/markdown/images/posts/embedded-communication-protocols/001-22ac2f8060.png">
+
+
+<link rel="canonical" href="https://zycrwa.github.io/markdown/embedded/communication-protocols/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://zycrwa.github.io/markdown/embedded/communication-protocols/","path":"/embedded/communication-protocols/","title":"嵌入式通信协议：UART、I2C、SPI 与 CAN"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>嵌入式通信协议：UART、I2C、SPI 与 CAN | ZY 的技术笔记</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous" defer></script>
+<script src="/markdown/js/utils.js" defer></script><script src="/markdown/js/motion.js" defer></script><script src="/markdown/js/sidebar.js" defer></script><script src="/markdown/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/markdown/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+  <script src="/markdown/js/third-party/fancybox.js" defer></script>
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/markdown/css/noscript.css">
+  </noscript>
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><link rel="alternate" href="/markdown/atom.xml" title="ZY 的技术笔记" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/markdown/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">ZY 的技术笔记</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">编程、工具与 AI 学习记录</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/markdown/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/markdown/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">18</span></a></li><li class="menu-item menu-item-categories"><a href="/markdown/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">6</span></a></li><li class="menu-item menu-item-tags"><a href="/markdown/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">60</span></a></li><li class="menu-item menu-item-about"><a href="/markdown/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%8F%E8%AE%AE%E5%AF%B9%E6%AF%94"><span class="nav-number">1.</span> <span class="nav-text">协议对比</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UART"><span class="nav-number">2.</span> <span class="nav-text">UART</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#I2C"><span class="nav-number">3.</span> <span class="nav-text">I2C</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SPI"><span class="nav-number">4.</span> <span class="nav-text">SPI</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CAN"><span class="nav-number">5.</span> <span class="nav-text">CAN</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZY"
+      src="/markdown/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">ZY</p>
+  <div class="site-description" itemprop="description">ZY 的个人技术学习博客</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/markdown/archives/">
+          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/markdown/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/markdown/tags/">
+        <span class="site-state-item-count">60</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zycrwa" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zycrwa" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zycrwa.github.io/markdown/embedded/communication-protocols/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/markdown/images/avatar.gif">
+      <meta itemprop="name" content="ZY">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ZY 的技术笔记">
+      <meta itemprop="description" content="ZY 的个人技术学习博客">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="嵌入式通信协议：UART、I2C、SPI 与 CAN | ZY 的技术笔记">
+      <meta itemprop="description" content="对比 UART、I2C、SPI 和 CAN 的信号、帧格式、时序与工程注意事项。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          嵌入式通信协议：UART、I2C、SPI 与 CAN
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-08-01 22:03:00 / 修改时间：23:51:19" itemprop="dateCreated datePublished" datetime="2026-08-01T22:03:00+08:00">2026-08-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/markdown/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">嵌入式开发</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">对比 UART、I2C、SPI 和 CAN 的信号、帧格式、时序与工程注意事项。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>本文按物理连接、数据帧、时序和可靠性机制整理 UART、I2C、SPI 与 CAN，重点保留调试时最常用的判断依据。</p>
+<span id="more"></span>
+
+<h2 id="协议对比"><a href="#协议对比" class="headerlink" title="协议对比"></a>协议对比</h2><table>
+<thead>
+<tr>
+<th align="left">协议</th>
+<th align="left">时钟方式</th>
+<th align="left">常见线数</th>
+<th align="left">通信方式</th>
+<th align="left">典型场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">UART</td>
+<td align="left">异步</td>
+<td align="left">TX、RX、GND</td>
+<td align="left">点对点、全双工</td>
+<td align="left">调试串口、模块通信</td>
+</tr>
+<tr>
+<td align="left">I2C</td>
+<td align="left">同步</td>
+<td align="left">SDA、SCL</td>
+<td align="left">多主多从、半双工</td>
+<td align="left">板级低速传感器</td>
+</tr>
+<tr>
+<td align="left">SPI</td>
+<td align="left">同步</td>
+<td align="left">SCK、MOSI、MISO、片选</td>
+<td align="left">主从、全双工</td>
+<td align="left">Flash、屏幕、高速 ADC</td>
+</tr>
+<tr>
+<td align="left">CAN</td>
+<td align="left">总线位同步</td>
+<td align="left">CAN_H、CAN_L</td>
+<td align="left">多主广播</td>
+<td align="left">汽车、工业控制、电机驱动</td>
+</tr>
+</tbody></table>
+<p>线数只列出核心信号，实际连接还需要公共参考地、电源以及相应的上拉或终端电阻。</p>
+<h2 id="UART"><a href="#UART" class="headerlink" title="UART"></a>UART</h2><p>UART 没有独立时钟线，发送端和接收端必须约定相同的波特率、数据位、校验位和停止位。常见 UART 可同时使用 TX 与 RX，实现全双工通信。对于普通二进制 UART，一码元承载一位，因此波特率与比特率数值相同。</p>
+<p><strong>单帧数据</strong></p>
+<ol>
+<li>起始位：总线空闲时为逻辑 1，发送端先输出一个逻辑 0，表示一帧开始。</li>
+<li>数据位：紧随起始位，常用长度为 8 位，通常从最低有效位（LSB）开始发送。</li>
+<li>奇偶校验位：奇校验要求“数据位 + 校验位”中 1 的总数为奇数，偶校验则要求为偶数；也可不使用校验位。</li>
+<li>停止位：表示一帧结束，常见长度为 1、1.5 或 2 位。</li>
+</ol>
+<p>起始位(1bit) → 数据位(8bit) → 校验位(0&#x2F;1bit) → 停止位(1&#x2F;1.5&#x2F;2bit)</p>
+<p><img src="/markdown/images/posts/embedded-communication-protocols/001-22ac2f8060.png" alt="embedded-communication-protocols 插图 1"></p>
+<p>LSB：最低有效位，就是二进制数里最右边的那位。</p>
+<p>MSB：最高有效位，就是二进制数里最左边的那位。</p>
+<p>图中线上依次发送的是 <code>11001010</code>。由于 UART 通常先发送 LSB，还原后的数据为 <code>01010011</code>，即 <code>0x53</code>。</p>
+<p>USART 在 UART 的异步模式之外还支持同步模式；使用同步模式时会增加时钟信号。</p>
+<p>自定义帧协议<strong>数据包（Frame）结构</strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">字段名称</th>
+<th align="left">字节数</th>
+<th align="left">作用与含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>Header (头域)</strong></td>
+<td align="left">2字节 (可配置)</td>
+<td align="left"><strong>帧头标识</strong>。用于固定匹配一帧数据的开始，防止数据错位。</td>
+</tr>
+<tr>
+<td align="left"><strong>Command (命令码)</strong></td>
+<td align="left">1字节 (可配置)</td>
+<td align="left"><strong>指令类型</strong>。告诉接收端这个包是干什么的（比如：读温度、写寄存器、心跳包）。</td>
+</tr>
+<tr>
+<td align="left"><strong>Data Length (长度域)</strong></td>
+<td align="left">1字节 (可配置)</td>
+<td align="left"><strong>有效数据长度</strong>。声明后面 Data 区域有多少个字节，防止越界读取。</td>
+</tr>
+<tr>
+<td align="left"><strong>Data (有效载荷)</strong></td>
+<td align="left">N字节 (可变)</td>
+<td align="left"><strong>实际数据</strong>。传输的真正信息（温度值、状态码、具体数值）。</td>
+</tr>
+<tr>
+<td align="left"><strong>CRC (循环冗余校验)</strong></td>
+<td align="left">2字节 (最常用)</td>
+<td align="left"><strong>完整性校验</strong>。用于检测数据在传输过程中是否出错（比如变成了乱码）。</td>
+</tr>
+<tr>
+<td align="left"><strong>Trailer (尾域)</strong></td>
+<td align="left">2字节 (可配置)</td>
+<td align="left"><strong>帧尾标识</strong>。标记一帧数据的结束。</td>
+</tr>
+</tbody></table>
+<p>假设我们要发送 <strong>温度值 25.5℃</strong>，假设协议定义：</p>
+<ul>
+<li>Header &#x3D; <code>0xAA 0xBB</code></li>
+<li>Command &#x3D; <code>0x03</code> (温度指令)</li>
+<li>Length &#x3D; <code>0x02</code> (后面数据有2个字节)</li>
+<li>Data &#x3D; <code>0x00 0xFF</code>（把温度放大 10 倍后以 16 位无符号整数传输，即 255）</li>
+<li>Trailer &#x3D; <code>0xCC 0xDD</code></li>
+<li>CRC &#x3D; 计算结果 <code>0x12 0x34</code></li>
+</ul>
+<p>那么在总线上传输的原始字节流就是：<br><code>AA</code> <code>BB</code> <code>03</code> <code>02</code> <code>00</code> <code>FF</code> <code>12</code> <code>34</code> <code>CC</code> <code>DD</code></p>
+<p>这里的缩放倍数、字节序和 CRC 算法都属于应用层协议，发送端与接收端必须采用同一约定。</p>
+<h2 id="I2C"><a href="#I2C" class="headerlink" title="I2C"></a>I2C</h2><p><strong>特点</strong>：</p>
+<p>I2C 是半双工同步总线，使用 SDA 数据线和 SCL 时钟线，支持多主多从。SDA 与 SCL 通常使用开漏输出，并通过上拉电阻回到高电平。</p>
+<p>工作原理：</p>
+<p>SDA (Serial Data)	SCL (Serial Clock)   开漏输出</p>
+<p><img src="/markdown/images/posts/embedded-communication-protocols/002-e183787cef.png" alt="SDA开漏输出可以发数据也可以接受数据"></p>
+<p><img src="/markdown/images/posts/embedded-communication-protocols/003-3c10f44516.png" alt="embedded-communication-protocols 插图 3"></p>
+<p>总线空闲时，SCL 和 SDA 都为高电平。SCL 保持高电平期间，SDA 从高变低表示起始条件，从低变高表示停止条件。传输数据时，SDA 通常在 SCL 低电平期间改变，并在 SCL 高电平期间保持稳定供接收端采样。每传输 8 位数据，接收端使用第 9 个时钟周期返回 ACK 或 NACK。</p>
+<p>如果从机拉低了 SDA -&gt; 代表 <strong>ACK (应答)</strong></p>
+<p>在 SCL 高电平时，SDA 拉高表示结束通信</p>
+<p>S + SlaveAddr(7bit)+W&#x2F;R + ACK + Data1 + ACK + Data2 + ACK + … + P</p>
+<ul>
+<li><strong>S</strong>：Start，SCL 为高电平时 SDA 从高变低</li>
+<li><strong>SlaveAddr(7bit)+W&#x2F;R</strong>：7 位从机地址 + 1 位读写位</li>
+<li>写：<code>0</code></li>
+<li>读：<code>1</code>合起来是 <strong>1 字节（8bit）</strong></li>
+<li><strong>ACK</strong>：应答位从机拉低 SDA 表示应答</li>
+<li><strong>Data1 &#x2F; Data2 &#x2F; …</strong>：要发送的数据，<strong>每个 1 字节（8bit）</strong></li>
+<li><strong>P</strong>：Stop，SCL 为高电平时 SDA 从低变高</li>
+</ul>
+<p>特殊情况：</p>
+<p>多个主机同时发起传输时，I2C 依靠“低电平占优”的线与特性完成同步与仲裁：</p>
+<ul>
+<li><strong>SCL 同步</strong>：只有所有主机都释放 SCL 后，总线才会回到高电平；任一主机拉低 SCL，总线都保持低电平。</li>
+<li><strong>SDA 仲裁</strong>：主机在发送数据的同时读取 SDA。若自己释放 SDA（发送 1）却读到低电平（总线上为 0），说明仲裁失败，应立即停止发送并转为接收状态。</li>
+</ul>
+<h2 id="SPI"><a href="#SPI" class="headerlink" title="SPI"></a>SPI</h2><p><strong>SCK：由主机输出的同步时钟，空闲时具有由 CPOL 决定的默认电平。</strong></p>
+<p><strong>MOSI 主机发送</strong></p>
+<p><strong>MISO 从机发送</strong></p>
+<p><strong>NSS 片选</strong></p>
+<p><img src="/markdown/images/posts/embedded-communication-protocols/004-eecdc3f40d.png" alt="设置LSB"></p>
+<p><strong>Clock Polarity（CPOL）</strong>：<code>0</code> 表示时钟空闲为低电平，<code>1</code> 表示时钟空闲为高电平。</p>
+<p><strong>Clock Phase（CPHA）</strong>：<code>0</code> 表示在第一个有效边沿采样、第二个边沿切换数据；<code>1</code> 表示在第一个边沿切换、第二个边沿采样。主机与从机必须使用相同的 CPOL、CPHA 和位序配置。</p>
+<p>SPI 是全双工移位传输：每个时钟周期，MOSI 与 MISO 各移动一位。即使只关心单向数据，另一方向仍会同步移位；主机可以丢弃无效接收值。未驱动的 MISO 电平取决于器件和电路，不能一概视为 <code>0xFF</code>。</p>
+<h2 id="CAN"><a href="#CAN" class="headerlink" title="CAN"></a>CAN</h2><p><img src="/markdown/images/posts/embedded-communication-protocols/005-6b596a829b.png" alt="embedded-communication-protocols 插图 5"></p>
+<p>异步差分信号，单一时刻仅能传播一个消息</p>
+<p>常用信息帧：</p>
+<p>数据帧用于在 CAN 总线上传输有效数据。报文会广播给所有节点，控制器根据标识符决定仲裁优先级，并通过接收过滤器判断是否接收。经典 CAN 数据帧从头到尾可分为七段：</p>
+<ol>
+<li>SOF 帧起始</li>
+<li>仲裁段（ID、RTR）</li>
+<li>控制段（IDE、r0、DLC）</li>
+<li>数据段（真正要传的数据）</li>
+<li>CRC校验段</li>
+<li>ACK应答段</li>
+<li>EOF帧结束 + IFS帧间隔</li>
+</ol>
+<p>分两种：<strong>标准数据帧（11位ID CAN2.0A）</strong>、<strong>扩展数据帧（29位ID CAN2.0B）</strong><br>下面讲最常用的<strong>标准帧</strong>。</p>
+<p><strong>SOF 帧起始（1 bit，固定显性 0）</strong></p>
+<ul>
+<li>作用：告诉所有节点：一帧消息正式开始，同步所有设备时钟。</li>
+<li>电平：强制拉低总线（显性0），总线空闲时全是隐性1，一出现0就代表新帧来了。</li>
+</ul>
+<p><strong>仲裁段（核心：ID冲突竞争）</strong></p>
+<p>顺序：11位ID → RTR位</p>
+<p>11位标识符 StdID（11 bit）</p>
+<ul>
+<li>取值范围：0 ~ 0x7FF</li>
+<li>规则：<strong>数字越小，优先级越高</strong></li>
+<li>仲裁原理：<br>多个节点同时发帧时，从最高位往最低位逐位对比；<br>自己发1、总线被别人拉成0 → 自己仲裁失败，立刻停止发送，转为接收。</li>
+</ul>
+<p>例：ID&#x3D;0x001（000 0000 0001）比 ID&#x3D;0x300 优先级高。</p>
+<p><strong>RTR 远程传输请求位（1 bit）</strong></p>
+<p><strong>数据帧固定写 0（显性）</strong></p>
+<ul>
+<li>RTR&#x3D;0：代表这是【数据帧】，后面带有数据段；</li>
+<li>RTR&#x3D;1：代表这是【远程帧】，不带数据，只请求对方发数据。<br>我们现在只讲数据帧，所以RTR恒为0。</li>
+</ul>
+<p><strong>控制段（6 bit）</strong></p>
+<p>顺序：IDE → r0 → DLC（4位）</p>
+<p><strong>IDE 标识符扩展位（1bit）</strong></p>
+<p>标准帧固定 &#x3D; 0</p>
+<ul>
+<li>IDE&#x3D;0：当前是11位标准ID；</li>
+<li>IDE&#x3D;1：后面是29位扩展ID（扩展帧）。</li>
+</ul>
+<p><strong>r0 保留位（1bit）</strong></p>
+<p>协议预留扩展，<strong>数据帧强制填0</strong>，不能写1，否则报格式错误。</p>
+<p><strong>DLC 数据长度码（4 bit，0~15）</strong></p>
+<p>用来表示后面「数据段有多少字节」<br>CAN2.0 限制最大8字节，映射规则：</p>
+<table>
+<thead>
+<tr>
+<th>DLC值</th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+<th>9~15</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>真实数据字节</td>
+<td>0</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+<td>5</td>
+<td>6</td>
+<td>7</td>
+<td>8</td>
+<td>（CAN2.0不允许）</td>
+</tr>
+</tbody></table>
+<p>举例：<br>DLC&#x3D;4 → 数据段有4个字节；<br>DLC&#x3D;0 → 数据段为空，不带任何数据。</p>
+<p><strong>数据段 Data Field（0~8 Byte）</strong></p>
+<p>紧跟DLC之后，长度由DLC决定。</p>
+<ul>
+<li>每个字节8bit，先发高bit，后发低bit；</li>
+<li>用途：放你要传输的实际数值，电压、转速、温度、开关状态等。</li>
+</ul>
+<p>示例：<br>要传输两个数据：电压&#x3D;0x01，温度&#x3D;0x20<br>DLC&#x3D;2，数据段 &#x3D; [0x01, 0x20]</p>
+<blockquote>
+<p>重点：CAN2.0最多只能塞8个字节，超过必须分多帧发送，这也是后来CAN FD出现的原因。</p>
+</blockquote>
+<p><strong>CRC 循环冗余校验段（15bit CRC + CRC界定符）</strong></p>
+<p>两部分：15位CRC校验码 + 1位CRC界定符（隐性1）</p>
+<ol>
+<li>CRC计算范围：从SOF一直到数据段全部比特；</li>
+<li>发送端算出CRC值附在帧后；接收端重新计算一遍对比；</li>
+<li>对比不一致 → CRC错误，直接丢弃本帧，不回复ACK；</li>
+<li>CRC界定符固定为隐性1，不能是0，否则格式错误。</li>
+</ol>
+<p>作用：防止线路干扰导致数据传错，硬件自动校验，不用软件手动计算。</p>
+<p><strong>ACK 应答段（2 bit）</strong></p>
+<ol>
+<li>ACK槽（1bit）<ul>
+<li>发送节点：这里输出隐性1；</li>
+<li>所有正常接收、校验无误的节点，会把总线拉成显性0；</li>
+</ul>
+</li>
+<li>ACK界定符（1bit，固定隐性1）</li>
+</ol>
+<p>两种情况：</p>
+<ul>
+<li>槽位变成0：有人正确收到我的帧，通信正常；</li>
+<li>槽位保持1：整条总线没有任何节点收下这帧，判定应答错误，发送器自动重发。</li>
+</ul>
+<p><strong>EOF 帧结束 + IFS 帧间隔</strong></p>
+<p>EOF 帧结束（7 bit，全部隐性1）</p>
+<p>连续7个1代表一帧完整结束，这段里不能出现0，否则格式错误。</p>
+<p><strong>IFS 帧间隔（3 bit，隐性1）</strong></p>
+<p>两帧之间强制等待3个空闲位，给单片机留出时间处理上一帧数据；<br>IFS期间不能发送新报文。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/markdown/tags/uart/" rel="tag"># UART</a>
+              <a href="/markdown/tags/i2c/" rel="tag"># I2C</a>
+              <a href="/markdown/tags/spi/" rel="tag"># SPI</a>
+              <a href="/markdown/tags/can/" rel="tag"># CAN</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/markdown/embedded/embedded-system-basics/" rel="prev" title="嵌入式基础：GPIO 输出、Keil 工程与自举电荷泵">
+                  <i class="fa fa-angle-left"></i> 嵌入式基础：GPIO 输出、Keil 工程与自举电荷泵
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/markdown/embedded/stm32-clion-development/" rel="next" title="STM32 与 CLion 开发实践">
+                  STM32 与 CLion 开发实践 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2025 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">ZY</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/zycrwa/markdown" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

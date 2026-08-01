@@ -72,7 +72,119 @@
   <noscript>
     <link rel="stylesheet" href="/markdown/css/noscript.css">
   </noscript>
-<link rel="alternate" href="/markdown/atom.xml" title="ZY 的技术笔记" type="application/atom+xml">
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><link rel="alternate" href="/markdown/atom.xml" title="ZY 的技术笔记" type="application/atom+xml">
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
@@ -109,7 +221,7 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/markdown/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/markdown/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">5</span></a></li><li class="menu-item menu-item-categories"><a href="/markdown/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">4</span></a></li><li class="menu-item menu-item-tags"><a href="/markdown/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">8</span></a></li><li class="menu-item menu-item-about"><a href="/markdown/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/markdown/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/markdown/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">18</span></a></li><li class="menu-item menu-item-categories"><a href="/markdown/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">6</span></a></li><li class="menu-item menu-item-tags"><a href="/markdown/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">60</span></a></li><li class="menu-item menu-item-about"><a href="/markdown/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -166,7 +278,7 @@
         <div class="site-overview-wrap sidebar-panel">
           <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <img class="site-author-image" itemprop="image" alt="ZY"
-      src="https://github.com/zycrwa.png">
+      src="/markdown/images/avatar.gif">
   <p class="site-author-name" itemprop="name">ZY</p>
   <div class="site-description" itemprop="description">ZY 的个人技术学习博客</div>
 </div>
@@ -174,18 +286,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/markdown/archives/">
-          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-count">18</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/markdown/categories/">
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/markdown/tags/">
-        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-count">60</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -215,27 +327,27 @@
   <div class="post-block">
     <div class="post-content">
       <div class="collection-title">
-        <span class="collection-header">嗯..! 目前共计 5 篇日志。 继续努力。</span>
+        <span class="collection-header">嗯..! 目前共计 18 篇日志。 继续努力。</span>
       </div>
 
       
     <div class="collection-year">
-      <span class="collection-header">2026<span class="collection-year-count">4</span></span>
+      <span class="collection-header">2026<span class="collection-year-count">18</span></span>
     </div>
 
   <article itemscope itemtype="http://schema.org/Article">
     <header class="post-header">
       <div class="post-meta-container">
         <time itemprop="dateCreated"
-              datetime="2026-08-01T22:07:22+08:00"
+              datetime="2026-08-01T22:17:00+08:00"
               content="2026-08-01">
           08-01
         </time>
       </div>
 
       <div class="post-title">
-          <a class="post-title-link" href="/markdown/2026/08/01/hexo-publishing-practice/" itemprop="url">
-            <span itemprop="name">我的第一篇 Hexo 发布练习</span>
+          <a class="post-title-link" href="/markdown/motor-control/dengfoc-control-code/" itemprop="url">
+            <span itemprop="name">DengFOC 常用控制代码与三环结构</span>
           </a>
       </div>
 
@@ -247,15 +359,15 @@
     <header class="post-header">
       <div class="post-meta-container">
         <time itemprop="dateCreated"
-              datetime="2026-08-01T22:07:22+08:00"
+              datetime="2026-08-01T22:16:00+08:00"
               content="2026-08-01">
           08-01
         </time>
       </div>
 
       <div class="post-title">
-          <a class="post-title-link" href="/markdown/2026/08/01/zy/" itemprop="url">
-            <span itemprop="name">我的第一篇 Hexo 发布练习</span>
+          <a class="post-title-link" href="/markdown/simulation/simulink-motor-simulation/" itemprop="url">
+            <span itemprop="name">Simulink 电机控制仿真常用模块与建议</span>
           </a>
       </div>
 
@@ -267,15 +379,15 @@
     <header class="post-header">
       <div class="post-meta-container">
         <time itemprop="dateCreated"
-              datetime="2026-08-01T10:00:00+08:00"
+              datetime="2026-08-01T22:15:00+08:00"
               content="2026-08-01">
           08-01
         </time>
       </div>
 
       <div class="post-title">
-          <a class="post-title-link" href="/markdown/2026/08/01/ai-knowledge/" itemprop="url">
-            <span itemprop="name">AI 知识库笔记</span>
+          <a class="post-title-link" href="/markdown/motor-control/pmsm-parameter-measurement/" itemprop="url">
+            <span itemprop="name">PMSM 电感与磁链参数测量</span>
           </a>
       </div>
 
@@ -287,38 +399,135 @@
     <header class="post-header">
       <div class="post-meta-container">
         <time itemprop="dateCreated"
-              datetime="2026-08-01T09:00:00+08:00"
+              datetime="2026-08-01T22:14:00+08:00"
               content="2026-08-01">
           08-01
         </time>
       </div>
 
       <div class="post-title">
-          <a class="post-title-link" href="/markdown/2026/08/01/git-notes/" itemprop="url">
-            <span itemprop="name">Git 使用笔记</span>
+          <a class="post-title-link" href="/markdown/motor-control/pmsm-speed-loop-pi-tuning/" itemprop="url">
+            <span itemprop="name">PMSM 转速环 PI 参数整定推导</span>
           </a>
       </div>
 
       
     </header>
   </article>
-    <div class="collection-year">
-      <span class="collection-header">2025<span class="collection-year-count">1</span></span>
-    </div>
 
   <article itemscope itemtype="http://schema.org/Article">
     <header class="post-header">
       <div class="post-meta-container">
         <time itemprop="dateCreated"
-              datetime="2025-10-15T00:00:00+08:00"
-              content="2025-10-15">
-          10-15
+              datetime="2026-08-01T22:13:00+08:00"
+              content="2026-08-01">
+          08-01
         </time>
       </div>
 
       <div class="post-title">
-          <a class="post-title-link" href="/markdown/2025/10/15/c-language-learning/" itemprop="url">
-            <span itemprop="name">C 语言学习笔记</span>
+          <a class="post-title-link" href="/markdown/motor-control/pmsm-harmonic-analysis/" itemprop="url">
+            <span itemprop="name">永磁同步电机谐波与六相矢量空间分析</span>
+          </a>
+      </div>
+
+      
+    </header>
+  </article>
+
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+      <div class="post-meta-container">
+        <time itemprop="dateCreated"
+              datetime="2026-08-01T22:12:00+08:00"
+              content="2026-08-01">
+          08-01
+        </time>
+      </div>
+
+      <div class="post-title">
+          <a class="post-title-link" href="/markdown/motor-control/dual-three-phase-pmsm/" itemprop="url">
+            <span itemprop="name">双三相永磁同步电机 SVPWM</span>
+          </a>
+      </div>
+
+      
+    </header>
+  </article>
+
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+      <div class="post-meta-container">
+        <time itemprop="dateCreated"
+              datetime="2026-08-01T22:11:00+08:00"
+              content="2026-08-01">
+          08-01
+        </time>
+      </div>
+
+      <div class="post-title">
+          <a class="post-title-link" href="/markdown/motor-control/three-phase-pmsm/" itemprop="url">
+            <span itemprop="name">三相永磁同步电机建模与控制</span>
+          </a>
+      </div>
+
+      
+    </header>
+  </article>
+
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+      <div class="post-meta-container">
+        <time itemprop="dateCreated"
+              datetime="2026-08-01T22:10:00+08:00"
+              content="2026-08-01">
+          08-01
+        </time>
+      </div>
+
+      <div class="post-title">
+          <a class="post-title-link" href="/markdown/motor-control/pmsm-control-basics/" itemprop="url">
+            <span itemprop="name">PMSM 控制基础：一阶滞后、DOB 与低通滤波器</span>
+          </a>
+      </div>
+
+      
+    </header>
+  </article>
+
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+      <div class="post-meta-container">
+        <time itemprop="dateCreated"
+              datetime="2026-08-01T22:09:00+08:00"
+              content="2026-08-01">
+          08-01
+        </time>
+      </div>
+
+      <div class="post-title">
+          <a class="post-title-link" href="/markdown/hardware/motor-drive-pcb-layout/" itemprop="url">
+            <span itemprop="name">电机驱动 PCB 布局与布线要点</span>
+          </a>
+      </div>
+
+      
+    </header>
+  </article>
+
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+      <div class="post-meta-container">
+        <time itemprop="dateCreated"
+              datetime="2026-08-01T22:08:00+08:00"
+              content="2026-08-01">
+          08-01
+        </time>
+      </div>
+
+      <div class="post-title">
+          <a class="post-title-link" href="/markdown/hardware/motor-drive-power-supply/" itemprop="url">
+            <span itemprop="name">电机驱动电源与保护器件设计笔记</span>
           </a>
       </div>
 
@@ -332,6 +541,9 @@
   
   
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/markdown/archives/page/2/">2</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/markdown/archives/page/2/"><i class="fa fa-angle-right"></i></a>
+  </nav>
 
 </div>
   </main>

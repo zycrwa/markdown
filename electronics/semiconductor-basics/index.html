@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 8.1.2">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/markdown/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/markdown/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/markdown/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/markdown/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/markdown/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zycrwa.github.io","root":"/markdown/","images":"/markdown/images","scheme":"Gemini","darkmode":false,"version":"8.28.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"flat"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":true,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/markdown/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/markdown/js/config.js" defer></script>
+
+    <meta name="description" content="梳理 PN 结的形成、单向导电性，以及增强型 MOSFET 的工作区、关键参数和寄生电容。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="半导体基础：PN 结与 MOSFET">
+<meta property="og:url" content="https://zycrwa.github.io/markdown/electronics/semiconductor-basics/index.html">
+<meta property="og:site_name" content="ZY 的技术笔记">
+<meta property="og:description" content="梳理 PN 结的形成、单向导电性，以及增强型 MOSFET 的工作区、关键参数和寄生电容。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://zycrwa.github.io/markdown/images/posts/semiconductor-basics/001-4c68dcee68.png">
+<meta property="og:image" content="https://zycrwa.github.io/markdown/images/posts/semiconductor-basics/002-f2105a6ad0.png">
+<meta property="og:image" content="https://zycrwa.github.io/markdown/images/posts/semiconductor-basics/003-4d828839df.png">
+<meta property="og:image" content="https://zycrwa.github.io/markdown/images/posts/semiconductor-basics/004-940ed011fc.png">
+<meta property="og:image" content="https://zycrwa.github.io/markdown/images/posts/semiconductor-basics/005-ae8feaed1c.png">
+<meta property="og:image" content="https://zycrwa.github.io/markdown/images/posts/semiconductor-basics/006-fc4057d105.png">
+<meta property="og:image" content="https://zycrwa.github.io/markdown/images/posts/semiconductor-basics/007-f8170b2efa.png">
+<meta property="og:image" content="https://zycrwa.github.io/markdown/images/posts/semiconductor-basics/008-8577c3db3b.png">
+<meta property="og:image" content="https://zycrwa.github.io/markdown/images/posts/semiconductor-basics/009-c979d89e6c.png">
+<meta property="og:image" content="https://zycrwa.github.io/markdown/images/posts/semiconductor-basics/010-407f1a6170.png">
+<meta property="og:image" content="https://zycrwa.github.io/markdown/images/posts/semiconductor-basics/011-fc4b38e79f.png">
+<meta property="article:published_time" content="2026-08-01T14:00:00.000Z">
+<meta property="article:modified_time" content="2026-08-01T15:51:19.060Z">
+<meta property="article:author" content="ZY">
+<meta property="article:tag" content="MOSFET">
+<meta property="article:tag" content="PN 结">
+<meta property="article:tag" content="半导体">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zycrwa.github.io/markdown/images/posts/semiconductor-basics/001-4c68dcee68.png">
+
+
+<link rel="canonical" href="https://zycrwa.github.io/markdown/electronics/semiconductor-basics/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://zycrwa.github.io/markdown/electronics/semiconductor-basics/","path":"/electronics/semiconductor-basics/","title":"半导体基础：PN 结与 MOSFET"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>半导体基础：PN 结与 MOSFET | ZY 的技术笔记</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous" defer></script>
+<script src="/markdown/js/utils.js" defer></script><script src="/markdown/js/motion.js" defer></script><script src="/markdown/js/sidebar.js" defer></script><script src="/markdown/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/markdown/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+  <script src="/markdown/js/third-party/fancybox.js" defer></script>
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/markdown/css/noscript.css">
+  </noscript>
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><link rel="alternate" href="/markdown/atom.xml" title="ZY 的技术笔记" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/markdown/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">ZY 的技术笔记</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">编程、工具与 AI 学习记录</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/markdown/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/markdown/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">18</span></a></li><li class="menu-item menu-item-categories"><a href="/markdown/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">6</span></a></li><li class="menu-item menu-item-tags"><a href="/markdown/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">60</span></a></li><li class="menu-item menu-item-about"><a href="/markdown/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#PN-%E7%BB%93"><span class="nav-number">1.</span> <span class="nav-text">PN 结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E3%80%81PN-%E7%BB%93%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">1.1.</span> <span class="nav-text">一、PN 结的基本概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E3%80%81PN-%E7%BB%93%E7%9A%84%E5%BD%A2%E6%88%90"><span class="nav-number">1.2.</span> <span class="nav-text">二、PN 结的形成</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E8%BD%BD%E6%B5%81%E5%AD%90%E7%9A%84%E6%89%A9%E6%95%A3%E8%BF%90%E5%8A%A8"><span class="nav-number">1.2.1.</span> <span class="nav-text">1. 载流子的扩散运动</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E7%A9%BA%E9%97%B4%E7%94%B5%E8%8D%B7%E5%8C%BA%E7%9A%84%E5%BD%A2%E6%88%90"><span class="nav-number">1.2.2.</span> <span class="nav-text">2. 空间电荷区的形成</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E5%86%85%E7%94%B5%E5%9C%BA%E7%9A%84%E5%BB%BA%E7%AB%8B%E4%B8%8E%E5%B9%B3%E8%A1%A1"><span class="nav-number">1.2.3.</span> <span class="nav-text">3. 内电场的建立与平衡</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E3%80%81PN-%E7%BB%93%E7%9A%84%E5%8D%95%E5%90%91%E5%AF%BC%E7%94%B5%E6%80%A7"><span class="nav-number">1.3.</span> <span class="nav-text">三、PN 结的单向导电性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E6%AD%A3%E5%90%91%E5%AF%BC%E9%80%9A"><span class="nav-number">1.3.1.</span> <span class="nav-text">1. 正向导通</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E5%8F%8D%E5%90%91%E6%88%AA%E6%AD%A2"><span class="nav-number">1.3.2.</span> <span class="nav-text">2. 反向截止</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9B%E3%80%81PN-%E7%BB%93%E7%9A%84%E4%B8%BB%E8%A6%81%E5%8F%82%E6%95%B0"><span class="nav-number">1.4.</span> <span class="nav-text">四、PN 结的主要参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E5%85%B3%E9%94%AE%E7%BB%93%E8%AE%BA%E4%B8%8E%E6%98%93%E9%94%99%E7%82%B9"><span class="nav-number">1.5.</span> <span class="nav-text">五、关键结论与易错点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MOSFET"><span class="nav-number">2.</span> <span class="nav-text">MOSFET</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E3%80%81MOSFET-%E5%9F%BA%E7%A1%80%E6%A6%82%E8%BF%B0"><span class="nav-number">2.1.</span> <span class="nav-text">一、MOSFET 基础概述</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E6%8C%89%E8%BD%BD%E6%B5%81%E5%AD%90%E7%B1%BB%E5%9E%8B%E5%88%86"><span class="nav-number">2.1.1.</span> <span class="nav-text">（1）按载流子类型分</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E6%8C%89%E5%AF%BC%E9%80%9A%E6%9D%A1%E4%BB%B6%E5%88%86"><span class="nav-number">2.1.2.</span> <span class="nav-text">（2）按导通条件分</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%A2%9E%E5%BC%BA%E5%9E%8BMOSFET%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="nav-number">2.2.</span> <span class="nav-text">二、增强型MOSFET的工作原理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E6%88%AA%E6%AD%A2%E5%8C%BA"><span class="nav-number">2.2.1.</span> <span class="nav-text">1. 截止区</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E5%8F%AF%E5%8F%98%E7%94%B5%E9%98%BB%E5%8C%BA%EF%BC%88%E9%9D%9E%E9%A5%B1%E5%92%8C%E5%8C%BA%EF%BC%89"><span class="nav-number">2.2.2.</span> <span class="nav-text">2. 可变电阻区（非饱和区）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E6%81%92%E6%B5%81%E5%8C%BA%EF%BC%88%E9%A5%B1%E5%92%8C%E5%8C%BA%EF%BC%89"><span class="nav-number">2.2.3.</span> <span class="nav-text">3. 恒流区（饱和区）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E3%80%81MOSFET%E7%9A%84%E5%85%B3%E9%94%AE%E5%8F%82%E6%95%B0"><span class="nav-number">2.3.</span> <span class="nav-text">三、MOSFET的关键参数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E9%98%88%E5%80%BC%E7%94%B5%E5%8E%8B%EF%BC%88%E5%BC%80%E5%90%AF%E7%94%B5%E5%8E%8B%EF%BC%89V-GS-th"><span class="nav-number">2.3.1.</span> <span class="nav-text">1. 阈值电压（开启电压）V_GS(th)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E6%BC%8F%E6%BA%90%E5%87%BB%E7%A9%BF%E7%94%B5%E5%8E%8BV-DS-BR"><span class="nav-number">2.3.2.</span> <span class="nav-text">2. 漏源击穿电压V_DS(BR)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E6%9C%80%E5%A4%A7%E6%BC%8F%E6%9E%81%E7%94%B5%E6%B5%81I-D-max"><span class="nav-number">2.3.3.</span> <span class="nav-text">3. 最大漏极电流I_D(max)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E5%AF%BC%E9%80%9A%E7%94%B5%E9%98%BBR-ON"><span class="nav-number">2.3.4.</span> <span class="nav-text">4. 导通电阻R_ON</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-%E6%A0%85%E6%BA%90%E5%87%BB%E7%A9%BF%E7%94%B5%E5%8E%8BV-GS-BR"><span class="nav-number">2.3.5.</span> <span class="nav-text">5. 栅源击穿电压V_GS(BR)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-%E5%BC%80%E5%85%B3%E5%8F%82%E6%95%B0"><span class="nav-number">2.3.6.</span> <span class="nav-text">6. 开关参数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9B%E3%80%81-MOSFET-%E5%AF%84%E7%94%9F%E7%94%B5%E5%AE%B9%E7%9A%84%E4%BD%9C%E7%94%A8%E4%B8%8E%E5%BD%B1%E5%93%8D%E8%A7%A3%E6%9E%90"><span class="nav-number">2.4.</span> <span class="nav-text">四、 MOSFET 寄生电容的作用与影响解析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E6%A0%B8%E5%BF%83%E7%94%B5%E5%AE%B9%E5%AE%9A%E4%B9%89"><span class="nav-number">2.4.1.</span> <span class="nav-text">1. 核心电容定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E5%90%84%E7%94%B5%E5%AE%B9%E7%9A%84%E6%A0%B8%E5%BF%83%E4%BD%9C%E7%94%A8%E4%B8%8E%E5%BD%B1%E5%93%8D"><span class="nav-number">2.4.2.</span> <span class="nav-text">2. 各电容的核心作用与影响</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%883%EF%BC%89-C-ds-%EF%BC%9A%E6%BC%8F%E6%BA%90%E7%94%B5%E5%AE%B9"><span class="nav-number">2.4.3.</span> <span class="nav-text">（3）：漏源电容</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E6%95%B4%E4%BD%93%E5%AF%B9%E7%94%B5%E8%B7%AF%E7%9A%84%E5%BD%B1%E5%93%8D%E6%80%BB%E7%BB%93"><span class="nav-number">2.4.4.</span> <span class="nav-text">3. 整体对电路的影响总结</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZY"
+      src="/markdown/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">ZY</p>
+  <div class="site-description" itemprop="description">ZY 的个人技术学习博客</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/markdown/archives/">
+          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/markdown/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/markdown/tags/">
+        <span class="site-state-item-count">60</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zycrwa" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zycrwa" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zycrwa.github.io/markdown/electronics/semiconductor-basics/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/markdown/images/avatar.gif">
+      <meta itemprop="name" content="ZY">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ZY 的技术笔记">
+      <meta itemprop="description" content="ZY 的个人技术学习博客">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="半导体基础：PN 结与 MOSFET | ZY 的技术笔记">
+      <meta itemprop="description" content="梳理 PN 结的形成、单向导电性，以及增强型 MOSFET 的工作区、关键参数和寄生电容。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          半导体基础：PN 结与 MOSFET
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-08-01 22:00:00 / 修改时间：23:51:19" itemprop="dateCreated datePublished" datetime="2026-08-01T22:00:00+08:00">2026-08-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/markdown/categories/%E7%94%B5%E5%AD%90%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">电子基础</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">梳理 PN 结的形成、单向导电性，以及增强型 MOSFET 的工作区、关键参数和寄生电容。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>本文从 PN 结出发，逐步整理增强型 MOSFET 的工作原理、主要工作区、选型参数与寄生电容影响，作为后续功率器件和电机驱动学习的基础。</p>
+<span id="more"></span>
+
+<h2 id="PN-结"><a href="#PN-结" class="headerlink" title="PN 结"></a>PN 结</h2><h3 id="一、PN-结的基本概念"><a href="#一、PN-结的基本概念" class="headerlink" title="一、PN 结的基本概念"></a>一、PN 结的基本概念</h3><p>PN 结是由 <strong>P 型半导体</strong>和 <strong>N 型半导体</strong>通过特殊工艺紧密结合形成的界面区域，具有单向导电性，是二极管、三极管和集成电路等半导体器件的核心基础。</p>
+<p>补充：</p>
+<p>“N”表示负电的意思，取自英文Negative的第一个字母。在四价的半导体材料中掺入五价的磷、砷、锑。5价的元素与4价的元素结合形成共价键，会多出一个自由电子。N型半导体主要依靠自由电子导电。由于N型半导体中正电荷量与负电荷量相等，故N型半导体呈电中性。自由电子主要由杂质原子提供。掺入的杂质越多，（自由电子）的浓度就越高，导电性能就越强。</p>
+<p><img src="/markdown/images/posts/semiconductor-basics/001-4c68dcee68.png" alt="semiconductor-basics 插图 1"></p>
+<p>“P”表示正电的意思，取自英文Positive的第一个字母。在4价的半导体材料中掺入3价的硼（B），由于原子核最外层最多可以容纳8个电子，因此形成共价键后，还会多出一个空穴，P型半导体主要依靠空穴导电。</p>
+<p><img src="/markdown/images/posts/semiconductor-basics/002-f2105a6ad0.png" alt="semiconductor-basics 插图 2"></p>
+<p>记住一点：<strong>N型半导体多出了电子，P型半导体缺少电子，形成空穴。</strong></p>
+<h3 id="二、PN-结的形成"><a href="#二、PN-结的形成" class="headerlink" title="二、PN 结的形成"></a>二、PN 结的形成</h3><p>当 P 型和 N 型半导体接触后，由于两侧载流子浓度存在较大差异，会经历扩散、复合和漂移过程，最终形成稳定的 PN 结。这个过程可分为三个阶段：</p>
+<h4 id="1-载流子的扩散运动"><a href="#1-载流子的扩散运动" class="headerlink" title="1. 载流子的扩散运动"></a>1. 载流子的扩散运动</h4><p>P区的多子（空穴）浓度远高于N区，N区的多子（电子）浓度远高于P区，因此：</p>
+<ul>
+<li>P区的空穴会向N区扩散（从高浓度→低浓度）；</li>
+<li>N区的电子会向P区扩散。</li>
+</ul>
+<h4 id="2-空间电荷区的形成"><a href="#2-空间电荷区的形成" class="headerlink" title="2. 空间电荷区的形成"></a>2. 空间电荷区的形成</h4><p>扩散到N区的空穴会与N区的电子复合，扩散到P区的电子会与P区的空穴复合，导致接触界面两侧的载流子被耗尽，形成“耗尽层”（即空间电荷区）：</p>
+<ul>
+<li>P区一侧：失去空穴，留下带负电的受主离子（如硼离子）；</li>
+<li>N区一侧：失去电子，留下带正电的施主离子（如磷离子）。</li>
+</ul>
+<h4 id="3-内电场的建立与平衡"><a href="#3-内电场的建立与平衡" class="headerlink" title="3. 内电场的建立与平衡"></a>3. 内电场的建立与平衡</h4><p>内电场的方向与载流子扩散运动的方向相反，会阻碍多子的继续扩散；同时，内电场会推动少子（P区的电子、N区的空穴）做漂移运动（与扩散运动方向相反）。</p>
+<p>当扩散运动和漂移运动的速率相等时，空间电荷区的宽度不再变化，PN结形成并达到动态平衡。</p>
+<h3 id="三、PN-结的单向导电性"><a href="#三、PN-结的单向导电性" class="headerlink" title="三、PN 结的单向导电性"></a>三、PN 结的单向导电性</h3><p>PN 结的核心特性是单向导电，即正向导通、反向截止，其导电状态由外加电压的极性决定。</p>
+<h4 id="1-正向导通"><a href="#1-正向导通" class="headerlink" title="1. 正向导通"></a>1. 正向导通</h4><p><img src="/markdown/images/posts/semiconductor-basics/003-4d828839df.png" alt="semiconductor-basics 插图 3"><br>电源正极接P区，负极接N区，此时外加电压产生的外电场方向与内电场方向相反。外电场会削弱内电场，使空间电荷区变窄（耗尽层变薄），打破动态平衡：</p>
+<ul>
+<li>P区的多子（空穴）和N区的多子（电子）能顺利越过PN结，形成较大的正向电流；</li>
+<li>正向导通时，PN结的正向压降很小（硅管约0.7V，锗管约0.2V）。</li>
+</ul>
+<h4 id="2-反向截止"><a href="#2-反向截止" class="headerlink" title="2. 反向截止"></a>2. 反向截止</h4><p><img src="/markdown/images/posts/semiconductor-basics/004-940ed011fc.png" alt="semiconductor-basics 插图 4"><br>电源正极接N区，负极接P区，外加电压产生的外电场方向与内电场方向相同。外电场会增强内电场，使空间电荷区变宽（耗尽层变厚）：</p>
+<ul>
+<li>多子的扩散运动被进一步阻碍，无法形成有效电流；</li>
+<li>只有少数载流子在电场作用下做漂移运动，形成极其微弱的反向漏电流（反向饱和电流），通常可忽略，因此认为 PN 结反向截止。</li>
+</ul>
+<h3 id="四、PN-结的主要参数"><a href="#四、PN-结的主要参数" class="headerlink" title="四、PN 结的主要参数"></a>四、PN 结的主要参数</h3><p>PN 结的参数是衡量其性能的重要指标，核心参数包括：</p>
+<ol>
+<li>正向压降（V_F）：正向导通时的电压降，与材料相关（硅管0.7V，锗管0.2V）。</li>
+<li>反向饱和电流（I_S）：反向截止时的漏电流，数值越小，PN结性能越好，受温度影响较大。</li>
+<li>反向击穿电压（V_BR）：反向电流急剧增大时的反向电压，是PN结反向工作的极限电压。</li>
+<li>结电容（C_j）：包括势垒电容（空间电荷区电容）和扩散电容（载流子存储电容），高频应用时需考虑结电容的影响。</li>
+</ol>
+<h3 id="五、关键结论与易错点"><a href="#五、关键结论与易错点" class="headerlink" title="五、关键结论与易错点"></a>五、关键结论与易错点</h3><ol>
+<li><p>核心结论：PN结的单向导电性源于动态平衡时的内电场，外加电压通过改变内电场强度调控载流子的运动；</p>
+</li>
+<li><p>易错点：① 反向截止并非完全无电流，存在微弱的反向饱和电流；② 反向击穿并非损坏（可逆，只要电流不超过极限），稳压管正是利用齐纳击穿工作；③ 空间电荷区（耗尽层）无自由载流子，导电能力极差。</p>
+</li>
+</ol>
+<h2 id="MOSFET"><a href="#MOSFET" class="headerlink" title="MOSFET"></a>MOSFET</h2><h3 id="一、MOSFET-基础概述"><a href="#一、MOSFET-基础概述" class="headerlink" title="一、MOSFET 基础概述"></a>一、MOSFET 基础概述</h3><p><img src="/markdown/images/posts/semiconductor-basics/005-ae8feaed1c.png" alt="semiconductor-basics 插图 5"></p>
+<p>MOSFET 是 Metal-Oxide-Semiconductor Field-Effect Transistor 的缩写，即金属-氧化物-半导体场效应晶体管。它通过栅源电压产生的电场控制半导体导电沟道。由于栅极与源极、漏极之间有 SiO2 绝缘层隔离，MOSFET 也称为绝缘栅型场效应管。</p>
+<p>市面上大家所说的功率场效应晶体管通常指绝缘栅MOS型(Metal Oxide Semiconductor FET),简称功率MOSFET(Power MOSFET)。实际上场效应管分为<strong>结型</strong>和<strong>绝缘栅</strong>两种不同的结构。场效应管是利用输入回路的电场效应来控制输出回路电流的一种半导体器件。它仅靠半导体中的<strong>多数载流子</strong>导电，又称为<strong>单极型</strong>晶体管。<strong>结型</strong>功率场效应晶体管一般称作<a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=190883786&amp;content_type=Article&amp;match_order=1&amp;q=%E9%9D%99%E7%94%B5%E6%84%9F%E5%BA%94%E6%99%B6%E4%BD%93%E7%AE%A1&amp;zhida_source=entity">静电感应晶体管</a>(Static Induction Transistor-SIT)。其特点是用栅极电压来控制漏极电流，驱动电路简单，需要的驱动功率小，开关速度快，工作频率高，热稳定性优于<a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=190883786&amp;content_type=Article&amp;match_order=1&amp;q=GTR&amp;zhida_source=entity">GTR</a>，但其电流容量小，耐压低，一般只适用于功率不超过10kW的电力电子装置。<strong>MOSFET</strong>功率场效应晶体管，大多数用作<strong>开关</strong>和<strong>驱动器，<strong>工作于</strong>开关状态</strong>，耐压从几十伏到上千伏，工作电流可达几安培到几十安。功率MOSFET基本上都是<strong>增强型</strong>MOSFET，它具有优良的开关特性。</p>
+<p>MOSFET的基本结构包括4个关键部分：</p>
+<ul>
+<li>栅极（G，Gate）：通常为金属或多晶硅材料，与沟道之间隔有一层极薄的氧化层（SiO₂），形成电容结构，用于施加电场控制沟道；</li>
+<li>源极（S，Source）：载流子（电子或空穴）的发源地，提供导电沟道的载流子；</li>
+<li>漏极（D，Drain）：载流子的收集地，输出电流；</li>
+<li>衬底（B，Body/Substrate）：半导体基底（通常为硅），与源极、漏极、氧化层共同构成导电沟道区域。</li>
+</ul>
+<h4 id="（1）按载流子类型分"><a href="#（1）按载流子类型分" class="headerlink" title="（1）按载流子类型分"></a>（1）按载流子类型分</h4><ul>
+<li>NMOSFET：沟道载流子为电子（多数载流子），衬底为P型半导体；</li>
+<li>PMOSFET：沟道载流子为空穴（多数载流子），衬底为N型半导体。</li>
+</ul>
+<h4 id="（2）按导通条件分"><a href="#（2）按导通条件分" class="headerlink" title="（2）按导通条件分"></a>（2）按导通条件分</h4><ul>
+<li>增强型（Enhancement Mode）：无栅压时，沟道未形成，器件截止；需施加特定极性的栅压，才能诱导形成导电沟道（最常用，如普通数字电路中的MOS管）；</li>
+<li>耗尽型（Depletion Mode）：无栅压时，沟道已存在，器件导通；需施加反向栅压，才能使沟道夹断，器件截止（应用较少，如特定放大电路）。</li>
+</ul>
+<p>注意：实际应用中以“增强型NMOS”和“增强型PMOS”为主，耗尽型仅用于特殊场景。</p>
+<h3 id="二、增强型MOSFET的工作原理"><a href="#二、增强型MOSFET的工作原理" class="headerlink" title="二、增强型MOSFET的工作原理"></a>二、增强型MOSFET的工作原理</h3><p><img src="/markdown/images/posts/semiconductor-basics/006-fc4057d105.png" alt="semiconductor-basics 插图 6"></p>
+<p>核心逻辑：通过栅极与源极之间的电压（V_GS）控制氧化层下的电场，进而形成导电沟道，最终控制漏极电流（I_D）。源极和漏极想象成两个 “N 型小岛”，原本被 P 衬底（相当于 “绝缘的海水”）隔开；栅极加正电压后，电场相当于 “在海水表面铺了一层 N 型的桥”，两个小岛通过这座桥连起来，电子就能从源极（小岛）经桥（沟道）流到漏极（小岛），实现导通。</p>
+<h4 id="1-截止区"><a href="#1-截止区" class="headerlink" title="1. 截止区"></a>1. 截止区</h4><p><img src="/markdown/images/posts/semiconductor-basics/007-f8170b2efa.png" alt="semiconductor-basics 插图 7"></p>
+<p>当栅-源之间不加电压时即<strong>VGS=0</strong>时，源漏之间是<strong>两只背向的PN结</strong>。不管VDS极性如何，其中总有<strong>一个PN结反偏</strong>，所以<strong>不存在</strong>导电沟道。</p>
+<p>V_GS(th)为NMOS的“开启电压”。当栅源电压小于开启电压时，栅极电场强度不足，无法克服衬底（P型）中多子（空穴）的势垒，无法在氧化层下方诱导形成电子沟道。此时漏源之间无导电通路，漏极电流I_D≈0，器件处于截止状态。</p>
+<h4 id="2-可变电阻区（非饱和区）"><a href="#2-可变电阻区（非饱和区）" class="headerlink" title="2. 可变电阻区（非饱和区）"></a>2. 可变电阻区（非饱和区）</h4><p><img src="/markdown/images/posts/semiconductor-basics/008-8577c3db3b.png" alt="semiconductor-basics 插图 8"></p>
+<p>当V_GS达到开启电压，但V_DS较小时，沟道未被夹断，呈均匀的电阻特性。此时漏极电流I_D随V_DS增大而近似线性增大，且V_GS越大，沟道电阻越小，I_D越大。该区域是MOSFET作为开关器件的“<strong>导通状态</strong>”工作区域.</p>
+<h4 id="3-恒流区（饱和区）"><a href="#3-恒流区（饱和区）" class="headerlink" title="3. 恒流区（饱和区）"></a>3. 恒流区（饱和区）</h4><p><img src="/markdown/images/posts/semiconductor-basics/009-c979d89e6c.png" alt="semiconductor-basics 插图 9"><br>当<strong>VGS&gt;VT且VDS&gt;VDS(sat)<strong>时，沟道中反型电荷为零的点移向源端。如果UDS继续</strong>增大</strong>，夹断区随之<strong>延长</strong>，如图所示，而且<strong>UDS的增大</strong>部分几乎全部用于<strong>克服</strong>夹断区对<strong>漏极电流的阻力</strong>，漏电流<strong>ID为一常数</strong>，这种情形在ID-VDS对应于<strong>饱和区(恒流区)</strong>，如图所示。</p>
+<p><img src="/markdown/images/posts/semiconductor-basics/010-407f1a6170.png" alt="semiconductor-basics 插图 10"></p>
+<h3 id="三、MOSFET的关键参数"><a href="#三、MOSFET的关键参数" class="headerlink" title="三、MOSFET的关键参数"></a>三、MOSFET的关键参数</h3><h4 id="1-阈值电压（开启电压）V-GS-th"><a href="#1-阈值电压（开启电压）V-GS-th" class="headerlink" title="1. 阈值电压（开启电压）V_GS(th)"></a>1. 阈值电压（开启电压）V_GS(th)</h4><p>使MOSFET开始形成导电沟道的最小栅源电压，增强型NMOS为正值，增强型PMOS为负值，耗尽型MOS管为负值（NMOS）或正值（PMOS）。V_GS(th)受温度、衬底偏压影响较大。</p>
+<h4 id="2-漏源击穿电压V-DS-BR"><a href="#2-漏源击穿电压V-DS-BR" class="headerlink" title="2. 漏源击穿电压V_DS(BR)"></a>2. 漏源击穿电压V_DS(BR)</h4><p>MOSFET截止时，漏源之间能承受的最大电压，超过此值会导致漏源之间击穿，电流急剧增大，器件可能损坏。</p>
+<h4 id="3-最大漏极电流I-D-max"><a href="#3-最大漏极电流I-D-max" class="headerlink" title="3. 最大漏极电流I_D(max)"></a>3. 最大漏极电流I_D(max)</h4><p>MOSFET正常工作时能承受的最大漏极电流，由器件的散热能力和沟道载流子容量决定，超过此值会导致器件过热损坏。</p>
+<h4 id="4-导通电阻R-ON"><a href="#4-导通电阻R-ON" class="headerlink" title="4. 导通电阻R_ON"></a>4. 导通电阻R_ON</h4><p>MOSFET工作在可变电阻区（导通状态）时，漏源之间的等效电阻，R_ON越小，导通时的功率损耗越小（P=I_D²R_ON），是开关电源等高效应用的核心指标（低R_ON是关键需求）。</p>
+<h4 id="5-栅源击穿电压V-GS-BR"><a href="#5-栅源击穿电压V-GS-BR" class="headerlink" title="5. 栅源击穿电压V_GS(BR)"></a>5. 栅源击穿电压V_GS(BR)</h4><p>栅极与源极之间的最大承受电压，由于栅极氧化层极薄（通常几nm<del>几十nm），V_GS(BR)较小（典型值±10</del>±20V），超过此值会导致氧化层击穿，器件永久损坏。<strong>注意：实际应用中需避免栅源电压过高，必要时并联稳压管保护</strong>。</p>
+<h4 id="6-开关参数"><a href="#6-开关参数" class="headerlink" title="6. 开关参数"></a>6. 开关参数</h4><ul>
+<li>开启时间t_ON：从V_GS施加到I_D达到稳定值的时间；</li>
+<li>关断时间t_OFF：从V_GS移除到I_D降至接近零的时间；</li>
+<li>开关时间越短，开关频率越高，适用于高频电路。</li>
+</ul>
+<h3 id="四、-MOSFET-寄生电容的作用与影响解析"><a href="#四、-MOSFET-寄生电容的作用与影响解析" class="headerlink" title="四、 MOSFET 寄生电容的作用与影响解析"></a>四、 MOSFET 寄生电容的作用与影响解析</h3><p><img src="/markdown/images/posts/semiconductor-basics/011-fc4b38e79f.png" alt="semiconductor-basics 插图 11"></p>
+<p>这张图展示了 MOSFET 三个极之间的<strong>寄生电容</strong>，它们是 MOSFET 结构本身固有的电容，对电路性能（开关速度、损耗、稳定性）影响极大。</p>
+<h4 id="1-核心电容定义"><a href="#1-核心电容定义" class="headerlink" title="1. 核心电容定义"></a>1. 核心电容定义</h4><ul>
+<li><strong>(</strong><mjx-container class="MathJax" jax="SVG" overflow="overflow"><svg style="vertical-align: -0.667ex;" xmlns="http://www.w3.org/2000/svg" width="3.319ex" height="2.262ex" role="img" focusable="false" viewBox="0 -705 1466.9 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math" data-latex=" C_{gs} "><g data-mml-node="msub" data-latex="C_{gs}"><g data-mml-node="mi" data-latex="C"><path data-c="1D436" d="M148 218C148 346 204 476 267 548C318 607 406 666 505 666C609 666 660 587 660 479C660 470 657 438 657 429C657 420 663 415 676 415C681 415 685 416 688 417C693 424 696 431 698 438L760 691C760 700 755 705 745 705C741 705 735 701 727 692L662 619C623 676 568 705 497 705C442 705 388 692 333 667C222 615 141 533 89 421C63 366 50 310 50 253C50 173 75 108 126 56C177 4 242-22 322-22C401-22 473 7 538 64C565 87 588 115 607 146C634 191 648 222 648 241C648 250 643 255 632 255C623 255 618 251 616 242C595 177 562 125 517 88C460 41 400 17 338 17C218 17 148 98 148 218Z"></path></g><g data-mml-node="TeXAtom" transform="translate(748,-150) scale(0.707)" data-latex="{g s}" data-mjx-texclass="ORD"><g data-mml-node="mi" data-latex="g"><path data-c="1D454" d="M15-141C15-184 60-205 150-205C197-205 241-193 280-170C324-144 351-109 362-66L471 373C473 383 474 389 474 392C474 412 463 422 442 422C420 422 406 410 399 387C377 424 347 442 310 442C246 442 189 410 140 346C95 286 72 223 72 158C72 71 123-3 207-3C246-3 282 14 315 47L285-71C256-140 211-175 148-175C122-175 100-173 82-169C103-158 113-141 113-118C113-93 99-80 72-80C40-80 15-109 15-141M356 392C376 371 386 351 386 331C386 330 385 325 383 318L336 129C330 106 313 82 286 60C259 38 233 27 210 27C170 27 150 56 150 114C150 169 184 291 204 327C235 384 270 412 311 412C329 412 344 405 356 392Z"></path></g><g data-mml-node="mi" data-latex="s" transform="translate(477,0)"><path data-c="1D460" d="M420 354C420 411 362 442 300 442C237 442 192 423 165 385C142 352 130 322 130 295C130 242 165 208 234 193C263 188 285 181 302 173C323 164 333 147 333 123C333 105 325 85 308 62C287 33 250 18 197 18C143 18 108 33 92 62C124 61 151 87 151 119C151 144 138 157 111 157C75 157 52 124 52 88C52 22 124-11 196-11C271-11 325 11 357 56C384 93 397 126 397 156C397 199 376 231 335 252C304 263 280 270 265 273C230 282 194 285 194 328C194 381 244 413 300 413C342 413 369 400 382 375C360 371 337 352 337 327C337 306 348 295 371 295C402 295 420 323 420 354Z"></path></g></g></g></g></g></svg></mjx-container><strong>)（栅源电容）</strong>：栅极(G)与源极(S)之间的电容</li>
+<li><strong>(</strong><mjx-container class="MathJax" jax="SVG" overflow="overflow"><svg style="vertical-align: -0.667ex;" xmlns="http://www.w3.org/2000/svg" width="3.4ex" height="2.262ex" role="img" focusable="false" viewBox="0 -705 1503 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math" data-latex=" C_{gd} "><g data-mml-node="msub" data-latex="C_{gd}"><g data-mml-node="mi" data-latex="C"><path data-c="1D436" d="M148 218C148 346 204 476 267 548C318 607 406 666 505 666C609 666 660 587 660 479C660 470 657 438 657 429C657 420 663 415 676 415C681 415 685 416 688 417C693 424 696 431 698 438L760 691C760 700 755 705 745 705C741 705 735 701 727 692L662 619C623 676 568 705 497 705C442 705 388 692 333 667C222 615 141 533 89 421C63 366 50 310 50 253C50 173 75 108 126 56C177 4 242-22 322-22C401-22 473 7 538 64C565 87 588 115 607 146C634 191 648 222 648 241C648 250 643 255 632 255C623 255 618 251 616 242C595 177 562 125 517 88C460 41 400 17 338 17C218 17 148 98 148 218Z"></path></g><g data-mml-node="TeXAtom" transform="translate(748,-150) scale(0.707)" data-latex="{g d}" data-mjx-texclass="ORD"><g data-mml-node="mi" data-latex="g"><path data-c="1D454" d="M15-141C15-184 60-205 150-205C197-205 241-193 280-170C324-144 351-109 362-66L471 373C473 383 474 389 474 392C474 412 463 422 442 422C420 422 406 410 399 387C377 424 347 442 310 442C246 442 189 410 140 346C95 286 72 223 72 158C72 71 123-3 207-3C246-3 282 14 315 47L285-71C256-140 211-175 148-175C122-175 100-173 82-169C103-158 113-141 113-118C113-93 99-80 72-80C40-80 15-109 15-141M356 392C376 371 386 351 386 331C386 330 385 325 383 318L336 129C330 106 313 82 286 60C259 38 233 27 210 27C170 27 150 56 150 114C150 169 184 291 204 327C235 384 270 412 311 412C329 412 344 405 356 392Z"></path></g><g data-mml-node="mi" data-latex="d" transform="translate(477,0)"><path data-c="1D451" d="M429 632L370 389C349 426 320 445 281 445C216 445 159 412 109 345C63 283 40 218 40 151C40 63 91-11 175-11C218-11 260 12 300 59C311 21 345-11 392-11C461-11 483 71 498 145C498 154 493 159 483 159C474 159 468 152 465 138C445 59 421 19 394 19C377 19 368 33 368 60C368 75 370 91 374 107L516 679L516 683C513 690 507 694 499 694C476 694 434 690 374 683C363 682 357 674 357 660C357 650 366 645 384 645C403 645 429 646 429 632M341 376C351 355 356 341 356 332C355 328 354 323 353 316L304 122C301 111 294 99 285 87C248 42 212 19 177 19C138 19 118 49 118 108C118 132 124 168 136 216C157 301 187 359 224 390C244 407 263 415 282 415C309 415 329 402 341 376Z"></path></g></g></g></g></g></svg></mjx-container><strong>)（栅漏电容，也叫 Miller 电容）</strong>：栅极(G)与漏极(D)之间的电容</li>
+<li><strong>(</strong><mjx-container class="MathJax" jax="SVG" overflow="overflow"><svg style="vertical-align: -0.357ex;" xmlns="http://www.w3.org/2000/svg" width="3.388ex" height="1.952ex" role="img" focusable="false" viewBox="0 -705 1497.3 862.8"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math" data-latex=" C_{ds} "><g data-mml-node="msub" data-latex="C_{ds}"><g data-mml-node="mi" data-latex="C"><path data-c="1D436" d="M148 218C148 346 204 476 267 548C318 607 406 666 505 666C609 666 660 587 660 479C660 470 657 438 657 429C657 420 663 415 676 415C681 415 685 416 688 417C693 424 696 431 698 438L760 691C760 700 755 705 745 705C741 705 735 701 727 692L662 619C623 676 568 705 497 705C442 705 388 692 333 667C222 615 141 533 89 421C63 366 50 310 50 253C50 173 75 108 126 56C177 4 242-22 322-22C401-22 473 7 538 64C565 87 588 115 607 146C634 191 648 222 648 241C648 250 643 255 632 255C623 255 618 251 616 242C595 177 562 125 517 88C460 41 400 17 338 17C218 17 148 98 148 218Z"></path></g><g data-mml-node="TeXAtom" transform="translate(748,-150) scale(0.707)" data-latex="{d s}" data-mjx-texclass="ORD"><g data-mml-node="mi" data-latex="d"><path data-c="1D451" d="M429 632L370 389C349 426 320 445 281 445C216 445 159 412 109 345C63 283 40 218 40 151C40 63 91-11 175-11C218-11 260 12 300 59C311 21 345-11 392-11C461-11 483 71 498 145C498 154 493 159 483 159C474 159 468 152 465 138C445 59 421 19 394 19C377 19 368 33 368 60C368 75 370 91 374 107L516 679L516 683C513 690 507 694 499 694C476 694 434 690 374 683C363 682 357 674 357 660C357 650 366 645 384 645C403 645 429 646 429 632M341 376C351 355 356 341 356 332C355 328 354 323 353 316L304 122C301 111 294 99 285 87C248 42 212 19 177 19C138 19 118 49 118 108C118 132 124 168 136 216C157 301 187 359 224 390C244 407 263 415 282 415C309 415 329 402 341 376Z"></path></g><g data-mml-node="mi" data-latex="s" transform="translate(520,0)"><path data-c="1D460" d="M420 354C420 411 362 442 300 442C237 442 192 423 165 385C142 352 130 322 130 295C130 242 165 208 234 193C263 188 285 181 302 173C323 164 333 147 333 123C333 105 325 85 308 62C287 33 250 18 197 18C143 18 108 33 92 62C124 61 151 87 151 119C151 144 138 157 111 157C75 157 52 124 52 88C52 22 124-11 196-11C271-11 325 11 357 56C384 93 397 126 397 156C397 199 376 231 335 252C304 263 280 270 265 273C230 282 194 285 194 328C194 381 244 413 300 413C342 413 369 400 382 375C360 371 337 352 337 327C337 306 348 295 371 295C402 295 420 323 420 354Z"></path></g></g></g></g></g></svg></mjx-container><strong>)（漏源电容）</strong>：漏极(D)与源极(S)之间的电容</li>
+</ul>
+<h4 id="2-各电容的核心作用与影响"><a href="#2-各电容的核心作用与影响" class="headerlink" title="2. 各电容的核心作用与影响"></a>2. 各电容的核心作用与影响</h4><p>(1) <mjx-container class="MathJax" jax="SVG" overflow="overflow"><svg style="vertical-align: -0.667ex;" xmlns="http://www.w3.org/2000/svg" width="3.319ex" height="2.262ex" role="img" focusable="false" viewBox="0 -705 1466.9 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math" data-latex=" C_{gs} "><g data-mml-node="msub" data-latex="C_{gs}"><g data-mml-node="mi" data-latex="C"><path data-c="1D436" d="M148 218C148 346 204 476 267 548C318 607 406 666 505 666C609 666 660 587 660 479C660 470 657 438 657 429C657 420 663 415 676 415C681 415 685 416 688 417C693 424 696 431 698 438L760 691C760 700 755 705 745 705C741 705 735 701 727 692L662 619C623 676 568 705 497 705C442 705 388 692 333 667C222 615 141 533 89 421C63 366 50 310 50 253C50 173 75 108 126 56C177 4 242-22 322-22C401-22 473 7 538 64C565 87 588 115 607 146C634 191 648 222 648 241C648 250 643 255 632 255C623 255 618 251 616 242C595 177 562 125 517 88C460 41 400 17 338 17C218 17 148 98 148 218Z"></path></g><g data-mml-node="TeXAtom" transform="translate(748,-150) scale(0.707)" data-latex="{g s}" data-mjx-texclass="ORD"><g data-mml-node="mi" data-latex="g"><path data-c="1D454" d="M15-141C15-184 60-205 150-205C197-205 241-193 280-170C324-144 351-109 362-66L471 373C473 383 474 389 474 392C474 412 463 422 442 422C420 422 406 410 399 387C377 424 347 442 310 442C246 442 189 410 140 346C95 286 72 223 72 158C72 71 123-3 207-3C246-3 282 14 315 47L285-71C256-140 211-175 148-175C122-175 100-173 82-169C103-158 113-141 113-118C113-93 99-80 72-80C40-80 15-109 15-141M356 392C376 371 386 351 386 331C386 330 385 325 383 318L336 129C330 106 313 82 286 60C259 38 233 27 210 27C170 27 150 56 150 114C150 169 184 291 204 327C235 384 270 412 311 412C329 412 344 405 356 392Z"></path></g><g data-mml-node="mi" data-latex="s" transform="translate(477,0)"><path data-c="1D460" d="M420 354C420 411 362 442 300 442C237 442 192 423 165 385C142 352 130 322 130 295C130 242 165 208 234 193C263 188 285 181 302 173C323 164 333 147 333 123C333 105 325 85 308 62C287 33 250 18 197 18C143 18 108 33 92 62C124 61 151 87 151 119C151 144 138 157 111 157C75 157 52 124 52 88C52 22 124-11 196-11C271-11 325 11 357 56C384 93 397 126 397 156C397 199 376 231 335 252C304 263 280 270 265 273C230 282 194 285 194 328C194 381 244 413 300 413C342 413 369 400 382 375C360 371 337 352 337 327C337 306 348 295 371 295C402 295 420 323 420 354Z"></path></g></g></g></g></g></svg></mjx-container>：栅源电容</p>
+<ul>
+<li><strong>作用</strong>：决定 MOSFET 栅极充放电的<strong>基础速度</strong>，是驱动电路需要主要克服的电容。</li>
+<li><strong>影响</strong>：<ul>
+<li>充电时：驱动电流给 (C_{gs}) 充电，当 (V_{gs}) 超过阈值电压 (V_{th}) 后，MOSFET 开始导通。</li>
+<li>放电时：(C_{gs}) 放电使 (V_{gs}) 下降，MOSFET 关断。</li>
+<li>电容越大，开关速度越慢，驱动损耗越大。</li>
+</ul>
+</li>
+</ul>
+<p>(2) <mjx-container class="MathJax" jax="SVG" overflow="overflow"><svg style="vertical-align: -0.667ex;" xmlns="http://www.w3.org/2000/svg" width="3.4ex" height="2.262ex" role="img" focusable="false" viewBox="0 -705 1503 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math" data-latex=" C_{gd} "><g data-mml-node="msub" data-latex="C_{gd}"><g data-mml-node="mi" data-latex="C"><path data-c="1D436" d="M148 218C148 346 204 476 267 548C318 607 406 666 505 666C609 666 660 587 660 479C660 470 657 438 657 429C657 420 663 415 676 415C681 415 685 416 688 417C693 424 696 431 698 438L760 691C760 700 755 705 745 705C741 705 735 701 727 692L662 619C623 676 568 705 497 705C442 705 388 692 333 667C222 615 141 533 89 421C63 366 50 310 50 253C50 173 75 108 126 56C177 4 242-22 322-22C401-22 473 7 538 64C565 87 588 115 607 146C634 191 648 222 648 241C648 250 643 255 632 255C623 255 618 251 616 242C595 177 562 125 517 88C460 41 400 17 338 17C218 17 148 98 148 218Z"></path></g><g data-mml-node="TeXAtom" transform="translate(748,-150) scale(0.707)" data-latex="{g d}" data-mjx-texclass="ORD"><g data-mml-node="mi" data-latex="g"><path data-c="1D454" d="M15-141C15-184 60-205 150-205C197-205 241-193 280-170C324-144 351-109 362-66L471 373C473 383 474 389 474 392C474 412 463 422 442 422C420 422 406 410 399 387C377 424 347 442 310 442C246 442 189 410 140 346C95 286 72 223 72 158C72 71 123-3 207-3C246-3 282 14 315 47L285-71C256-140 211-175 148-175C122-175 100-173 82-169C103-158 113-141 113-118C113-93 99-80 72-80C40-80 15-109 15-141M356 392C376 371 386 351 386 331C386 330 385 325 383 318L336 129C330 106 313 82 286 60C259 38 233 27 210 27C170 27 150 56 150 114C150 169 184 291 204 327C235 384 270 412 311 412C329 412 344 405 356 392Z"></path></g><g data-mml-node="mi" data-latex="d" transform="translate(477,0)"><path data-c="1D451" d="M429 632L370 389C349 426 320 445 281 445C216 445 159 412 109 345C63 283 40 218 40 151C40 63 91-11 175-11C218-11 260 12 300 59C311 21 345-11 392-11C461-11 483 71 498 145C498 154 493 159 483 159C474 159 468 152 465 138C445 59 421 19 394 19C377 19 368 33 368 60C368 75 370 91 374 107L516 679L516 683C513 690 507 694 499 694C476 694 434 690 374 683C363 682 357 674 357 660C357 650 366 645 384 645C403 645 429 646 429 632M341 376C351 355 356 341 356 332C355 328 354 323 353 316L304 122C301 111 294 99 285 87C248 42 212 19 177 19C138 19 118 49 118 108C118 132 124 168 136 216C157 301 187 359 224 390C244 407 263 415 282 415C309 415 329 402 341 376Z"></path></g></g></g></g></g></svg></mjx-container>：最关键也最特殊</p>
+<ul>
+<li><strong>作用</strong>：是导致米勒效应(Miller Effect)的核心电容，也是影响开关损耗和 EMI 的关键因素。</li>
+<li><strong>影响</strong>：<ul>
+<li><strong>米勒平台</strong>：在开关过程中，漏极电压 (V_{ds}) 快速变化时，会通过 (C_{gd}) 耦合到栅极，产生额外的充/放电电流，使 (V_{gs}) 暂时保持在一个平台期（米勒平台），延长开关时间。</li>
+<li><strong>电压尖峰与振荡</strong>：快速变化的 (V_{ds})（(dV/dt) 很大）会通过 (C_{gd}) 在栅极感应出电压，可能导致 MOSFET 误开通或产生振荡。</li>
+<li><strong>分压效应</strong>：外部加在 GATE 到 GND 的电容会和 (C_{gd}) 形成分压，用来抑制高速 (V_{IN}) 变化带来的影响。</li>
+</ul>
+</li>
+</ul>
+<h4 id="（3）-C-ds-：漏源电容"><a href="#（3）-C-ds-：漏源电容" class="headerlink" title="（3）$C_{ds}$：漏源电容"></a>（3）<mjx-container class="MathJax" jax="SVG" overflow="overflow"><svg style="vertical-align: -0.357ex;" xmlns="http://www.w3.org/2000/svg" width="3.388ex" height="1.952ex" role="img" focusable="false" viewBox="0 -705 1497.3 862.8"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math" data-latex="C_{ds}"><g data-mml-node="msub" data-latex="C_{ds}"><g data-mml-node="mi" data-latex="C"><path data-c="1D436" d="M148 218C148 346 204 476 267 548C318 607 406 666 505 666C609 666 660 587 660 479C660 470 657 438 657 429C657 420 663 415 676 415C681 415 685 416 688 417C693 424 696 431 698 438L760 691C760 700 755 705 745 705C741 705 735 701 727 692L662 619C623 676 568 705 497 705C442 705 388 692 333 667C222 615 141 533 89 421C63 366 50 310 50 253C50 173 75 108 126 56C177 4 242-22 322-22C401-22 473 7 538 64C565 87 588 115 607 146C634 191 648 222 648 241C648 250 643 255 632 255C623 255 618 251 616 242C595 177 562 125 517 88C460 41 400 17 338 17C218 17 148 98 148 218Z"></path></g><g data-mml-node="TeXAtom" transform="translate(748,-150) scale(0.707)" data-latex="{d s}" data-mjx-texclass="ORD"><g data-mml-node="mi" data-latex="d"><path data-c="1D451" d="M429 632L370 389C349 426 320 445 281 445C216 445 159 412 109 345C63 283 40 218 40 151C40 63 91-11 175-11C218-11 260 12 300 59C311 21 345-11 392-11C461-11 483 71 498 145C498 154 493 159 483 159C474 159 468 152 465 138C445 59 421 19 394 19C377 19 368 33 368 60C368 75 370 91 374 107L516 679L516 683C513 690 507 694 499 694C476 694 434 690 374 683C363 682 357 674 357 660C357 650 366 645 384 645C403 645 429 646 429 632M341 376C351 355 356 341 356 332C355 328 354 323 353 316L304 122C301 111 294 99 285 87C248 42 212 19 177 19C138 19 118 49 118 108C118 132 124 168 136 216C157 301 187 359 224 390C244 407 263 415 282 415C309 415 329 402 341 376Z"></path></g><g data-mml-node="mi" data-latex="s" transform="translate(520,0)"><path data-c="1D460" d="M420 354C420 411 362 442 300 442C237 442 192 423 165 385C142 352 130 322 130 295C130 242 165 208 234 193C263 188 285 181 302 173C323 164 333 147 333 123C333 105 325 85 308 62C287 33 250 18 197 18C143 18 108 33 92 62C124 61 151 87 151 119C151 144 138 157 111 157C75 157 52 124 52 88C52 22 124-11 196-11C271-11 325 11 357 56C384 93 397 126 397 156C397 199 376 231 335 252C304 263 280 270 265 273C230 282 194 285 194 328C194 381 244 413 300 413C342 413 369 400 382 375C360 371 337 352 337 327C337 306 348 295 371 295C402 295 420 323 420 354Z"></path></g></g></g></g></g></svg></mjx-container>：漏源电容</h4><ul>
+<li><strong>作用</strong>：漏极与源极之间的寄生电容，主要影响<strong>高频特性和能量损耗</strong>。</li>
+<li><strong>影响</strong>：<ul>
+<li>在硬开关电路中，(C_{ds}) 存储的能量会在开关过程中以热量形式释放，增加开关损耗。</li>
+<li>在谐振变换器中，(C_{ds}) 可以参与谐振，帮助实现软开关，降低损耗。</li>
+<li>对高频噪声有一定滤波作用，但也会引入额外的相位偏移。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h4 id="3-整体对电路的影响总结"><a href="#3-整体对电路的影响总结" class="headerlink" title="3. 整体对电路的影响总结"></a>3. 整体对电路的影响总结</h4><table>
+<thead>
+<tr>
+<th align="left">电容</th>
+<th align="left">主要影响</th>
+<th align="left">工程关注点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">(C_{gs})</td>
+<td align="left">开关速度、驱动电流需求</td>
+<td align="left">选择驱动能力匹配的驱动芯片，决定最小开通/关断时间</td>
+</tr>
+<tr>
+<td align="left">(C_{gd})</td>
+<td align="left">米勒效应、开关损耗、EMI、稳定性</td>
+<td align="left">优化驱动电路、加栅极电阻/电容抑制振荡，是高速电路设计的核心难点</td>
+</tr>
+<tr>
+<td align="left">(C_{ds})</td>
+<td align="left">开关损耗、高频谐振</td>
+<td align="left">在谐振变换器中可利用，硬开关中需尽量减小以降低损耗</td>
+</tr>
+</tbody></table>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/markdown/tags/mosfet/" rel="tag"># MOSFET</a>
+              <a href="/markdown/tags/pn-%E7%BB%93/" rel="tag"># PN 结</a>
+              <a href="/markdown/tags/%E5%8D%8A%E5%AF%BC%E4%BD%93/" rel="tag"># 半导体</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+            </div>
+            <div class="post-nav-item">
+                <a href="/markdown/electronics/component-selection-parameters/" rel="next" title="常用元器件关键参数与选型检查表">
+                  常用元器件关键参数与选型检查表 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2025 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">ZY</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/zycrwa/markdown" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

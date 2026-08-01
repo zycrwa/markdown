@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 8.1.2">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/markdown/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/markdown/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/markdown/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/markdown/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/markdown/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zycrwa.github.io","root":"/markdown/","images":"/markdown/images","scheme":"Gemini","darkmode":false,"version":"8.28.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"flat"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":true,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/markdown/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/markdown/js/config.js" defer></script>
+
+    <meta name="description" content="整理 DengFOC 坐标变换、开闭环位置控制、速度环和位置速度电流三环代码。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DengFOC 常用控制代码与三环结构">
+<meta property="og:url" content="https://zycrwa.github.io/markdown/motor-control/dengfoc-control-code/index.html">
+<meta property="og:site_name" content="ZY 的技术笔记">
+<meta property="og:description" content="整理 DengFOC 坐标变换、开闭环位置控制、速度环和位置速度电流三环代码。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://zycrwa.github.io/markdown/images/posts/dengfoc-control-code/001-c7d8c099d2.png">
+<meta property="og:image" content="https://zycrwa.github.io/markdown/images/posts/dengfoc-control-code/002-e76c62445c.png">
+<meta property="og:image" content="https://zycrwa.github.io/markdown/images/posts/dengfoc-control-code/003-d3118cd46d.png">
+<meta property="og:image" content="https://zycrwa.github.io/markdown/images/posts/dengfoc-control-code/004-052204eb6f.png">
+<meta property="article:published_time" content="2026-08-01T14:17:00.000Z">
+<meta property="article:modified_time" content="2026-08-01T15:51:19.057Z">
+<meta property="article:author" content="ZY">
+<meta property="article:tag" content="DengFOC">
+<meta property="article:tag" content="FOC">
+<meta property="article:tag" content="位置环">
+<meta property="article:tag" content="电流环">
+<meta property="article:tag" content="速度环">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zycrwa.github.io/markdown/images/posts/dengfoc-control-code/001-c7d8c099d2.png">
+
+
+<link rel="canonical" href="https://zycrwa.github.io/markdown/motor-control/dengfoc-control-code/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://zycrwa.github.io/markdown/motor-control/dengfoc-control-code/","path":"/motor-control/dengfoc-control-code/","title":"DengFOC 常用控制代码与三环结构"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>DengFOC 常用控制代码与三环结构 | ZY 的技术笔记</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous" defer></script>
+<script src="/markdown/js/utils.js" defer></script><script src="/markdown/js/motion.js" defer></script><script src="/markdown/js/sidebar.js" defer></script><script src="/markdown/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/markdown/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+  <script src="/markdown/js/third-party/fancybox.js" defer></script>
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/markdown/css/noscript.css">
+  </noscript>
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><link rel="alternate" href="/markdown/atom.xml" title="ZY 的技术笔记" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/markdown/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">ZY 的技术笔记</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">编程、工具与 AI 学习记录</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/markdown/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/markdown/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">18</span></a></li><li class="menu-item menu-item-categories"><a href="/markdown/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">6</span></a></li><li class="menu-item menu-item-tags"><a href="/markdown/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">60</span></a></li><li class="menu-item menu-item-about"><a href="/markdown/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E8%AE%A1%E8%A7%82%E5%AF%9F"><span class="nav-number">1.</span> <span class="nav-text">设计观察</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E3%80%81%E5%9D%90%E6%A0%87%E5%8F%98%E6%8D%A2"><span class="nav-number">2.</span> <span class="nav-text">1、坐标变换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2%E3%80%81%E5%BC%80%E7%8E%AF%E4%BD%8D%E7%BD%AE%E7%8E%AF%E6%B5%8B%E8%AF%95"><span class="nav-number">3.</span> <span class="nav-text">2、开环位置环测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3%E3%80%81%E9%97%AD%E7%8E%AF%E4%BD%8D%E7%BD%AE%E7%8E%AF"><span class="nav-number">4.</span> <span class="nav-text">3、闭环位置环</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4%E3%80%81%E9%97%AD%E7%8E%AF%E9%80%9F%E5%BA%A6%E7%8E%AF"><span class="nav-number">5.</span> <span class="nav-text">4、闭环速度环</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5%E3%80%81%E4%BD%8D%E7%BD%AE-%E9%80%9F%E5%BA%A6-%E7%94%B5%E6%B5%81%E9%97%AD%E7%8E%AF"><span class="nav-number">6.</span> <span class="nav-text">5、位置-速度-电流闭环</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZY"
+      src="/markdown/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">ZY</p>
+  <div class="site-description" itemprop="description">ZY 的个人技术学习博客</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/markdown/archives/">
+          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/markdown/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/markdown/tags/">
+        <span class="site-state-item-count">60</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zycrwa" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zycrwa" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zycrwa.github.io/markdown/motor-control/dengfoc-control-code/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/markdown/images/avatar.gif">
+      <meta itemprop="name" content="ZY">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ZY 的技术笔记">
+      <meta itemprop="description" content="ZY 的个人技术学习博客">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="DengFOC 常用控制代码与三环结构 | ZY 的技术笔记">
+      <meta itemprop="description" content="整理 DengFOC 坐标变换、开闭环位置控制、速度环和位置速度电流三环代码。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          DengFOC 常用控制代码与三环结构
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-08-01 22:17:00 / 修改时间：23:51:19" itemprop="dateCreated datePublished" datetime="2026-08-01T22:17:00+08:00">2026-08-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/markdown/categories/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6/" itemprop="url" rel="index"><span itemprop="name">电机控制</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">整理 DengFOC 坐标变换、开闭环位置控制、速度环和位置速度电流三环代码。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>本文以 DengFOC 示例代码为线索，整理坐标变换、开环位置测试、闭环位置与速度控制，以及位置—速度—电流三环结构，并保留对采样频率和环路带宽的工程观察。</p>
+<span id="more"></span>
+
+<p><a target="_blank" rel="noopener" href="http://dengfoc.com/#/">http://dengfoc.com</a></p>
+<p><img src="/markdown/images/posts/dengfoc-control-code/001-c7d8c099d2.png" alt="dengfoc-control-code 插图 1"></p>
+<h2 id="设计观察"><a href="#设计观察" class="headerlink" title="设计观察"></a>设计观察</h2><p>DengFOC 选用 SPWM。</p>
+<p>问题：整体设计思路简单，但是电流环和速度环频率一致，这是问题所在。</p>
+<p>   采样的频率感觉有点问题，最好能设置成固定频率采样</p>
+<p>代码设计思路：</p>
+<p>循环读取编码器和电流值</p>
+<p>设计位置、速度和电流三环 PID</p>
+<p>位置环误差的输出作为速度环给定</p>
+<p>速度环误差的输出作为电流环给定，各环输出均需限幅</p>
+<p>转速环的限幅是最大电流，电流环最大</p>
+<h2 id="1、坐标变换"><a href="#1、坐标变换" class="headerlink" title="1、坐标变换"></a>1、坐标变换</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/172484981">https://zhuanlan.zhihu.com/p/172484981</a></p>
+<p><img src="/markdown/images/posts/dengfoc-control-code/002-e76c62445c.png" alt="dengfoc-control-code 插图 2"></p>
+<p><img src="/markdown/images/posts/dengfoc-control-code/003-d3118cd46d.png" alt="dengfoc-control-code 插图 3"></p>
+<h2 id="2、开环位置环测试"><a href="#2、开环位置环测试" class="headerlink" title="2、开环位置环测试"></a>2、开环位置环测试</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//灯哥开源，转载请著名出处</span></span><br><span class="line"><span class="comment">//仅在DengFOC上测试过</span></span><br><span class="line"><span class="comment">//PWM输出引脚定义</span></span><br><span class="line"><span class="type">int</span> pwmA = <span class="number">32</span>;<span class="comment">//此处仅供arduino使用</span></span><br><span class="line"><span class="type">int</span> pwmB = <span class="number">33</span>;</span><br><span class="line"><span class="type">int</span> pwmC = <span class="number">25</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//初始变量及函数定义</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> _constrain(amt,low,high) ((amt)<span class="string">&lt;(low)?(low):((amt)&gt;</span>(high)?(high):(amt)))</span></span><br><span class="line"><span class="comment">//宏定义实现的一个约束函数,用于限制一个值的范围。</span></span><br><span class="line"><span class="comment">//具体来说，该宏定义的名称为 _constrain，接受三个参数 amt、low 和 high，分别表示要限制的值、最小值和最大值。该宏定义的实现使用了三元运算符，根据 amt 是否小于 low 或大于 high，返回其中的最大或最小值，或者返回原值。</span></span><br><span class="line"><span class="comment">//换句话说，如果 amt 小于 low，则返回 low；如果 amt 大于 high，则返回 high；否则返回 amt。这样，_constrain(amt, low, high) 就会将 amt 约束在 [low, high] 的范围内。</span></span><br><span class="line"><span class="type">float</span> voltage_power_supply=<span class="number">12.6</span>; <span class="comment">//母线电压，这里也可以理解成输入电压</span></span><br><span class="line"><span class="type">float</span> shaft_angle=<span class="number">0</span>,open_loop_timestamp=<span class="number">0</span>;<span class="comment">//电机机械角度，开环时间戳(用于计算开环机械角度的时间)</span></span><br><span class="line"><span class="type">float</span> zero_electric_angle=<span class="number">0</span>,Ualpha,Ubeta=<span class="number">0</span>,Ua=<span class="number">0</span>,Ub=<span class="number">0</span>,Uc=<span class="number">0</span>,dc_a=<span class="number">0</span>,dc_b=<span class="number">0</span>,dc_c=<span class="number">0</span>;</span><br><span class="line"><span class="comment">//零电角(0度,暂未使用,通常作用：编码器的零点和机械零点对齐)     Ualpha,Ubeta,Ua,Ub,Uc,  dc_a,dc_b,dc_c(占空比0-1)</span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">setup</span><span class="params">()</span> &#123;</span><br><span class="line">  <span class="comment">// put your setup code here, to run once:</span></span><br><span class="line">  Serial.begin(<span class="number">115200</span>);</span><br><span class="line">  <span class="comment">//PWM设置</span></span><br><span class="line">  pinMode(pwmA, OUTPUT);</span><br><span class="line">  pinMode(pwmB, OUTPUT);</span><br><span class="line">  pinMode(pwmC, OUTPUT);</span><br><span class="line">  ledcSetup(<span class="number">0</span>, <span class="number">30000</span>, <span class="number">8</span>);  <span class="comment">//pwm频道, 频率, 精度</span></span><br><span class="line">  ledcSetup(<span class="number">1</span>, <span class="number">30000</span>, <span class="number">8</span>);  <span class="comment">//pwm频道, 频率, 精度</span></span><br><span class="line">  ledcSetup(<span class="number">2</span>, <span class="number">30000</span>, <span class="number">8</span>);  <span class="comment">//pwm频道, 频率, 精度</span></span><br><span class="line">  ledcAttachPin(pwmA, <span class="number">0</span>);</span><br><span class="line">  ledcAttachPin(pwmB, <span class="number">1</span>);</span><br><span class="line">  ledcAttachPin(pwmC, <span class="number">2</span>);</span><br><span class="line">  Serial.println(<span class="string">&quot;完成PWM初始化设置&quot;</span>);</span><br><span class="line">  delay(<span class="number">3000</span>);</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 电角度求解</span></span><br><span class="line"><span class="type">float</span> _electricalAngle(<span class="type">float</span> shaft_angle, <span class="type">int</span> pole_pairs) &#123;</span><br><span class="line">  <span class="keyword">return</span> (shaft_angle * pole_pairs);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 归一化角度到 [0,2PI]</span></span><br><span class="line"><span class="type">float</span> _normalizeAngle(<span class="type">float</span> angle)&#123;</span><br><span class="line">  <span class="type">float</span> a = <span class="built_in">fmod</span>(angle, <span class="number">2</span>*PI);   <span class="comment">//取余运算可以用于归一化，列出特殊值例子算便知</span></span><br><span class="line">  <span class="keyword">return</span> a &gt;= <span class="number">0</span> ? a : (a + <span class="number">2</span>*PI);</span><br><span class="line">  <span class="comment">//三目运算符。格式：condition ? expr1 : expr2</span></span><br><span class="line">  <span class="comment">//其中，condition 是要求值的条件表达式，如果条件成立，则返回 expr1 的值，否则返回 expr2 的值。可以将三目运算符视为 if-else 语句的简化形式。</span></span><br><span class="line">  <span class="comment">//fmod 函数的余数的符号与除数相同。因此，当 angle 的值为负数时，余数的符号将与 _2PI 的符号相反。也就是说，如果 angle 的值小于 0 且 _2PI 的值为正数，则 fmod(angle, _2PI) 的余数将为负数。</span></span><br><span class="line">  <span class="comment">//例如，当 angle 的值为 -PI/2，_2PI 的值为 2PI 时，fmod(angle, _2PI) 将返回一个负数。在这种情况下，可以通过将负数的余数加上 _2PI 来将角度归一化到 [0, 2PI] 的范围内，以确保角度的值始终为正数。</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 设置PWM到控制器输出</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">setPwm</span><span class="params">(<span class="type">float</span> Ua, <span class="type">float</span> Ub, <span class="type">float</span> Uc)</span> &#123;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 计算占空比</span></span><br><span class="line">  <span class="comment">// 限制占空比从0到1</span></span><br><span class="line">  dc_a = _constrain(Ua / voltage_power_supply, <span class="number">0.0f</span> , <span class="number">1.0f</span> );</span><br><span class="line">  dc_b = _constrain(Ub / voltage_power_supply, <span class="number">0.0f</span> , <span class="number">1.0f</span> );</span><br><span class="line">  dc_c = _constrain(Uc / voltage_power_supply, <span class="number">0.0f</span> , <span class="number">1.0f</span> );</span><br><span class="line"></span><br><span class="line">  <span class="comment">//写入PWM到PWM 0 1 2 通道</span></span><br><span class="line">  ledcWrite(<span class="number">0</span>, dc_a*<span class="number">255</span>);</span><br><span class="line">  ledcWrite(<span class="number">1</span>, dc_b*<span class="number">255</span>);</span><br><span class="line">  ledcWrite(<span class="number">2</span>, dc_c*<span class="number">255</span>); <span class="comment">//此处是8倍分辨率所以要乘255</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">setPhaseVoltage</span><span class="params">(<span class="type">float</span> Uq,<span class="type">float</span> Ud, <span class="type">float</span> angle_el)</span> &#123;</span><br><span class="line">  angle_el = _normalizeAngle(angle_el + zero_electric_angle);</span><br><span class="line">  <span class="comment">// 帕克逆变换</span></span><br><span class="line">  Ualpha =  -Uq*<span class="built_in">sin</span>(angle_el);</span><br><span class="line">  Ubeta =   Uq*<span class="built_in">cos</span>(angle_el);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 克拉克逆变换</span></span><br><span class="line">  Ua = Ualpha + voltage_power_supply/<span class="number">2</span>; <span class="comment">//这里需要加上电压偏置的一半，当做虚拟电压，实际情况ua,ub,uc没办法是负电压，ua,ub,uc的零电压相当于母线电压的一半</span></span><br><span class="line">  Ub = (<span class="built_in">sqrt</span>(<span class="number">3</span>)*Ubeta-Ualpha)/<span class="number">2</span> + voltage_power_supply/<span class="number">2</span>;</span><br><span class="line">  Uc = (-Ualpha-<span class="built_in">sqrt</span>(<span class="number">3</span>)*Ubeta)/<span class="number">2</span> + voltage_power_supply/<span class="number">2</span>;</span><br><span class="line">  setPwm(Ua,Ub,Uc);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//开环速度函数，输入单位为rad/s</span></span><br><span class="line"><span class="type">float</span> <span class="title function_">velocityOpenloop</span><span class="params">(<span class="type">float</span> target_velocity)</span>&#123;</span><br><span class="line">  <span class="type">unsigned</span> <span class="type">long</span> now_us = micros();</span><br><span class="line">  <span class="comment">//获取从开启芯片以来的微秒数，它的精度是 4 微秒。 micros() 返回的是一个无符号长整型（unsigned long）的值</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">//计算当前每个Loop的运行时间间隔，这里单位是us转换成s</span></span><br><span class="line">  <span class="type">float</span> Ts = (now_us - open_loop_timestamp) * <span class="number">1e-6</span>f;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//由于 micros() 函数返回的时间戳会在大约 70 分钟之后重新开始计数，在由70分钟跳变到0时，TS会出现异常</span></span><br><span class="line">  <span class="comment">//因此需要进行修正。如果时间间隔小于等于零或大于 0.5 秒，则将其设置为一个较小的默认值，即 1e-3f</span></span><br><span class="line">  <span class="comment">//可以理解成异常处理，暂不考虑</span></span><br><span class="line">  <span class="keyword">if</span>(Ts &lt;= <span class="number">0</span> || Ts &gt; <span class="number">0.5f</span>) Ts = <span class="number">1e-3</span>f;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 通过乘以时间间隔和目标速度来计算需要转动的机械角度，存储在 shaft_angle 变量中。</span></span><br><span class="line">  <span class="comment">// 还需要对轴角度进行归一化，以确保机械角速度的值在 0 到 2π 之间。</span></span><br><span class="line">  shaft_angle = _normalizeAngle(shaft_angle + target_velocity*Ts);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 使用早前设置的voltage_power_supply的1/3作为Uq值，这个值会直接影响输出力矩</span></span><br><span class="line">  <span class="comment">// 最大只能设置为Uq = voltage_power_supply/2，否则ua,ub,uc会超出供电电压限幅</span></span><br><span class="line"></span><br><span class="line">  <span class="type">float</span> Uq = voltage_power_supply/<span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">  setPhaseVoltage(Uq,  <span class="number">0</span>, _electricalAngle(shaft_angle, <span class="number">7</span>));</span><br><span class="line"></span><br><span class="line">  open_loop_timestamp = now_us;  <span class="comment">//用于计算下一个时间间隔</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> Uq;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">loop</span><span class="params">()</span> &#123;</span><br><span class="line">  <span class="comment">// put your main code here, to run repeatedly:</span></span><br><span class="line">   velocityOpenloop(<span class="number">5</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>设计思路</p>
+<p>开环速度控制-&gt;给定预期速度，单位 rad&#x2F;s</p>
+<p>预期速度-&gt;积分计算预期机械角度-&gt;预期电角度</p>
+<p>电角度 and 给定 q 轴电压-&gt;计算 ua,ub,uc-&gt;对比母线电压给出占空比</p>
+<h2 id="3、闭环位置环"><a href="#3、闭环位置环" class="headerlink" title="3、闭环位置环"></a>3、闭环位置环</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;AS5600.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> pwmA = <span class="number">32</span>;</span><br><span class="line"><span class="type">int</span> pwmB = <span class="number">33</span>;</span><br><span class="line"><span class="type">int</span> pwmC = <span class="number">25</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//初始变量及函数定义</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> _constrain(amt,low,high) ((amt)<span class="string">&lt;(low)?(low):((amt)&gt;</span>(high)?(high):(amt)))</span></span><br><span class="line"><span class="comment">//宏定义实现的一个约束函数,用于限制一个值的范围。</span></span><br><span class="line"><span class="comment">//具体来说，该宏定义的名称为 _constrain，接受三个参数 amt、low 和 high，分别表示要限制的值、最小值和最大值。该宏定义的实现使用了三元运算符，根据 amt 是否小于 low 或大于 high，返回其中的最大或最小值，或者返回原值。</span></span><br><span class="line"><span class="comment">//换句话说，如果 amt 小于 low，则返回 low；如果 amt 大于 high，则返回 high；否则返回 amt。这样，_constrain(amt, low, high) 就会将 amt 约束在 [low, high] 的范围内。</span></span><br><span class="line"><span class="type">float</span> voltage_limit=<span class="number">12.6</span>;</span><br><span class="line"><span class="type">float</span> voltage_power_supply=<span class="number">12.6</span>;</span><br><span class="line"><span class="type">float</span> shaft_angle=<span class="number">0</span>,open_loop_timestamp=<span class="number">0</span>;</span><br><span class="line"><span class="type">float</span> zero_electric_angle=<span class="number">0</span>,Ualpha,Ubeta=<span class="number">0</span>,Ua=<span class="number">0</span>,Ub=<span class="number">0</span>,Uc=<span class="number">0</span>,dc_a=<span class="number">0</span>,dc_b=<span class="number">0</span>,dc_c=<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> _3PI_2 4.71238898038f</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> PP=<span class="number">7</span>,DIR=<span class="number">-1</span>;</span><br><span class="line"><span class="comment">//dir代表的是方向，如果编码的方向和开环方向不一致则为-1</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @brief 计算电角度</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @return float 电角度</span></span><br><span class="line"><span class="comment"> * @note 电角度 = 机械角度 * 极对数 - 零电角度</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="type">float</span> _electricalAngle()&#123;</span><br><span class="line">  <span class="keyword">return</span>  _normalizeAngle((<span class="type">float</span>)(DIR *  PP) * getAngle_Without_track()-zero_electric_angle);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 归一化角度到 [0,2PI]</span></span><br><span class="line"><span class="type">float</span> _normalizeAngle(<span class="type">float</span> angle)&#123;</span><br><span class="line">  <span class="type">float</span> a = <span class="built_in">fmod</span>(angle, <span class="number">2</span>*PI);   <span class="comment">//取余运算可以用于归一化，列出特殊值例子算便知</span></span><br><span class="line">  <span class="keyword">return</span> a &gt;= <span class="number">0</span> ? a : (a + <span class="number">2</span>*PI);  &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 设置PWM到控制器输出</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">setPwm</span><span class="params">(<span class="type">float</span> Ua, <span class="type">float</span> Ub, <span class="type">float</span> Uc)</span> &#123;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 限制上限</span></span><br><span class="line">  Ua = _constrain(Ua, <span class="number">0.0f</span>, voltage_limit);</span><br><span class="line">  Ub = _constrain(Ub, <span class="number">0.0f</span>, voltage_limit);</span><br><span class="line">  Uc = _constrain(Uc, <span class="number">0.0f</span>, voltage_limit);</span><br><span class="line">  <span class="comment">// 计算占空比</span></span><br><span class="line">  <span class="comment">// 限制占空比从0到1</span></span><br><span class="line">  dc_a = _constrain(Ua / voltage_power_supply, <span class="number">0.0f</span> , <span class="number">1.0f</span> );</span><br><span class="line">  dc_b = _constrain(Ub / voltage_power_supply, <span class="number">0.0f</span> , <span class="number">1.0f</span> );</span><br><span class="line">  dc_c = _constrain(Uc / voltage_power_supply, <span class="number">0.0f</span> , <span class="number">1.0f</span> );</span><br><span class="line"></span><br><span class="line">  <span class="comment">//写入PWM到PWM 0 1 2 通道</span></span><br><span class="line">  ledcWrite(<span class="number">0</span>, dc_a*<span class="number">255</span>);</span><br><span class="line">  ledcWrite(<span class="number">1</span>, dc_b*<span class="number">255</span>);</span><br><span class="line">  ledcWrite(<span class="number">2</span>, dc_c*<span class="number">255</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @brief  Clarke逆变换</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @param Uq</span></span><br><span class="line"><span class="comment"> * @param Ud</span></span><br><span class="line"><span class="comment"> * @param angle_el</span></span><br><span class="line"><span class="comment"> * @note 使用电角度和Uq,Ud计算出Ua,Ub,Uc然后设置PWM输出</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">setPhaseVoltage</span><span class="params">(<span class="type">float</span> Uq,<span class="type">float</span> Ud, <span class="type">float</span> angle_el)</span> &#123;</span><br><span class="line">  angle_el = _normalizeAngle(angle_el);</span><br><span class="line">  <span class="comment">// 帕克逆变换</span></span><br><span class="line">  Ualpha =  -Uq*<span class="built_in">sin</span>(angle_el);</span><br><span class="line">  Ubeta =   Uq*<span class="built_in">cos</span>(angle_el);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 克拉克逆变换</span></span><br><span class="line">  Ua = Ualpha + voltage_power_supply/<span class="number">2</span>;</span><br><span class="line">  Ub = (<span class="built_in">sqrt</span>(<span class="number">3</span>)*Ubeta-Ualpha)/<span class="number">2</span> + voltage_power_supply/<span class="number">2</span>;</span><br><span class="line">  Uc = (-Ualpha-<span class="built_in">sqrt</span>(<span class="number">3</span>)*Ubeta)/<span class="number">2</span> + voltage_power_supply/<span class="number">2</span>;</span><br><span class="line">  setPwm(Ua,Ub,Uc);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">setup</span><span class="params">()</span> &#123;</span><br><span class="line">  <span class="comment">// put your setup code here, to run once:</span></span><br><span class="line">  Serial.begin(<span class="number">115200</span>);</span><br><span class="line">  <span class="comment">//PWM设置</span></span><br><span class="line">  pinMode(pwmA, OUTPUT);</span><br><span class="line">  pinMode(pwmB, OUTPUT);</span><br><span class="line">  pinMode(pwmC, OUTPUT);</span><br><span class="line">  ledcSetup(<span class="number">0</span>, <span class="number">30000</span>, <span class="number">8</span>);  <span class="comment">//pwm频道, 频率, 精度</span></span><br><span class="line">  ledcSetup(<span class="number">1</span>, <span class="number">30000</span>, <span class="number">8</span>);  <span class="comment">//pwm频道, 频率, 精度</span></span><br><span class="line">  ledcSetup(<span class="number">2</span>, <span class="number">30000</span>, <span class="number">8</span>);  <span class="comment">//pwm频道, 频率, 精度</span></span><br><span class="line">  ledcAttachPin(pwmA, <span class="number">0</span>);</span><br><span class="line">  ledcAttachPin(pwmB, <span class="number">1</span>);</span><br><span class="line">  ledcAttachPin(pwmC, <span class="number">2</span>);</span><br><span class="line">  Serial.println(<span class="string">&quot;完成PWM初始化设置&quot;</span>);</span><br><span class="line">  BeginSensor();  <span class="comment">//初始化传感器</span></span><br><span class="line">  setPhaseVoltage(<span class="number">3</span>, <span class="number">0</span>,_3PI_2);<span class="comment">//这里是让磁场方向和a轴对齐</span></span><br><span class="line">  delay(<span class="number">3000</span>);</span><br><span class="line">  zero_electric_angle=_electricalAngle();<span class="comment">//计算零电角度</span></span><br><span class="line">  setPhaseVoltage(<span class="number">0</span>, <span class="number">0</span>,_3PI_2);</span><br><span class="line">  Serial.print(<span class="string">&quot;0电角度：&quot;</span>);Serial.println(zero_electric_angle);</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//==============串口接收==============</span></span><br><span class="line"><span class="type">float</span> motor_target;</span><br><span class="line"><span class="type">int</span> commaPosition;</span><br><span class="line">String <span class="title function_">serialReceiveUserCommand</span><span class="params">()</span> &#123;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// a string to hold incoming data</span></span><br><span class="line">  <span class="type">static</span> String received_chars;</span><br><span class="line"></span><br><span class="line">  String command = <span class="string">&quot;&quot;</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">while</span> (Serial.available()) &#123;</span><br><span class="line">    <span class="comment">// get the new byte:</span></span><br><span class="line">    <span class="type">char</span> inChar = (<span class="type">char</span>)Serial.read();</span><br><span class="line">    <span class="comment">// add it to the string buffer:</span></span><br><span class="line">    received_chars += inChar;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// end of user input</span></span><br><span class="line">    <span class="keyword">if</span> (inChar == <span class="string">&#x27;\n&#x27;</span>) &#123;</span><br><span class="line"></span><br><span class="line">      <span class="comment">// execute the user command</span></span><br><span class="line">      command = received_chars;</span><br><span class="line"></span><br><span class="line">      commaPosition = command.indexOf(<span class="string">&#x27;\n&#x27;</span>);<span class="comment">//检测字符串中的逗号</span></span><br><span class="line">      <span class="keyword">if</span>(commaPosition != <span class="number">-1</span>)<span class="comment">//如果有逗号存在就向下执行</span></span><br><span class="line">      &#123;</span><br><span class="line">          motor_target = command.substring(<span class="number">0</span>,commaPosition).toDouble();            <span class="comment">//电机角度</span></span><br><span class="line">          Serial.println(motor_target);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">// reset the command buffer</span></span><br><span class="line">      received_chars = <span class="string">&quot;&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> command;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">loop</span><span class="params">()</span> &#123;</span><br><span class="line">  <span class="comment">// put your main code here, to run repeatedly:</span></span><br><span class="line">  Serial.println(getAngle()); <span class="comment">//输出机械角度</span></span><br><span class="line">  <span class="type">float</span> Sensor_Angle=getAngle();</span><br><span class="line">  <span class="type">float</span> Kp=<span class="number">0.133</span>;</span><br><span class="line">  <span class="comment">//输入电角度，计算uq</span></span><br><span class="line">  setPhaseVoltage(_constrain(Kp*(motor_target-DIR*Sensor_Angle)*<span class="number">180</span>/PI,<span class="number">-6</span>,<span class="number">6</span>),<span class="number">0</span>,_electricalAngle());</span><br><span class="line">  serialReceiveUserCommand();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/markdown/images/posts/dengfoc-control-code/004-052204eb6f.png" alt="dengfoc-control-code 插图 4"></p>
+<h2 id="4、闭环速度环"><a href="#4、闭环速度环" class="headerlink" title="4、闭环速度环"></a>4、闭环速度环</h2><p>编码器采样 -&gt; 计算采样间隔 -&gt;计算速度和圈数 -&gt;滤波</p>
+<p>编码器采样同时计算转子电角度，并使得 d 轴和 转子 s 轴重合，使得获得最大力矩</p>
+<p>所谓的闭环只是修改 uq 大小，基于不同大小的 uq 电压来更随速度环</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">setup</span><span class="params">()</span> &#123;</span><br><span class="line">  Serial.begin(<span class="number">115200</span>);</span><br><span class="line">  DFOC_Vbus(<span class="number">12.6</span>);   <span class="comment">//设定驱动器供电电压</span></span><br><span class="line">  DFOC_alignSensor(Motor_PP,Sensor_DIR);  <span class="comment">//封装编码器对齐函数，获得编码器零点偏差</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">loop</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="comment">//设置速度环PID</span></span><br><span class="line">   DFOC_M0_SET_VEL_PID(<span class="number">0.005</span>,<span class="number">0.00</span>,<span class="number">0</span>,<span class="number">0</span>);</span><br><span class="line">  <span class="comment">//设置速度</span></span><br><span class="line">   DFOC_M0_setVelocity(serial_motor_target());</span><br><span class="line">  <span class="comment">//接收串口，串口接收速度指令</span></span><br><span class="line">  serialReceiveUserCommand();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">DFOC_M0_setVelocity</span><span class="params">(<span class="type">float</span> Target)</span></span><br><span class="line">&#123;</span><br><span class="line">  setTorque(DFOC_M0_VEL_PID((serial_motor_target()-DFOC_M0_Velocity())*<span class="number">180</span>/PI),_electricalAngle());   <span class="comment">//速度闭环</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//输入目标速度减去实际-滤波后速度</span></span><br><span class="line"><span class="comment">//DFOC_M0_Velocity中会读取编码器的角度所以读取编码器的频率和循环频率是一样的</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//后面输出的是转子的电角度</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">setTorque</span><span class="params">(<span class="type">float</span> Uq,<span class="type">float</span> angle_el)</span> &#123;</span><br><span class="line">  S0.Sensor_update(); <span class="comment">//更新传感器数值</span></span><br><span class="line">  Uq=_constrain(Uq,-(voltage_power_supply)/<span class="number">2</span>,(voltage_power_supply)/<span class="number">2</span>);</span><br><span class="line">  <span class="type">float</span> Ud=<span class="number">0</span>;</span><br><span class="line">  angle_el = _normalizeAngle(angle_el);</span><br><span class="line">  <span class="comment">// 帕克逆变换</span></span><br><span class="line">  Ualpha =  -Uq*<span class="built_in">sin</span>(angle_el);</span><br><span class="line">  Ubeta =   Uq*<span class="built_in">cos</span>(angle_el);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 克拉克逆变换</span></span><br><span class="line">  Ua = Ualpha + voltage_power_supply/<span class="number">2</span>;</span><br><span class="line">  Ub = (<span class="built_in">sqrt</span>(<span class="number">3</span>)*Ubeta-Ualpha)/<span class="number">2</span> + voltage_power_supply/<span class="number">2</span>;</span><br><span class="line">  Uc = (-Ualpha-<span class="built_in">sqrt</span>(<span class="number">3</span>)*Ubeta)/<span class="number">2</span> + voltage_power_supply/<span class="number">2</span>;</span><br><span class="line">  setPwm(Ua,Ub,Uc);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="5、位置-速度-电流闭环"><a href="#5、位置-速度-电流闭环" class="headerlink" title="5、位置-速度-电流闭环"></a>5、位置-速度-电流闭环</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 初始化配置</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">setup</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Serial.<span class="built_in">begin</span>(<span class="number">115200</span>);</span><br><span class="line">    <span class="built_in">DFOC_Vbus</span>(<span class="number">12.6</span>);           <span class="comment">// 设置母线电压</span></span><br><span class="line">    <span class="built_in">DFOC_alignSensor</span>(Motor_PP, Sensor_DIR);  <span class="comment">// 传感器校准，寻找偏差角度</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">loop</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">runFOC</span>();  <span class="comment">// 核心FOC循环</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 三闭环控制模式（位置→速度→电流）</span></span><br><span class="line">    <span class="built_in">DFOC_M0_SET_ANGLE_PID</span>(<span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">100000</span>, <span class="number">30</span>);    <span class="comment">// 角度环参数</span></span><br><span class="line">    <span class="built_in">DFOC_M0_SET_VEL_PID</span>(<span class="number">0.02</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">100000</span>, <span class="number">0.5</span>);  <span class="comment">// 速度环参数</span></span><br><span class="line">    <span class="built_in">DFOC_M0_SET_CURRENT_PID</span>(<span class="number">5</span>, <span class="number">200</span>, <span class="number">0</span>, <span class="number">100000</span>);    <span class="comment">// 电流环参数</span></span><br><span class="line">    <span class="built_in">DFOC_M0_set_Velocity_Angle</span>(<span class="built_in">serial_motor_target</span>());  <span class="comment">// 位置-速度-电流三闭环</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 数据输出输，输出电流和角速度</span></span><br><span class="line">    <span class="keyword">if</span>(count++ &gt; <span class="number">30</span>) &#123;</span><br><span class="line">        Serial.<span class="built_in">printf</span>(<span class="string">&quot;%f,%f\n&quot;</span>, <span class="built_in">DFOC_M0_Current</span>(), <span class="built_in">DFOC_M0_Velocity</span>());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">serialReceiveUserCommand</span>();  <span class="comment">// 串口接收目标值</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>核心算法：坐标变换和 spwm 输出</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">setTorque</span><span class="params">(<span class="type">float</span> Uq, <span class="type">float</span> angle_el)</span> </span>&#123;</span><br><span class="line">  Uq = _constrain(Uq, -(voltage_power_supply)/<span class="number">2</span>, (voltage_power_supply)/<span class="number">2</span>);</span><br><span class="line">  <span class="type">float</span> Ud = <span class="number">0</span>;</span><br><span class="line">  angle_el = _normalizeAngle(angle_el);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Park逆变换（将d-q坐标系转换为α-β坐标系）</span></span><br><span class="line">  Ualpha = -Uq * <span class="built_in">sin</span>(angle_el);</span><br><span class="line">  Ubeta = Uq * <span class="built_in">cos</span>(angle_el);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Clark逆变换（将α-β坐标系转换为三相坐标系）</span></span><br><span class="line">  Ua = Ualpha + voltage_power_supply/<span class="number">2</span>;</span><br><span class="line">  Ub = (<span class="built_in">sqrt</span>(<span class="number">3</span>)*Ubeta - Ualpha)/<span class="number">2</span> + voltage_power_supply/<span class="number">2</span>;</span><br><span class="line">  Uc = (-Ualpha - <span class="built_in">sqrt</span>(<span class="number">3</span>)*Ubeta)/<span class="number">2</span> + voltage_power_supply/<span class="number">2</span>;</span><br><span class="line">  <span class="built_in">setPwm</span>(Ua, Ub, Uc);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">DFOC_M0_set_Velocity_Angle</span><span class="params">(<span class="type">float</span> Target)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 角度环输出作为速度环输入，速度环输出作为电流环输入</span></span><br><span class="line">  <span class="built_in">DFOC_M0_setTorque</span>(    <span class="comment">//电流环环</span></span><br><span class="line">    <span class="built_in">DFOC_M0_VEL_PID</span>(	<span class="comment">//速度环</span></span><br><span class="line">      <span class="built_in">DFOC_M0_ANGLE_PID</span>((Target - <span class="built_in">DFOC_M0_Angle</span>()) * <span class="number">180</span>/PI)  <span class="comment">//位置环</span></span><br><span class="line">      - <span class="built_in">DFOC_M0_Velocity</span>()</span><br><span class="line">    )</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>系统初始化<br>├── DFOC_Vbus()      → PWM、编码器、电流传感器初始化<br>└── DFOC_alignSensor() → 传感器零点校准</li>
+<li>主循环 runFOC()<br>├── S0.Sensor_update()      → 更新编码器角度<br>└── CS_M0.getPhaseCurrents() → 采样三相电流</li>
+<li>控制算法执行<br>├── 角度环：计算角度误差 → PID输出速度指令<br>├── 速度环：计算速度误差 → PID输出电流指令<br>├── 电流环：计算电流误差 → PID输出电压指令<br>└── setTorque() → 坐标变换 → PWM输出</li>
+<li>串口通信<br>└── serialReceiveUserCommand() → 接收上位机指令</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/markdown/tags/dengfoc/" rel="tag"># DengFOC</a>
+              <a href="/markdown/tags/foc/" rel="tag"># FOC</a>
+              <a href="/markdown/tags/%E4%BD%8D%E7%BD%AE%E7%8E%AF/" rel="tag"># 位置环</a>
+              <a href="/markdown/tags/%E9%80%9F%E5%BA%A6%E7%8E%AF/" rel="tag"># 速度环</a>
+              <a href="/markdown/tags/%E7%94%B5%E6%B5%81%E7%8E%AF/" rel="tag"># 电流环</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/markdown/simulation/simulink-motor-simulation/" rel="prev" title="Simulink 电机控制仿真常用模块与建议">
+                  <i class="fa fa-angle-left"></i> Simulink 电机控制仿真常用模块与建议
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2025 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">ZY</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/zycrwa/markdown" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

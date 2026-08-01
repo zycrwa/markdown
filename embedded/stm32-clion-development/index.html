@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 8.1.2">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/markdown/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/markdown/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/markdown/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/markdown/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/markdown/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zycrwa.github.io","root":"/markdown/","images":"/markdown/images","scheme":"Gemini","darkmode":false,"version":"8.28.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"flat"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":true,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/markdown/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/markdown/js/config.js" defer></script>
+
+    <meta name="description" content="记录 STM32 在 CLion 和 CMake 环境下的 GPIO、I2C、SPI、UART 与 SVPWM 验证代码。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="STM32 与 CLion 开发实践">
+<meta property="og:url" content="https://zycrwa.github.io/markdown/embedded/stm32-clion-development/index.html">
+<meta property="og:site_name" content="ZY 的技术笔记">
+<meta property="og:description" content="记录 STM32 在 CLion 和 CMake 环境下的 GPIO、I2C、SPI、UART 与 SVPWM 验证代码。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://zycrwa.github.io/markdown/images/posts/stm32-clion-development/001-eb1e2314ac.png">
+<meta property="og:image" content="https://zycrwa.github.io/markdown/images/posts/stm32-clion-development/002-0afcca555d.png">
+<meta property="article:published_time" content="2026-08-01T14:04:00.000Z">
+<meta property="article:modified_time" content="2026-08-01T15:51:19.060Z">
+<meta property="article:author" content="ZY">
+<meta property="article:tag" content="CLion">
+<meta property="article:tag" content="CMake">
+<meta property="article:tag" content="HAL">
+<meta property="article:tag" content="STM32">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zycrwa.github.io/markdown/images/posts/stm32-clion-development/001-eb1e2314ac.png">
+
+
+<link rel="canonical" href="https://zycrwa.github.io/markdown/embedded/stm32-clion-development/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://zycrwa.github.io/markdown/embedded/stm32-clion-development/","path":"/embedded/stm32-clion-development/","title":"STM32 与 CLion 开发实践"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>STM32 与 CLion 开发实践 | ZY 的技术笔记</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous" defer></script>
+<script src="/markdown/js/utils.js" defer></script><script src="/markdown/js/motion.js" defer></script><script src="/markdown/js/sidebar.js" defer></script><script src="/markdown/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/markdown/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+  <script src="/markdown/js/third-party/fancybox.js" defer></script>
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/markdown/css/noscript.css">
+  </noscript>
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><link rel="alternate" href="/markdown/atom.xml" title="ZY 的技术笔记" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/markdown/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">ZY 的技术笔记</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">编程、工具与 AI 学习记录</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/markdown/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/markdown/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">18</span></a></li><li class="menu-item menu-item-categories"><a href="/markdown/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">6</span></a></li><li class="menu-item menu-item-tags"><a href="/markdown/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">60</span></a></li><li class="menu-item menu-item-about"><a href="/markdown/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#CMakeLists-txt-%E9%85%8D%E7%BD%AE"><span class="nav-number">1.</span> <span class="nav-text">CMakeLists.txt 配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CLion-%E9%85%8D%E7%BD%AE"><span class="nav-number">2.</span> <span class="nav-text">CLion 配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%96%87%E4%BB%B6%E6%B3%A8%E9%87%8A"><span class="nav-number">2.1.</span> <span class="nav-text">1. 文件注释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%87%BD%E6%95%B0%E6%B3%A8%E9%87%8A"><span class="nav-number">2.2.</span> <span class="nav-text">2. 函数注释</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GPIO-%E8%BE%93%E5%87%BA%EF%BC%9A%E7%82%B9%E4%BA%AE-LED"><span class="nav-number">3.</span> <span class="nav-text">GPIO 输出：点亮 LED</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81-GPIO-output-level"><span class="nav-number">3.1.</span> <span class="nav-text">1、 GPIO output level</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81GPIO-mode"><span class="nav-number">3.2.</span> <span class="nav-text">2、GPIO mode</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-GPIO-Pull-up-Pull-down"><span class="nav-number">3.3.</span> <span class="nav-text">3. GPIO Pull-up  &#x2F;  Pull-down</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Maximum-output-speed"><span class="nav-number">3.4.</span> <span class="nav-text">4. Maximum output speed</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-User-Label"><span class="nav-number">3.5.</span> <span class="nav-text">5. User Label</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GPIO-%E8%BE%93%E5%85%A5%EF%BC%9A%E6%8C%89%E9%94%AE%E6%8E%A7%E5%88%B6"><span class="nav-number">4.</span> <span class="nav-text">GPIO 输入：按键控制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GPIO-%E5%A4%96%E9%83%A8%E4%B8%AD%E6%96%AD"><span class="nav-number">5.</span> <span class="nav-text">GPIO 外部中断</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A1%AC%E4%BB%B6-I2C%EF%BC%9A%E9%A9%B1%E5%8A%A8-OLED"><span class="nav-number">6.</span> <span class="nav-text">硬件 I2C：驱动 OLED</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BD%AF%E4%BB%B6-SPI%EF%BC%9A%E9%A9%B1%E5%8A%A8-OLED"><span class="nav-number">7.</span> <span class="nav-text">软件 SPI：驱动 OLED</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UART-%E4%B8%8E-VOFA"><span class="nav-number">8.</span> <span class="nav-text">UART 与 VOFA+</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SVPWM-%E7%AE%97%E6%B3%95%E9%AA%8C%E8%AF%81"><span class="nav-number">9.</span> <span class="nav-text">SVPWM 算法验证</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZY"
+      src="/markdown/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">ZY</p>
+  <div class="site-description" itemprop="description">ZY 的个人技术学习博客</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/markdown/archives/">
+          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/markdown/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/markdown/tags/">
+        <span class="site-state-item-count">60</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zycrwa" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zycrwa" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zycrwa.github.io/markdown/embedded/stm32-clion-development/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/markdown/images/avatar.gif">
+      <meta itemprop="name" content="ZY">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ZY 的技术笔记">
+      <meta itemprop="description" content="ZY 的个人技术学习博客">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="STM32 与 CLion 开发实践 | ZY 的技术笔记">
+      <meta itemprop="description" content="记录 STM32 在 CLion 和 CMake 环境下的 GPIO、I2C、SPI、UART 与 SVPWM 验证代码。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          STM32 与 CLion 开发实践
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-08-01 22:04:00 / 修改时间：23:51:19" itemprop="dateCreated datePublished" datetime="2026-08-01T22:04:00+08:00">2026-08-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/markdown/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">嵌入式开发</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">记录 STM32 在 CLion 和 CMake 环境下的 GPIO、I2C、SPI、UART 与 SVPWM 验证代码。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>本文记录 STM32 工程迁移到 CLion&#x2F;CMake 后的常用配置与外设实验，包括 GPIO、外部中断、I2C、SPI、UART，以及用于验证 SVPWM 的基础代码。</p>
+<span id="more"></span>
+
+<h2 id="CMakeLists-txt-配置"><a href="#CMakeLists-txt-配置" class="headerlink" title="CMakeLists.txt 配置"></a>CMakeLists.txt 配置</h2><p>下面的配置给出了 STM32 CMake 工程的基本骨架。源文件、头文件目录和宏定义应根据实际工程补充。</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">cmake_minimum_required</span>(VERSION <span class="number">3.22</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span>(CMAKE_C_STANDARD <span class="number">11</span>)</span><br><span class="line"><span class="keyword">set</span>(CMAKE_C_STANDARD_REQUIRED <span class="keyword">ON</span>)</span><br><span class="line"><span class="keyword">set</span>(CMAKE_C_EXTENSIONS <span class="keyword">ON</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">NOT</span> CMAKE_BUILD_TYPE)</span><br><span class="line">    <span class="keyword">set</span>(CMAKE_BUILD_TYPE <span class="string">&quot;Debug&quot;</span>)</span><br><span class="line"><span class="keyword">endif</span>()</span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span>(CMAKE_PROJECT_NAME <span class="number">7</span>_I2C_MPU6050)</span><br><span class="line"><span class="keyword">set</span>(CMAKE_EXPORT_COMPILE_COMMANDS <span class="keyword">TRUE</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">project</span>(<span class="variable">$&#123;CMAKE_PROJECT_NAME&#125;</span>)</span><br><span class="line"><span class="keyword">message</span>(<span class="string">&quot;Build type: $&#123;CMAKE_BUILD_TYPE&#125;&quot;</span>)</span><br><span class="line"><span class="keyword">enable_language</span>(C ASM)</span><br><span class="line"></span><br><span class="line"><span class="keyword">add_executable</span>(<span class="variable">$&#123;CMAKE_PROJECT_NAME&#125;</span></span><br><span class="line">    Lib/SOFT_I2C/SOFT_I2C.h</span><br><span class="line">    Lib/SOFT_I2C/SOFT_I2C.c</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">target_link_directories</span>(<span class="variable">$&#123;CMAKE_PROJECT_NAME&#125;</span> PRIVATE)</span><br><span class="line"><span class="keyword">target_include_directories</span>(<span class="variable">$&#123;CMAKE_PROJECT_NAME&#125;</span> PRIVATE)</span><br><span class="line"><span class="keyword">target_compile_definitions</span>(<span class="variable">$&#123;CMAKE_PROJECT_NAME&#125;</span> PRIVATE)</span><br></pre></td></tr></table></figure>
+
+<p>其中，<code>CMAKE_EXPORT_COMPILE_COMMANDS</code> 会生成 <code>compile_commands.json</code>，供 CLion、clangd 等工具读取编译参数；<code>enable_language(C ASM)</code> 则同时启用 C 与汇编语言支持。</p>
+<h2 id="CLion-配置"><a href="#CLion-配置" class="headerlink" title="CLion 配置"></a>CLion 配置</h2><h3 id="1-文件注释"><a href="#1-文件注释" class="headerlink" title="1. 文件注释"></a>1. 文件注释</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @file      i2c_sim.c</span></span><br><span class="line"><span class="comment"> * @brief     软件模拟 I2C 通信协议的实现文件</span></span><br><span class="line"><span class="comment"> * @author    Your Name</span></span><br><span class="line"><span class="comment"> * @version   V1.0.0</span></span><br><span class="line"><span class="comment"> * @date      2026-04-16</span></span><br><span class="line"><span class="comment"> * @note      仅适用于标准 I2C 从机设备，暂不支持时钟拉伸</span></span><br><span class="line"><span class="comment"> * @attention 使用前需正确配置 SDA/SCL 引脚的 GPIO 模式</span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>
+
+<p>常用 Doxygen 字段包括：<code>file</code> 表示文件名，<code>brief</code> 表示简介，<code>author</code>、<code>version</code> 和 <code>date</code> 记录版本信息，<code>note</code> 用于补充说明，<code>attention</code> 用于标出注意事项。</p>
+<h3 id="2-函数注释"><a href="#2-函数注释" class="headerlink" title="2. 函数注释"></a>2. 函数注释</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @brief  模拟 I2C 发送一个字节</span></span><br><span class="line"><span class="comment"> * @param  data 要发送的 8 位数据</span></span><br><span class="line"><span class="comment"> * @retval 应答状态：0 表示 ACK，1 表示 NACK</span></span><br><span class="line"><span class="comment"> * @note   需在起始信号后调用</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="type">uint8_t</span> <span class="title function_">I2C_WriteByte</span><span class="params">(<span class="type">uint8_t</span> data)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 在这里实现发送逻辑</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>param</code> 描述输入参数，<code>retval</code> 描述返回值及其含义。</p>
+<h2 id="GPIO-输出：点亮-LED"><a href="#GPIO-输出：点亮-LED" class="headerlink" title="GPIO 输出：点亮 LED"></a>GPIO 输出：点亮 LED</h2><p><img src="/markdown/images/posts/stm32-clion-development/001-eb1e2314ac.png" alt="stm32-clion-development 插图 1"></p>
+<p><img src="/markdown/images/posts/stm32-clion-development/002-0afcca555d.png" alt="stm32-clion-development 插图 2"></p>
+<h3 id="1、-GPIO-output-level"><a href="#1、-GPIO-output-level" class="headerlink" title="1、 GPIO output level"></a>1、 GPIO output level</h3><p>初始高 &#x2F; 低电平</p>
+<h3 id="2、GPIO-mode"><a href="#2、GPIO-mode" class="headerlink" title="2、GPIO mode"></a>2、GPIO mode</h3><p>Output Push Pull——推挽输出</p>
+<p>引脚可以主动输出高电平和低电平</p>
+<p>Output Open Drain——开漏输出<br>       引脚只能低电平，无法输出高电平，需要外接上拉电阻才能实现高电平</p>
+<p>Input  &#x2F;  Analog<br>	输入模式读取电平，无法输出；模拟模式用于ADC等模拟信号采集</p>
+<h3 id="3-GPIO-Pull-up-Pull-down"><a href="#3-GPIO-Pull-up-Pull-down" class="headerlink" title="3. GPIO Pull-up  &#x2F;  Pull-down"></a>3. GPIO Pull-up  &#x2F;  Pull-down</h3><p> 控制引脚内部集成的上拉&#x2F;下拉电阻，用来给引脚提供默认电平，避免浮空状态下的电平不稳定</p>
+<h3 id="4-Maximum-output-speed"><a href="#4-Maximum-output-speed" class="headerlink" title="4. Maximum output speed"></a>4. Maximum output speed</h3><p>Low<br>	最大翻转速度约2MHz，是LED、按键等低速外设的最优选择。</p>
+<p>Medium<br>	最大约10MHz，适合UART、SPI等中等速度的通信外设。</p>
+<p>High<br>	最大约50MHz，适合USB、高速SPI等高速接口。</p>
+<p>Very High<br>	最大100MHz+，用于超高速外设。</p>
+<h3 id="5-User-Label"><a href="#5-User-Label" class="headerlink" title="5. User Label"></a>5. User Label</h3><p>引脚别名，生成宏定义</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> LED_Pin GPIO_PIN_12</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> LED_GPIO_Port GPIOA</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 灯亮（PA12输出低）</span></span><br><span class="line">HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_RESET);</span><br><span class="line"><span class="comment">// 灯灭（PA12输出高）</span></span><br><span class="line">HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_SET);</span><br></pre></td></tr></table></figure>
+
+<h2 id="GPIO-输入：按键控制"><a href="#GPIO-输入：按键控制" class="headerlink" title="GPIO 输入：按键控制"></a>GPIO 输入：按键控制</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// KEY 编码器按键</span></span><br><span class="line"><span class="keyword">if</span> (!HAL_GPIO_ReadPin(KEY_GPIO_Port,KEY_Pin)) &#123;</span><br><span class="line">    <span class="comment">// 如果检测到低电平，先延时等待50ms</span></span><br><span class="line">    HAL_Delay(<span class="number">50</span>);</span><br><span class="line">    <span class="comment">// 再判断KEY3是否还处于低电平</span></span><br><span class="line">    <span class="keyword">if</span> (!HAL_GPIO_ReadPin(KEY_GPIO_Port,KEY_Pin)) &#123;</span><br><span class="line">        <span class="comment">// 确认不是抖动，蓝灯亮灭翻转</span></span><br><span class="line">        HAL_GPIO_TogglePin(LED_GPIO_Port,LED_Pin );</span><br><span class="line">        <span class="comment">// 等待KEY3松开，才能开始下一次检测</span></span><br><span class="line">        <span class="keyword">while</span> (!HAL_GPIO_ReadPin(KEY_GPIO_Port,KEY_Pin))</span><br><span class="line">        &#123;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="GPIO-外部中断"><a href="#GPIO-外部中断" class="headerlink" title="GPIO 外部中断"></a>GPIO 外部中断</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">EXTI0_IRQHandler</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">  HAL_GPIO_EXTI_IRQHandler(KEY_Pin);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">HAL_GPIO_EXTI_IRQHandler</span><span class="params">(<span class="type">uint16_t</span> GPIO_Pin)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">if</span>(__HAL_GPIO_EXTI_GET_IT(GPIO_Pin) != RESET)</span><br><span class="line">  &#123;</span><br><span class="line">    __HAL_GPIO_EXTI_CLEAR_IT(GPIO_Pin);  \\清空中断标志</span><br><span class="line">    HAL_GPIO_EXTI_Callback(GPIO_Pin);    \\中断回调</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">HAL_GPIO_EXTI_Callback</span><span class="params">(<span class="type">uint16_t</span> GPIO_Pin)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">if</span>(HAL_GPIO_ReadPin(KEY_GPIO_Port, KEY_Pin) == <span class="number">0</span>)&#123;          <span class="comment">//确认KEY按下</span></span><br><span class="line">    HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);</span><br><span class="line">    <span class="keyword">while</span>(HAL_GPIO_ReadPin(KEY_GPIO_Port, KEY_Pin) == <span class="number">0</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">HAL_GPIO_EXTI_Callback</span><span class="params">(<span class="type">uint16_t</span> GPIO_Pin)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="comment">// 确认一下是否为KEY按下</span></span><br><span class="line">  <span class="keyword">if</span>(HAL_GPIO_ReadPin(KEY_GPIO_Port, KEY_Pin) == <span class="number">0</span>)&#123;</span><br><span class="line">    <span class="comment">// 翻转灯</span></span><br><span class="line">    HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);</span><br><span class="line">    <span class="comment">// 等待KE1松开</span></span><br><span class="line">    <span class="keyword">while</span>(HAL_GPIO_ReadPin(KEY_GPIO_Port, KEY_Pin) == <span class="number">0</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">MX_GPIO_Init</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    GPIO_InitTypeDef GPIO_InitStruct = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">    <span class="comment">/*Configure GPIO pin : KEY_Pin */</span></span><br><span class="line">    GPIO_InitStruct.Pin = KEY_Pin;</span><br><span class="line">    GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;</span><br><span class="line">    GPIO_InitStruct.Pull = GPIO_NOPULL;</span><br><span class="line">    HAL_GPIO_Init(KEY_GPIO_Port, &amp;GPIO_InitStruct);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* EXTI interrupt init*/</span></span><br><span class="line">    HAL_NVIC_SetPriority(EXTI0_IRQn, <span class="number">2</span>, <span class="number">0</span>);</span><br><span class="line">    HAL_NVIC_EnableIRQ(EXTI0_IRQn);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="硬件-I2C：驱动-OLED"><a href="#硬件-I2C：驱动-OLED" class="headerlink" title="硬件 I2C：驱动 OLED"></a>硬件 I2C：驱动 OLED</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 主机发送数据（阻塞式，最常用）</span></span><br><span class="line">HAL_StatusTypeDef <span class="title function_">HAL_I2C_Master_Transmit</span><span class="params">(</span></span><br><span class="line"><span class="params">    I2C_HandleTypeDef *hi2c,   <span class="comment">// I2C句柄</span></span></span><br><span class="line"><span class="params">    <span class="type">uint16_t</span> DevAddress,      <span class="comment">// 从机地址(7位/10位)</span></span></span><br><span class="line"><span class="params">    <span class="type">uint8_t</span> *pData,           <span class="comment">// 发送数据</span></span></span><br><span class="line"><span class="params">    <span class="type">uint16_t</span> Size,            <span class="comment">// 数据长度</span></span></span><br><span class="line"><span class="params">    <span class="type">uint32_t</span> Timeout          <span class="comment">// 超时</span></span></span><br><span class="line"><span class="params">)</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 主机接收数据（阻塞式，最常用）</span></span><br><span class="line">HAL_StatusTypeDef <span class="title function_">HAL_I2C_Master_Receive</span><span class="params">(</span></span><br><span class="line"><span class="params">    I2C_HandleTypeDef *hi2c,</span></span><br><span class="line"><span class="params">    <span class="type">uint16_t</span> DevAddress,</span></span><br><span class="line"><span class="params">    <span class="type">uint8_t</span> *pData,</span></span><br><span class="line"><span class="params">    <span class="type">uint16_t</span> Size,</span></span><br><span class="line"><span class="params">    <span class="type">uint32_t</span> Timeout</span></span><br><span class="line"><span class="params">)</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 写寄存器</span></span><br><span class="line">HAL_I2C_Mem_Write(</span><br><span class="line">    I2C_HandleTypeDef *hi2c,</span><br><span class="line">    <span class="type">uint16_t</span> DevAddress,</span><br><span class="line">    <span class="type">uint16_t</span> MemAddress,      <span class="comment">// 寄存器地址</span></span><br><span class="line">    <span class="type">uint16_t</span> MemAddSize,      <span class="comment">// 寄存器地址长度 8/16bit</span></span><br><span class="line">    <span class="type">uint8_t</span> *pData,</span><br><span class="line">    <span class="type">uint16_t</span> Size,</span><br><span class="line">    <span class="type">uint32_t</span> Timeout</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 读寄存器</span></span><br><span class="line">HAL_I2C_Mem_Read(</span><br><span class="line">    I2C_HandleTypeDef *hi2c,</span><br><span class="line">    <span class="type">uint16_t</span> DevAddress,</span><br><span class="line">    <span class="type">uint16_t</span> MemAddress,</span><br><span class="line">    <span class="type">uint16_t</span> MemAddSize,</span><br><span class="line">    <span class="type">uint8_t</span> *pData,</span><br><span class="line">    <span class="type">uint16_t</span> Size,</span><br><span class="line">    <span class="type">uint32_t</span> Timeout</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">//中断方式</span></span><br><span class="line">HAL_I2C_Master_Transmit_IT();</span><br><span class="line">HAL_I2C_Master_Receive_IT();</span><br><span class="line">HAL_I2C_Mem_Write_IT();</span><br><span class="line">HAL_I2C_Mem_Read_IT();</span><br><span class="line"></span><br><span class="line"><span class="comment">//DMA方式</span></span><br><span class="line">HAL_I2C_Master_Transmit_DMA();</span><br><span class="line">HAL_I2C_Master_Receive_DMA();</span><br><span class="line">HAL_I2C_Mem_Write_DMA();</span><br><span class="line">HAL_I2C_Mem_Read_DMA();</span><br><span class="line"></span><br><span class="line"><span class="comment">//中断回调函数</span></span><br><span class="line"><span class="comment">// 发送完成</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">HAL_I2C_MasterTxCpltCallback</span><span class="params">(I2C_HandleTypeDef *hi2c)</span>;</span><br><span class="line"><span class="comment">// 接收完成</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">HAL_I2C_MasterRxCpltCallback</span><span class="params">(I2C_HandleTypeDef *hi2c)</span>;</span><br><span class="line"><span class="comment">// 错误回调</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">HAL_I2C_ErrorCallback</span><span class="params">(I2C_HandleTypeDef *hi2c)</span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="软件-SPI：驱动-OLED"><a href="#软件-SPI：驱动-OLED" class="headerlink" title="软件 SPI：驱动 OLED"></a>软件 SPI：驱动 OLED</h2><p>时钟极性 CPOL：时钟信号空闲时是高电平还是低电平</p>
+<ul>
+<li>CPOL&#x3D;0,SCLK 空闲低电平</li>
+<li>CPOL&#x3D;1,SCLK 空闲高电平</li>
+</ul>
+<p>时钟相位 CPHA：时钟相位，决定数据采样时机</p>
+<ul>
+<li>CPHA&#x3D;0,数据第一个时钟沿采样</li>
+<li>CPHA&#x3D;1,数据在第二个时钟采样</li>
+</ul>
+<p>例如：</p>
+<ul>
+<li>CPOL&#x3D;0,CPHA&#x3D;0,SCLK 空闲时低电平，数据在第一个时钟沿采样-上升沿</li>
+<li>CPOL&#x3D;1,CPHA&#x3D;0,SCLK 空闲时高电平，数据在第一个时钟沿采样-下降沿</li>
+<li>CPOL&#x3D;0,CPHA&#x3D;1,SCLK 空闲时低电平，数据在第二个时钟沿采样-下降沿</li>
+<li>CPOL&#x3D;1,CPHA&#x3D;1.SCLK 空闲时高电平，数据在第二个时钟沿采样-上升沿</li>
+</ul>
+<p>可参考代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/***</span></span><br><span class="line"><span class="comment"> *Function: 发送1byte数据/命令</span></span><br><span class="line"><span class="comment"> *Input:    dat-&gt; 写入的数据/命令      cmd-&gt; 0表示命令 1表示数据</span></span><br><span class="line"><span class="comment"> *Output:   None</span></span><br><span class="line"><span class="comment">***/</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">OLED_WR_Byte</span><span class="params">(<span class="type">uint8_t</span> dat, <span class="type">uint8_t</span> cmd)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">uint8_t</span> i=<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (cmd)</span><br><span class="line">        OLED_RS_Set();        <span class="comment">//RS高电平数据模式</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        OLED_RS_Clr();        <span class="comment">//RS低电平命令模式</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">8</span>; i++)   <span class="comment">//SPI协议发送1byte数据</span></span><br><span class="line">    &#123;</span><br><span class="line">        OLED_SCLK_Clr();      <span class="comment">//时钟拉低(准备发数据)</span></span><br><span class="line">        <span class="keyword">if</span> (dat&amp;<span class="number">0x80</span>)</span><br><span class="line">            OLED_SDIN_Set();</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            OLED_SDIN_Clr();</span><br><span class="line"></span><br><span class="line">        OLED_SCLK_Set();</span><br><span class="line">        dat&lt;&lt;=<span class="number">1</span>;               <span class="comment">//左移</span></span><br><span class="line">    &#125;</span><br><span class="line">    OLED_RS_Set();             <span class="comment">//RS恢复高电平</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="UART-与-VOFA"><a href="#UART-与-VOFA" class="headerlink" title="UART 与 VOFA+"></a>UART 与 VOFA+</h2><p>Vofa 串口协议规则：</p>
+<p>FireWater</p>
+<p>数值 1，数值 2，数值 3，…，数值 N \r\n</p>
+<p>分隔符：英文逗号，</p>
+<p>帧结束标记：回车换行 \r\n(0x0D,0x0A)</p>
+<p>数值支持:float，int 整数</p>
+<p>示例：1.25,3.68,-0.52,24.7\r\n</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 发送3路浮点</span></span><br><span class="line"><span class="type">float</span> a=<span class="number">1.1f</span>,b=<span class="number">2.2f</span>,c=<span class="number">3.3f</span>;</span><br><span class="line"><span class="type">char</span> buf[<span class="number">64</span>];</span><br><span class="line"><span class="built_in">sprintf</span>(buf,<span class="string">&quot;%.2f,%.2f,%.2f\r\n&quot;</span>,a,b,c);</span><br><span class="line"><span class="built_in">HAL_UART_Transmit</span>(&amp;huart1,(<span class="type">uint8_t</span>*)buf,<span class="built_in">strlen</span>(buf),<span class="number">10</span>);</span><br></pre></td></tr></table></figure>
+
+<p>优点：简单、可读、调试简单</p>
+<p>缺点：传输数据量大、CPU 开销大</p>
+<p>JustFloat</p>
+<p>[float0(4B)] [float1(4B)] … [floatN(4B)] + 固定4字节帧尾 0x00 0x00 0x80 0x7F</p>
+<p>1、数据区：N 个 IEEE754 单精度 float,每个占 4 字节，小端字节序</p>
+<p>2、帧尾：对应浮点+inf，VOFA</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 联合体自动映射float内存字节</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">union</span> &#123;</span><br><span class="line">    <span class="type">float</span> f;</span><br><span class="line">    <span class="type">uint8_t</span> b[<span class="number">4</span>];</span><br><span class="line">&#125; FloatByte;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">Vofa_Send_JustFloat</span><span class="params">(<span class="type">float</span> ch1,<span class="type">float</span> ch2,<span class="type">float</span> ch3)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    FloatByte fb1,fb2,fb3;</span><br><span class="line">    fb<span class="number">1.f</span>=ch1; fb<span class="number">2.f</span>=ch2; fb<span class="number">3.f</span>=ch3;</span><br><span class="line">    <span class="comment">// 帧尾固定</span></span><br><span class="line">    <span class="type">uint8_t</span> tail[<span class="number">4</span>]=&#123;<span class="number">0x00</span>,<span class="number">0x00</span>,<span class="number">0x80</span>,<span class="number">0x7F</span>&#125;;</span><br><span class="line">    <span class="comment">// 拼接缓冲区</span></span><br><span class="line">    <span class="type">uint8_t</span> tx_buf[<span class="number">16</span>];</span><br><span class="line">    <span class="built_in">memcpy</span>(tx_buf,fb<span class="number">1.</span>b,<span class="number">4</span>);</span><br><span class="line">    <span class="built_in">memcpy</span>(tx_buf<span class="number">+4</span>,fb<span class="number">2.</span>b,<span class="number">4</span>);</span><br><span class="line">    <span class="built_in">memcpy</span>(tx_buf<span class="number">+8</span>,fb<span class="number">3.</span>b,<span class="number">4</span>);</span><br><span class="line">    <span class="built_in">memcpy</span>(tx_buf<span class="number">+12</span>,tail,<span class="number">4</span>);</span><br><span class="line">    <span class="comment">// 串口发送16字节</span></span><br><span class="line">    <span class="built_in">HAL_UART_Transmit</span>(&amp;huart1,tx_buf,<span class="number">16</span>,<span class="number">10</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="SVPWM-算法验证"><a href="#SVPWM-算法验证" class="headerlink" title="SVPWM 算法验证"></a>SVPWM 算法验证</h2>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/markdown/tags/stm32/" rel="tag"># STM32</a>
+              <a href="/markdown/tags/clion/" rel="tag"># CLion</a>
+              <a href="/markdown/tags/cmake/" rel="tag"># CMake</a>
+              <a href="/markdown/tags/hal/" rel="tag"># HAL</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/markdown/embedded/communication-protocols/" rel="prev" title="嵌入式通信协议：UART、I2C、SPI 与 CAN">
+                  <i class="fa fa-angle-left"></i> 嵌入式通信协议：UART、I2C、SPI 与 CAN
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/markdown/tools/altium-designer-notes/" rel="next" title="Altium Designer 原理图与 PCB 使用笔记">
+                  Altium Designer 原理图与 PCB 使用笔记 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2025 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">ZY</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/zycrwa/markdown" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

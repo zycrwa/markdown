@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 8.1.2">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/markdown/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/markdown/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/markdown/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/markdown/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/markdown/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zycrwa.github.io","root":"/markdown/","images":"/markdown/images","scheme":"Gemini","darkmode":false,"version":"8.28.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"flat"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":true,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/markdown/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/markdown/js/config.js" defer></script>
+
+    <meta name="description" content="整理 Altium Designer 原理图库、原理图和 PCB 编辑中的常用规则与快捷操作。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Altium Designer 原理图与 PCB 使用笔记">
+<meta property="og:url" content="https://zycrwa.github.io/markdown/tools/altium-designer-notes/index.html">
+<meta property="og:site_name" content="ZY 的技术笔记">
+<meta property="og:description" content="整理 Altium Designer 原理图库、原理图和 PCB 编辑中的常用规则与快捷操作。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://zycrwa.github.io/markdown/images/posts/altium-designer-notes/001-7d12c0486a.png">
+<meta property="article:published_time" content="2026-08-01T14:05:00.000Z">
+<meta property="article:modified_time" content="2026-08-01T15:51:19.055Z">
+<meta property="article:author" content="ZY">
+<meta property="article:tag" content="Altium Designer">
+<meta property="article:tag" content="PCB">
+<meta property="article:tag" content="原理图">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zycrwa.github.io/markdown/images/posts/altium-designer-notes/001-7d12c0486a.png">
+
+
+<link rel="canonical" href="https://zycrwa.github.io/markdown/tools/altium-designer-notes/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://zycrwa.github.io/markdown/tools/altium-designer-notes/","path":"/tools/altium-designer-notes/","title":"Altium Designer 原理图与 PCB 使用笔记"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Altium Designer 原理图与 PCB 使用笔记 | ZY 的技术笔记</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous" defer></script>
+<script src="/markdown/js/utils.js" defer></script><script src="/markdown/js/motion.js" defer></script><script src="/markdown/js/sidebar.js" defer></script><script src="/markdown/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/markdown/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+  <script src="/markdown/js/third-party/fancybox.js" defer></script>
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/markdown/css/noscript.css">
+  </noscript>
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><link rel="alternate" href="/markdown/atom.xml" title="ZY 的技术笔记" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/markdown/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">ZY 的技术笔记</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">编程、工具与 AI 学习记录</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/markdown/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/markdown/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">18</span></a></li><li class="menu-item menu-item-categories"><a href="/markdown/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">6</span></a></li><li class="menu-item menu-item-tags"><a href="/markdown/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">60</span></a></li><li class="menu-item menu-item-about"><a href="/markdown/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E7%BB%84%E6%88%90"><span class="nav-number">1.</span> <span class="nav-text">项目组成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E7%90%86%E5%9B%BE%E5%BA%93"><span class="nav-number">2.</span> <span class="nav-text">原理图库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%9B%BE%E5%BD%A2%E4%B8%BB%E4%BD%93%EF%BC%88%E8%A7%86%E8%A7%89%E8%A1%A8%E8%BE%BE%EF%BC%89"><span class="nav-number">2.1.</span> <span class="nav-text">一、图形主体（视觉表达）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%BC%95%E8%84%9A%E5%AE%9A%E4%B9%89%EF%BC%88%E7%94%B5%E6%B0%94%E8%BF%9E%E6%8E%A5%E6%A0%B8%E5%BF%83%EF%BC%89"><span class="nav-number">2.2.</span> <span class="nav-text">二、引脚定义（电气连接核心）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E6%A0%B8%E5%BF%83%E5%B1%9E%E6%80%A7%EF%BC%88%E6%A0%87%E8%AF%86%E4%B8%8E%E6%8F%8F%E8%BF%B0%EF%BC%89"><span class="nav-number">2.3.</span> <span class="nav-text">三、核心属性（标识与描述）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E5%85%B3%E8%81%94%E5%B0%81%E8%A3%85%E4%B8%8E%E7%94%9F%E4%BA%A7%E4%BF%A1%E6%81%AF%EF%BC%88%E5%8E%9F%E7%90%86%E5%9B%BE%E2%86%92PCB-%E6%A1%A5%E6%A2%81%EF%BC%89"><span class="nav-number">2.4.</span> <span class="nav-text">四、关联封装与生产信息（原理图→PCB 桥梁）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E7%94%B5%E6%B0%94-%E4%BB%BF%E7%9C%9F-%E9%AB%98%E7%BA%A7%E4%BF%A1%E6%81%AF"><span class="nav-number">2.5.</span> <span class="nav-text">五、电气&#x2F;仿真&#x2F;高级信息</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E7%90%86%E5%9B%BE%E6%93%8D%E4%BD%9C"><span class="nav-number">3.</span> <span class="nav-text">原理图操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Compiler-Off-Grid%EF%BC%9A%E7%94%B5%E6%B0%94%E6%A0%85%E6%A0%BC%E6%9C%AA%E5%AF%B9%E9%BD%90"><span class="nav-number">3.1.</span> <span class="nav-text">1. Compiler Off Grid：电气栅格未对齐</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%BC%95%E8%84%9A%E6%82%AC%E7%A9%BA"><span class="nav-number">3.2.</span> <span class="nav-text">2. 引脚悬空</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%8E%9F%E7%90%86%E5%9B%BE%E6%8E%A5%E7%BA%BF%E8%A7%92%E5%BA%A6%E5%88%87%E6%8D%A2"><span class="nav-number">3.3.</span> <span class="nav-text">3. 原理图接线角度切换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E6%A0%87%E6%B3%A8-Designator"><span class="nav-number">3.4.</span> <span class="nav-text">4. 标注 Designator</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-X-Y-%E6%96%B9%E5%90%91%E7%A7%BB%E5%8A%A8"><span class="nav-number">3.5.</span> <span class="nav-text">5. X&#x2F;Y 方向移动</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PCB-%E6%93%8D%E4%BD%9C"><span class="nav-number">4.</span> <span class="nav-text">PCB 操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%B8%85%E9%99%A4-PCB-%E6%B5%8B%E9%87%8F%E6%A0%87%E8%AE%B0"><span class="nav-number">4.1.</span> <span class="nav-text">1. 清除 PCB 测量标记</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-PCB-%E5%90%84%E5%B1%82"><span class="nav-number">4.2.</span> <span class="nav-text">2. PCB 各层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-X-Y-%E6%96%B9%E5%90%91%E7%A7%BB%E5%8A%A8"><span class="nav-number">4.3.</span> <span class="nav-text">3. X&#x2F;Y 方向移动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%8D%95%E5%B1%82%E4%B8%8E%E5%A4%9A%E5%B1%82%E6%98%BE%E7%A4%BA"><span class="nav-number">4.4.</span> <span class="nav-text">4. 单层与多层显示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E4%B8%9D%E5%8D%B0%E8%A3%81%E5%89%AA"><span class="nav-number">4.5.</span> <span class="nav-text">5. 丝印裁剪</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-3D-%E8%A7%86%E5%9B%BE%E6%97%8B%E8%BD%AC"><span class="nav-number">4.6.</span> <span class="nav-text">6. 3D 视图旋转</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-%E4%BB%8E%E8%AE%BE%E8%AE%A1%E7%94%9F%E6%88%90-PCB-%E5%BA%93"><span class="nav-number">4.7.</span> <span class="nav-text">7. 从设计生成 PCB 库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-%E4%BD%BF%E7%94%A8%E5%B0%81%E8%A3%85%E7%AE%A1%E7%90%86%E5%99%A8%E6%A3%80%E6%9F%A5%E5%B0%81%E8%A3%85"><span class="nav-number">4.8.</span> <span class="nav-text">8. 使用封装管理器检查封装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-%E6%9B%B4%E6%96%B0%E5%8E%9F%E7%90%86%E5%9B%BE%E5%BA%93"><span class="nav-number">4.9.</span> <span class="nav-text">9. 更新原理图库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-%E7%9F%A9%E5%BD%A2%E5%99%A8%E4%BB%B6%E6%91%86%E6%94%BE"><span class="nav-number">4.10.</span> <span class="nav-text">10. 矩形器件摆放</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-PCB-%E6%9D%BF%E6%A1%86"><span class="nav-number">4.11.</span> <span class="nav-text">11. PCB 板框</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-%E8%AE%BE%E7%BD%AE%E5%8E%9F%E7%82%B9"><span class="nav-number">4.12.</span> <span class="nav-text">12. 设置原点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-%E7%BB%98%E5%88%B6%E6%9D%BF%E6%A1%86%E5%B0%BA%E5%AF%B8"><span class="nav-number">4.13.</span> <span class="nav-text">13. 绘制板框尺寸</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#14-%E5%A4%9A%E5%B1%82%E6%9D%BF%E5%B1%82%E5%8F%A0%E8%AE%BE%E7%BD%AE"><span class="nav-number">4.14.</span> <span class="nav-text">14. 多层板层叠设置</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZY"
+      src="/markdown/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">ZY</p>
+  <div class="site-description" itemprop="description">ZY 的个人技术学习博客</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/markdown/archives/">
+          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/markdown/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/markdown/tags/">
+        <span class="site-state-item-count">60</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zycrwa" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zycrwa" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zycrwa.github.io/markdown/tools/altium-designer-notes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/markdown/images/avatar.gif">
+      <meta itemprop="name" content="ZY">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ZY 的技术笔记">
+      <meta itemprop="description" content="ZY 的个人技术学习博客">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Altium Designer 原理图与 PCB 使用笔记 | ZY 的技术笔记">
+      <meta itemprop="description" content="整理 Altium Designer 原理图库、原理图和 PCB 编辑中的常用规则与快捷操作。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Altium Designer 原理图与 PCB 使用笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-08-01 22:05:00 / 修改时间：23:51:19" itemprop="dateCreated datePublished" datetime="2026-08-01T22:05:00+08:00">2026-08-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/markdown/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">开发工具</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">整理 Altium Designer 原理图库、原理图和 PCB 编辑中的常用规则与快捷操作。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>本文整理 Altium Designer 中原理图库、原理图和 PCB 的常用操作，重点覆盖引脚与封装关联、ERC&#x2F;DRC、板层、丝印和板框等容易遗漏的环节。</p>
+<span id="more"></span>
+
+<h2 id="项目组成"><a href="#项目组成" class="headerlink" title="项目组成"></a>项目组成</h2><p>一个完整项目通常包含原理图、PCB、原理图库和 PCB 封装库四类核心文件。</p>
+<h2 id="原理图库"><a href="#原理图库" class="headerlink" title="原理图库"></a>原理图库</h2><p>AD（Altium Designer）元件符号必须包含<strong>图形主体、引脚定义、核心属性、关联封装、电气&#x2F;仿真信息</strong>五大类信息，以确保原理图逻辑清晰、与PCB&#x2F;生产&#x2F;仿真完全匹配。</p>
+<h3 id="一、图形主体（视觉表达）"><a href="#一、图形主体（视觉表达）" class="headerlink" title="一、图形主体（视觉表达）"></a>一、图形主体（视觉表达）</h3><ul>
+<li><strong>标准符号轮廓</strong>：遵循 IEEE 315 规范，如电阻矩形、电容平行线、运放三角形、IC矩形框。</li>
+<li><strong>极性&#x2F;功能标记</strong>：二极管箭头、电解电容+&#x2F;-、三极管箭头、MOSFET衬底箭头、晶振波浪线等。</li>
+<li><strong>多单元拆分</strong>：如 74HC00 拆为 4 个与非门（Part A&#x2F;B&#x2F;C&#x2F;D），电源引脚可全局隐藏。</li>
+</ul>
+<h3 id="二、引脚定义（电气连接核心）"><a href="#二、引脚定义（电气连接核心）" class="headerlink" title="二、引脚定义（电气连接核心）"></a>二、引脚定义（电气连接核心）</h3><p>每个引脚必须包含：</p>
+<ol>
+<li><strong>引脚编号（Number）</strong>：与实物管脚、PCB 封装焊盘号<strong>严格一一对应</strong>（必填）。</li>
+<li><strong>引脚名称（Name）</strong>：功能名（如 VCC、GND、SDA、PA0、OUT），可隐藏但必须正确。</li>
+<li><strong>电气类型（Electrical Type）</strong>：Input&#x2F;Output&#x2F;Power&#x2F;Passive&#x2F;Open Collector 等，用于 DRC 检查。</li>
+<li><strong>引脚长度&#x2F;方向</strong>：标准 100mil，编号朝外、名称朝内；可设置隐藏（如全局电源）。</li>
+</ol>
+<h3 id="三、核心属性（标识与描述）"><a href="#三、核心属性（标识与描述）" class="headerlink" title="三、核心属性（标识与描述）"></a>三、核心属性（标识与描述）</h3><ul>
+<li><strong>Designator（位号）</strong>：唯一标识符，如 R?、C?、U?、J?（必填，自动编号用）。</li>
+<li><strong>Comment（注释&#x2F;值）</strong>：阻值 10k、容值 0.1μF、型号 ATmega328P、LED 等（必填）。</li>
+<li><strong>Description（描述）</strong>：功能说明，如“双运放、轨到轨”。</li>
+<li><strong>Component Name（库内名称）</strong>：如 RES、CAP、LM358（库内唯一）。</li>
+</ul>
+<h3 id="四、关联封装与生产信息（原理图→PCB-桥梁）"><a href="#四、关联封装与生产信息（原理图→PCB-桥梁）" class="headerlink" title="四、关联封装与生产信息（原理图→PCB 桥梁）"></a>四、关联封装与生产信息（原理图→PCB 桥梁）</h3><ul>
+<li><strong>Footprint（封装）</strong>：如 0805、SOIC-8、DIP-16、SOT-23（必须与引脚编号匹配）。</li>
+<li><strong>Link（厂商和联系方式）</strong>。</li>
+<li><strong>其他参数</strong>：功率、耐压、精度、温度等级等（按需添加）。</li>
+</ul>
+<h3 id="五、电气-仿真-高级信息"><a href="#五、电气-仿真-高级信息" class="headerlink" title="五、电气&#x2F;仿真&#x2F;高级信息"></a>五、电气&#x2F;仿真&#x2F;高级信息</h3><ul>
+<li><strong>隐藏电源&#x2F;地</strong>：VCC、GND 设为全局网络（Power Port），简化图纸。</li>
+<li><strong>仿真模型链接</strong>：SPICE 子电路、IBIS 模型路径（仿真用）。</li>
+<li><strong>3D 模型关联</strong>：STEP 文件（3D 预览用）。</li>
+<li><strong>设计规则（DRC）</strong>：引脚电气类型、网络约束。</li>
+</ul>
+<h2 id="原理图操作"><a href="#原理图操作" class="headerlink" title="原理图操作"></a>原理图操作</h2><h3 id="1-Compiler-Off-Grid：电气栅格未对齐"><a href="#1-Compiler-Off-Grid：电气栅格未对齐" class="headerlink" title="1. Compiler Off Grid：电气栅格未对齐"></a>1. Compiler Off Grid：电气栅格未对齐</h3><p>右键→对齐→对齐到栅格上</p>
+<h3 id="2-引脚悬空"><a href="#2-引脚悬空" class="headerlink" title="2. 引脚悬空"></a>2. 引脚悬空</h3><p>放置→指示→通用 No_ERC</p>
+<p>防止报错</p>
+<h3 id="3-原理图接线角度切换"><a href="#3-原理图接线角度切换" class="headerlink" title="3. 原理图接线角度切换"></a>3. 原理图接线角度切换</h3><p>切换：shift+space</p>
+<h3 id="4-标注-Designator"><a href="#4-标注-Designator" class="headerlink" title="4. 标注 Designator"></a>4. 标注 Designator</h3><p>工具-标注-原理图标注</p>
+<p>标注类型：</p>
+<table>
+<thead>
+<tr>
+<th align="left"><strong>R</strong></th>
+<th align="left">Resistor「电阻」</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>C</strong></td>
+<td align="left">Capacitor「电容」</td>
+</tr>
+<tr>
+<td align="left"><strong>U</strong></td>
+<td align="left">IC&#x2F;Integrated Circuit「集成电路」</td>
+</tr>
+<tr>
+<td align="left"><strong>D</strong></td>
+<td align="left">Diode「二极管」</td>
+</tr>
+<tr>
+<td align="left"><strong>Q</strong></td>
+<td align="left">Transistor「晶体管」</td>
+</tr>
+<tr>
+<td align="left"><strong>J</strong></td>
+<td align="left">Connector&#x2F;Jumper「连接器 &#x2F; 接插件」</td>
+</tr>
+<tr>
+<td align="left"><strong>L</strong></td>
+<td align="left">Inductor「电感」</td>
+</tr>
+<tr>
+<td align="left"><strong>F</strong></td>
+<td align="left">Fuse「保险丝」</td>
+</tr>
+</tbody></table>
+<h3 id="5-X-Y-方向移动"><a href="#5-X-Y-方向移动" class="headerlink" title="5. X&#x2F;Y 方向移动"></a>5. X&#x2F;Y 方向移动</h3><p>M</p>
+<h2 id="PCB-操作"><a href="#PCB-操作" class="headerlink" title="PCB 操作"></a>PCB 操作</h2><h3 id="1-清除-PCB-测量标记"><a href="#1-清除-PCB-测量标记" class="headerlink" title="1. 清除 PCB 测量标记"></a>1. 清除 PCB 测量标记</h3><pre><code>	SHIFT+C
+</code></pre>
+<h3 id="2-PCB-各层"><a href="#2-PCB-各层" class="headerlink" title="2. PCB 各层"></a>2. PCB 各层</h3><table>
+<thead>
+<tr>
+<th align="left">**Mechanical **</th>
+<th align="left">机械层</th>
+<th align="left">用于标注尺寸、工艺说明、板框、定位孔</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>Top Overlay</strong></td>
+<td align="left">顶层丝印层</td>
+<td align="left">放置元件位号（R1&#x2F;C2&#x2F;U3）、元件轮廓</td>
+</tr>
+<tr>
+<td align="left"><strong>Bottom Overlay</strong></td>
+<td align="left">底层丝印层</td>
+<td align="left">底层元件的丝印、位号、标识</td>
+</tr>
+<tr>
+<td align="left"><strong>Top Paste</strong></td>
+<td align="left">顶层锡膏层</td>
+<td align="left">生成 SMT 贴片钢网，控制焊盘上锡量</td>
+</tr>
+<tr>
+<td align="left"><strong>Bottom Paste</strong></td>
+<td align="left">底层锡膏层</td>
+<td align="left">底层贴片元件的钢网开口</td>
+</tr>
+<tr>
+<td align="left"><strong>Top Solder</strong></td>
+<td align="left">顶层阻焊层</td>
+<td align="left">阻焊绿油层，</td>
+</tr>
+<tr>
+<td align="left"><strong>Bottom Solder</strong></td>
+<td align="left">底层阻焊层</td>
+<td align="left">底层阻焊绿油层</td>
+</tr>
+<tr>
+<td align="left"><strong>Drill Guide</strong></td>
+<td align="left">钻孔引导层</td>
+<td align="left">生成钻孔位置、孔径的参考图</td>
+</tr>
+<tr>
+<td align="left"><strong>Keep-Out Layer</strong></td>
+<td align="left">禁止布线层</td>
+<td align="left">定义 PCB 板框、禁止布线</td>
+</tr>
+<tr>
+<td align="left"><strong>Drill Drawing</strong></td>
+<td align="left">钻孔图层</td>
+<td align="left">汇总所有钻孔的孔径、数量、位置</td>
+</tr>
+<tr>
+<td align="left"><strong>Multi-Layer</strong></td>
+<td align="left">多层</td>
+<td align="left">贯穿所有层，用于通孔焊盘、过孔</td>
+</tr>
+</tbody></table>
+<h3 id="3-X-Y-方向移动"><a href="#3-X-Y-方向移动" class="headerlink" title="3. X&#x2F;Y 方向移动"></a>3. X&#x2F;Y 方向移动</h3><p>选中，按 M</p>
+<h3 id="4-单层与多层显示"><a href="#4-单层与多层显示" class="headerlink" title="4. 单层与多层显示"></a>4. 单层与多层显示</h3><p>shift+s</p>
+<h3 id="5-丝印裁剪"><a href="#5-丝印裁剪" class="headerlink" title="5. 丝印裁剪"></a>5. 丝印裁剪</h3><p>丝印不能放到焊盘上</p>
+<p>编辑-移动-打断走线</p>
+<h3 id="6-3D-视图旋转"><a href="#6-3D-视图旋转" class="headerlink" title="6. 3D 视图旋转"></a>6. 3D 视图旋转</h3><p>panels-View_Configuration-3D</p>
+<p>shift+鼠标右键：旋转</p>
+<p>Ctrl+鼠标右键：放大缩小</p>
+<p>鼠标右键：移动</p>
+<h3 id="7-从设计生成-PCB-库"><a href="#7-从设计生成-PCB-库" class="headerlink" title="7. 从设计生成 PCB 库"></a>7. 从设计生成 PCB 库</h3><p>设计-生成 PCB 库</p>
+<h3 id="8-使用封装管理器检查封装"><a href="#8-使用封装管理器检查封装" class="headerlink" title="8. 使用封装管理器检查封装"></a>8. 使用封装管理器检查封装</h3><p>工具-封装管理器</p>
+<h3 id="9-更新原理图库"><a href="#9-更新原理图库" class="headerlink" title="9. 更新原理图库"></a>9. 更新原理图库</h3><p>修改了原理图库之后-&gt;更新到原理图 -&gt;</p>
+<p>工具-从库更新</p>
+<p><img src="/markdown/images/posts/altium-designer-notes/001-7d12c0486a.png" alt="altium-designer-notes 插图 1"></p>
+<p> 图形属性：原理图里元件的<strong>图形、引脚、线、形状</strong></p>
+<p> 更新参数: 元器件参数</p>
+<p> 更新模型: PCB 封装-&gt;footprint</p>
+<h3 id="10-矩形器件摆放"><a href="#10-矩形器件摆放" class="headerlink" title="10. 矩形器件摆放"></a>10. 矩形器件摆放</h3><p>全选器件-工具-器件摆放</p>
+<h3 id="11-PCB-板框"><a href="#11-PCB-板框" class="headerlink" title="11. PCB 板框"></a>11. PCB 板框</h3><p>画线-&gt;设计-板子形状</p>
+<h3 id="12-设置原点"><a href="#12-设置原点" class="headerlink" title="12. 设置原点"></a>12. 设置原点</h3><p>EOS</p>
+<h3 id="13-绘制板框尺寸"><a href="#13-绘制板框尺寸" class="headerlink" title="13. 绘制板框尺寸"></a>13. 绘制板框尺寸</h3><p>放置-尺寸-线性尺寸</p>
+<p>space 纵横切换</p>
+<h3 id="14-多层板层叠设置"><a href="#14-多层板层叠设置" class="headerlink" title="14. 多层板层叠设置"></a>14. 多层板层叠设置</h3><p>d-k</p>
+<p>core-&gt;中间层两边都是铜箔</p>
+<p>prepreg-&gt;两层没有铜箔</p>
+<p>plane-&gt;负极片-&gt;铜覆盖所有，画线去铜</p>
+<p>signal-&gt;正极片</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/markdown/tags/altium-designer/" rel="tag"># Altium Designer</a>
+              <a href="/markdown/tags/%E5%8E%9F%E7%90%86%E5%9B%BE/" rel="tag"># 原理图</a>
+              <a href="/markdown/tags/pcb/" rel="tag"># PCB</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/markdown/embedded/stm32-clion-development/" rel="prev" title="STM32 与 CLion 开发实践">
+                  <i class="fa fa-angle-left"></i> STM32 与 CLion 开发实践
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/markdown/tools/word-formatting-notes/" rel="next" title="Word 中文论文排版与公式行距设置">
+                  Word 中文论文排版与公式行距设置 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2025 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">ZY</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/zycrwa/markdown" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>
