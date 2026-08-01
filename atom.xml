@@ -35,21 +35,21 @@
     <author>
       <name>ZY</name>
     </author>
-    <category term="���ʹ" scheme="https://zycrwa.github.io/markdown/categories/%EF%BF%BD%EF%BF%BD%EF%BF%BD%CD%B4%EE%BD%A8/"/>
+    <category term="博客搭建" scheme="https://zycrwa.github.io/markdown/categories/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/"/>
     <category term="Hexo" scheme="https://zycrwa.github.io/markdown/tags/hexo/"/>
     <category term="GitHub Pages" scheme="https://zycrwa.github.io/markdown/tags/github-pages/"/>
     <content>
-      <![CDATA[<p>������ͨ�� Hexo ������һƪ��ϰ���¡�</p><h2 id="����ԭ��������"><a href="#����ԭ��������" class="headerlink" title="����ԭ��������"></a>����ԭ��������</h2><p>��ƪ���µ� Markdown ԭ�屣���ڣ�</p><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source/_posts/hexo-publishing-practice.md</span><br></pre></td></tr></table></figure><p>Hexo ֻ��ȡ <code>source/_posts/</code> �е����£���Ŀ¼ԭ�е� <code>docs/</code> �����ڵ�ǰ���͵�������Դ��</p><h2 id="����ʱ������ʲo"><a href="#����ʱ������ʲo" class="headerlink" title="����ʱ������ʲô"></a>����ʱ������ʲô</h2><ol><li>Hexo ��ȡ Markdown ԭ�塣</li><li>Hexo ������������ HTML��CSS �Ⱦ�̬�ļ���</li><li>���ɽ����ʱ������ <code>public/</code>��</li><li>���𹤾߰� <code>public/</code> ���͵� GitHub �� <code>gh-pages</code> ��֧��</li><li>GitHub Pages �� <code>gh-pages</code> �е���ҳ������������</li></ol><p>��˵������ƽʱֻ��Ҫά�� Markdown ԭ�壬����Ҫ�ֹ���д���ɺ�� HTML��</p>]]>
+      <![CDATA[<p>这是我通过 Hexo 发布的一篇练习文章。</p><h2 id="文章原稿在哪里"><a href="#文章原稿在哪里" class="headerlink" title="文章原稿在哪里"></a>文章原稿在哪里</h2><p>这篇文章的 Markdown 原稿保存在：</p><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source/_posts/hexo-publishing-practice.md</span><br></pre></td></tr></table></figure><p>Hexo 只读取 <code>source/_posts/</code> 中的文章，根目录原有的 <code>docs/</code> 不属于当前博客的文章来源。</p><h2 id="发布时发生了什么"><a href="#发布时发生了什么" class="headerlink" title="发布时发生了什么"></a>发布时发生了什么</h2><ol><li>Hexo 读取 Markdown 原稿。</li><li>Hexo 根据主题生成 HTML、CSS 等静态文件。</li><li>生成结果暂时保存在 <code>public/</code>。</li><li>部署工具把 <code>public/</code> 推送到 GitHub 的 <code>gh-pages</code> 分支。</li><li>GitHub Pages 将 <code>gh-pages</code> 中的网页发布到公网。</li></ol><p>这说明我们平时只需要维护 Markdown 原稿，不需要手工编写生成后的 HTML。</p>]]>
     </content>
     <id>https://zycrwa.github.io/markdown/2026/08/01/zy/</id>
     <link href="https://zycrwa.github.io/markdown/2026/08/01/zy/"/>
     <published>2026-08-01T14:07:22.000Z</published>
     <summary>
-      <![CDATA[<p>������ͨ�� Hexo ������һƪ��ϰ���¡�</p>
-<h2 id="����ԭ��������"><a href="#����ԭ��������" class="headerlink" title="����ԭ��������"></a>����ԭ���]]>
+      <![CDATA[<p>这是我通过 Hexo 发布的一篇练习文章。</p>
+<h2 id="文章原稿在哪里"><a href="#文章原稿在哪里" class="headerlink" title="文章原稿在哪里"></a>文章原稿在哪里</h2><p>这篇文章的 Markdown 原稿保存在：]]>
     </summary>
-    <title>�ҵĵ�һƪ Hexo ������ϰ</title>
-    <updated>2026-08-01T14:15:30.113Z</updated>
+    <title>我的第一篇 Hexo 发布练习</title>
+    <updated>2026-08-01T14:20:31.140Z</updated>
   </entry>
   <entry>
     <author>
