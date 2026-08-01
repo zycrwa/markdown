@@ -1,31 +1,31 @@
 ---
-title: �ҵĵ�һƪ Hexo ������ϰ
+title: 我的第一篇 Hexo 发布练习
 date: 2026-08-01 22:07:22
 categories:
-  - ���ʹ
+  - 博客搭建
 tags:
   - Hexo
   - GitHub Pages
 ---
 
-������ͨ�� Hexo ������һƪ��ϰ���¡�
+这是我通过 Hexo 发布的一篇练习文章。
 
-## ����ԭ��������
+## 文章原稿在哪里
 
-��ƪ���µ� Markdown ԭ�屣���ڣ�
+这篇文章的 Markdown 原稿保存在：
 
 ```text
 source/_posts/hexo-publishing-practice.md
 ```
 
-Hexo ֻ��ȡ `source/_posts/` �е����£���Ŀ¼ԭ�е� `docs/` �����ڵ�ǰ���͵�������Դ��
+Hexo 只读取 `source/_posts/` 中的文章，根目录原有的 `docs/` 不属于当前博客的文章来源。
 
-## ����ʱ������ʲô
+## 发布时发生了什么
 
-1. Hexo ��ȡ Markdown ԭ�塣
-2. Hexo ������������ HTML��CSS �Ⱦ�̬�ļ���
-3. ���ɽ����ʱ������ `public/`��
-4. ���𹤾߰� `public/` ���͵� GitHub �� `gh-pages` ��֧��
-5. GitHub Pages �� `gh-pages` �е���ҳ������������
+1. Hexo 读取 Markdown 原稿。
+2. Hexo 根据主题生成 HTML、CSS 等静态文件。
+3. 生成结果暂时保存在 `public/`。
+4. 部署工具把 `public/` 推送到 GitHub 的 `gh-pages` 分支。
+5. GitHub Pages 将 `gh-pages` 中的网页发布到公网。
 
-��˵������ƽʱֻ��Ҫά�� Markdown ԭ�壬����Ҫ�ֹ���д���ɺ�� HTML��
+这说明我们平时只需要维护 Markdown 原稿，不需要手工编写生成后的 HTML。
