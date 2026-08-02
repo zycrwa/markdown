@@ -1,7 +1,8 @@
 ---
 title: "永磁同步电机谐波与六相矢量空间分析"
 date: 2026-08-01 22:13:00
-description: "推导三相空间谐波、六相时间谐波、Clarke 变换与矢量空间解耦模型。"
+updated: 2026-08-01 22:13:00
+description: "覆盖三相空间谐波、六相时间谐波与 VSD 模型；不重复三相 PMSM 基础控制和双三相 SVPWM 实现。"
 permalink: motor-control/pmsm-harmonic-analysis/
 categories:
   - 电机控制
@@ -11,6 +12,17 @@ tags:
   - 六相电机
   - Clarke 变换
   - VSD
+aliases:
+  - PMSM 谐波分析
+  - 六相电机 VSD
+  - 矢量空间解耦
+related_posts:
+  - dual-three-phase-pmsm
+  - three-phase-pmsm
+  - simulink-motor-simulation
+source_docs:
+  - "archive/original-posts/永磁同步电机谐波分析.md"
+review_status: unverified
 toc: true
 mathjax: true
 ---

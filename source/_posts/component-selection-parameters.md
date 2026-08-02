@@ -1,7 +1,8 @@
 ---
 title: "常用元器件关键参数与选型检查表"
 date: 2026-08-01 22:01:00
-description: "汇总 PPTC 自恢复保险丝和增强型 NMOSFET 的关键参数与工程选型约束。"
+updated: 2026-08-01 22:01:00
+description: "覆盖 PPTC 与增强型 NMOSFET 的工程选型；器件原理、电源保护和 PCB 应用分别由关联文章维护。"
 permalink: electronics/component-selection-parameters/
 categories:
   - 电子基础
@@ -9,6 +10,18 @@ tags:
   - 元器件选型
   - PPTC
   - MOSFET
+aliases:
+  - 器件选型
+  - PPTC 选型
+  - NMOSFET 选型
+related_posts:
+  - semiconductor-basics
+  - motor-drive-power-supply
+  - motor-drive-pcb-layout
+  - altium-designer-notes
+source_docs:
+  - "archive/original-posts/元器件关键参数.md"
+review_status: unverified
 toc: true
 mathjax: true
 ---

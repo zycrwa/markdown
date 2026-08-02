@@ -2,12 +2,30 @@
 
 const fs = require('node:fs');
 const path = require('node:path');
+const frontMatter = require('hexo-front-matter');
+const { INDEX_PATH, buildIndex } = require('./build-knowledge-index');
 
 const ROOT = path.resolve(__dirname, '..');
 const POSTS_DIR = path.join(ROOT, 'source', '_posts');
 const POST_IMAGES_DIR = path.join(ROOT, 'source', 'images', 'posts');
+const ARCHIVE_DIR = path.join(ROOT, 'archive');
 const SITE_IMAGE_ROOT = '/images/';
-const REQUIRED_FIELDS = ['title', 'date', 'description', 'permalink', 'categories', 'tags', 'toc'];
+const REQUIRED_FIELDS = [
+  'title',
+  'date',
+  'updated',
+  'description',
+  'permalink',
+  'categories',
+  'tags',
+  'aliases',
+  'related_posts',
+  'source_docs',
+  'review_status',
+  'toc'
+];
+const ARRAY_FIELDS = ['categories', 'tags', 'aliases', 'related_posts', 'source_docs'];
+const REVIEW_STATUSES = new Set(['unverified', 'partially-verified', 'human-verified']);
 
 const errors = [];
 const warnings = [];
@@ -25,44 +43,105 @@ function walkFiles(directory) {
   });
 }
 
-function parseFrontMatter(file, lines) {
+function uniqueStrings(file, field, value) {
+  if (!Array.isArray(value)) {
+    report(errors, file, 1, `${field} 必须是 YAML 数组`);
+    return [];
+  }
+
+  const normalized = value.filter(item => typeof item === 'string' && item.trim()).map(item => item.trim());
+  if (normalized.length !== value.length) report(errors, file, 1, `${field} 只能包含非空字符串`);
+  if (new Set(normalized).size !== normalized.length) report(errors, file, 1, `${field} 包含重复项`);
+  return normalized;
+}
+
+function parsePost(file, content) {
+  const cleanContent = content.replace(/^\uFEFF/, '');
+  const lines = cleanContent.split(/\r?\n/);
   if (lines[0] !== '---') {
     report(errors, file, 1, '缺少 Front Matter 起始标记');
-    return { end: 0, values: new Map() };
+    return { data: {}, end: 0, lines };
   }
 
   const end = lines.indexOf('---', 1);
   if (end === -1) {
     report(errors, file, 1, 'Front Matter 没有结束标记');
-    return { end: 0, values: new Map() };
+    return { data: {}, end: 0, lines };
   }
 
-  const values = new Map();
+  const presentFields = new Set();
   for (let index = 1; index < end; index += 1) {
-    const match = lines[index].match(/^([a-z_]+):(?:\s*(.*))?$/i);
-    if (match) values.set(match[1], match[2] || '');
+    const match = lines[index].match(/^([a-z_]+):(?:\s|$)/i);
+    if (match) presentFields.add(match[1]);
   }
-
   for (const field of REQUIRED_FIELDS) {
-    if (!values.has(field)) report(errors, file, 1, `Front Matter 缺少 ${field}`);
+    if (!presentFields.has(field)) report(errors, file, 1, `Front Matter 缺少 ${field}`);
   }
 
-  return { end, values };
+  try {
+    return { data: frontMatter.parse(cleanContent), end, lines };
+  } catch (error) {
+    report(errors, file, 1, `Front Matter YAML 无法解析：${error.message}`);
+    return { data: {}, end, lines };
+  }
 }
 
-function checkMarkdown(file, content, permalinks) {
-  const lines = content.replace(/^\uFEFF/, '').split(/\r?\n/);
-  const { end, values } = parseFrontMatter(file, lines);
-  const permalink = values.get('permalink');
+function checkMetadata(file, id, data, permalinks) {
+  for (const field of ['title', 'description', 'permalink', 'review_status']) {
+    if (typeof data[field] !== 'string' || !data[field].trim()) {
+      report(errors, file, 1, `${field} 必须是非空字符串`);
+    }
+  }
+  if (typeof data.description === 'string' && data.description.trim().length < 20) {
+    report(errors, file, 1, 'description 应说明文章覆盖范围，不能少于 20 个字符');
+  }
 
-  if (permalink) {
-    if (permalinks.has(permalink)) {
-      report(errors, file, 1, `permalink 与 ${permalinks.get(permalink)} 重复：${permalink}`);
+  for (const field of ARRAY_FIELDS) data[field] = uniqueStrings(file, field, data[field]);
+  for (const field of ['categories', 'tags', 'source_docs']) {
+    if (!data[field]?.length) report(errors, file, 1, `${field} 至少需要一项`);
+  }
+
+  if (!(data.date instanceof Date) || Number.isNaN(data.date.getTime())) {
+    report(errors, file, 1, 'date 不是有效日期');
+  }
+  if (!(data.updated instanceof Date) || Number.isNaN(data.updated.getTime())) {
+    report(errors, file, 1, 'updated 不是有效日期');
+  }
+  if (data.date instanceof Date && data.updated instanceof Date && data.updated < data.date) {
+    report(errors, file, 1, 'updated 不能早于 date');
+  }
+
+  if (!REVIEW_STATUSES.has(data.review_status)) {
+    report(errors, file, 1, `review_status 必须是 ${[...REVIEW_STATUSES].join('、')} 之一`);
+  }
+  if (data.toc !== true && data.toc !== false) report(errors, file, 1, 'toc 必须是 true 或 false');
+
+  if (typeof data.permalink === 'string' && data.permalink) {
+    if (!data.permalink.endsWith('/')) report(errors, file, 1, 'permalink 必须以 / 结尾');
+    if (data.permalink.includes('pending/')) report(errors, file, 1, 'permalink 仍是模板占位值');
+    if (permalinks.has(data.permalink)) {
+      report(errors, file, 1, `permalink 与 ${permalinks.get(data.permalink)} 重复：${data.permalink}`);
     } else {
-      permalinks.set(permalink, file);
+      permalinks.set(data.permalink, file);
     }
   }
 
+  for (const sourceDoc of data.source_docs || []) {
+    const sourcePath = path.resolve(ROOT, sourceDoc);
+    const relativeToArchive = path.relative(ARCHIVE_DIR, sourcePath);
+    if (relativeToArchive.startsWith('..') || path.isAbsolute(relativeToArchive)) {
+      report(errors, file, 1, `source_docs 必须指向 archive/：${sourceDoc}`);
+    } else if (!fs.existsSync(sourcePath)) {
+      report(errors, file, 1, `source_docs 文件不存在：${sourceDoc}`);
+    }
+  }
+
+  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(id)) {
+    report(errors, file, 1, '文件名必须是小写英文、数字和连字符组成的稳定文章 ID');
+  }
+}
+
+function checkBody(file, content, data, end, lines) {
   if (!content.includes('<!-- more -->')) {
     report(warnings, file, end + 1, '缺少首页摘要分隔符 <!-- more -->');
   }
@@ -97,7 +176,7 @@ function checkMarkdown(file, content, permalinks) {
   }
   if (fence) report(errors, file, fence.line, '代码围栏没有闭合');
 
-  if (values.get('mathjax') === 'true') {
+  if (data.mathjax === true) {
     let displayMathStart = null;
     let inCodeFence = false;
     for (let index = end + 1; index < lines.length; index += 1) {
@@ -149,20 +228,48 @@ function checkMarkdown(file, content, permalinks) {
   if (content.includes('](/markdown/')) {
     report(errors, file, 1, '站点根路径不应硬编码为 /markdown/，Hexo 会根据 root 自动补齐');
   }
+  if (/<img\b[^>]*\bsrc=["'](?:https?:)?\/\//i.test(content)) {
+    report(errors, file, 1, 'HTML 图片仍引用远程地址');
+  }
+}
 
-  const remoteHtmlImage = /<img\b[^>]*\bsrc=["'](?:https?:)?\/\//i;
-  if (remoteHtmlImage.test(content)) report(errors, file, 1, 'HTML 图片仍引用远程地址');
+function checkKnowledgeIndex() {
+  if (!fs.existsSync(INDEX_PATH)) {
+    errors.push('KNOWLEDGE_INDEX.md:1 缺少知识索引，请运行 npm run knowledge:index');
+    return;
+  }
+  const actual = fs.readFileSync(INDEX_PATH, 'utf8').replace(/\r\n/g, '\n');
+  const expected = buildIndex().replace(/\r\n/g, '\n');
+  if (actual !== expected) {
+    errors.push('KNOWLEDGE_INDEX.md:1 知识索引已过期，请运行 npm run knowledge:index');
+  }
 }
 
 function main() {
   const postFiles = fs.readdirSync(POSTS_DIR)
     .filter(file => file.endsWith('.md'))
-    .sort((a, b) => a.localeCompare(b, 'en'));
+    .sort((left, right) => left.localeCompare(right, 'en'));
   const permalinks = new Map();
+  const posts = new Map();
 
   for (const file of postFiles) {
+    const id = path.basename(file, '.md');
     const content = fs.readFileSync(path.join(POSTS_DIR, file), 'utf8');
-    checkMarkdown(file, content, permalinks);
+    const { data, end, lines } = parsePost(file, content);
+    checkMetadata(file, id, data, permalinks);
+    checkBody(file, content, data, end, lines);
+    posts.set(id, { file, data });
+  }
+
+  for (const [id, post] of posts) {
+    for (const relatedId of post.data.related_posts || []) {
+      if (relatedId === id) report(errors, post.file, 1, 'related_posts 不能引用文章自身');
+      if (!posts.has(relatedId)) {
+        report(errors, post.file, 1, `related_posts 引用了不存在的文章：${relatedId}`);
+      } else if (!(posts.get(relatedId).data.related_posts || []).includes(id)) {
+        report(errors, post.file, 1, `related_posts 必须双向关联：${relatedId} 未引用 ${id}`);
+      }
+    }
   }
 
   const localImages = walkFiles(POST_IMAGES_DIR);
@@ -170,6 +277,8 @@ function main() {
   for (const image of orphanImages) {
     warnings.push(`未被正文引用的图片：${path.relative(ROOT, image).replace(/\\/g, '/')}`);
   }
+
+  checkKnowledgeIndex();
 
   console.log(`检查完成：${postFiles.length} 篇文章，${referencedImages.size} 个图片引用，${localImages.length} 个本地图片文件。`);
   if (warnings.length) {

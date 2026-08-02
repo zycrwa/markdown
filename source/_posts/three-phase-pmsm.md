@@ -1,7 +1,8 @@
 ---
 title: "三相永磁同步电机建模与控制"
 date: 2026-08-01 22:11:00
-description: "系统整理三相 PMSM 数学模型、SVPWM、电流环和经典双闭环控制。"
+updated: 2026-08-01 22:11:00
+description: "覆盖三相 PMSM 模型、坐标变换、SVPWM 与电流环；速度环整定、参数测量和六相分析由独立文章维护。"
 permalink: motor-control/three-phase-pmsm/
 categories:
   - 电机控制
@@ -10,6 +11,21 @@ tags:
   - 数学建模
   - SVPWM
   - 电流环
+aliases:
+  - 三相 PMSM
+  - PMSM FOC
+  - 永磁同步电机建模
+related_posts:
+  - dual-three-phase-pmsm
+  - pmsm-control-basics
+  - pmsm-harmonic-analysis
+  - pmsm-parameter-measurement
+  - pmsm-speed-loop-pi-tuning
+  - dengfoc-control-code
+  - simulink-motor-simulation
+source_docs:
+  - "archive/original-posts/三相永磁同步电机.md"
+review_status: unverified
 toc: true
 mathjax: true
 ---

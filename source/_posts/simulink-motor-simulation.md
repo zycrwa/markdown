@@ -1,7 +1,8 @@
 ---
 title: "Simulink 电机控制仿真常用模块与建议"
 date: 2026-08-01 22:16:00
-description: "记录 Simulink 电机控制仿真的常用模块、建模建议和无感仿真入口。"
+updated: 2026-08-01 22:16:00
+description: "覆盖 Simulink 电机控制模块、建模建议与无感仿真入口；电机和谐波理论由关联文章维护。"
 permalink: simulation/simulink-motor-simulation/
 categories:
   - 仿真工具
@@ -9,6 +10,17 @@ tags:
   - Simulink
   - 电机仿真
   - 无感控制
+aliases:
+  - 电机 Simulink 仿真
+  - PMSM 仿真
+  - 无感控制仿真
+related_posts:
+  - three-phase-pmsm
+  - pmsm-harmonic-analysis
+  - pmsm-parameter-measurement
+source_docs:
+  - "archive/original-posts/simulink仿真.md"
+review_status: unverified
 toc: true
 ---
 

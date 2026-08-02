@@ -1,7 +1,8 @@
 ---
 title: "嵌入式通信协议：UART、I2C、SPI 与 CAN"
 date: 2026-08-01 22:03:00
-description: "对比 UART、I2C、SPI 和 CAN 的信号、帧格式、时序与工程注意事项。"
+updated: 2026-08-01 22:03:00
+description: "覆盖 UART、I2C、SPI 与 CAN 的协议原理和工程约束；STM32 代码实现由开发实践文章维护。"
 permalink: embedded/communication-protocols/
 categories:
   - 嵌入式开发
@@ -10,6 +11,15 @@ tags:
   - I2C
   - SPI
   - CAN
+aliases:
+  - 串口与总线协议
+  - UART I2C SPI CAN
+related_posts:
+  - embedded-system-basics
+  - stm32-clion-development
+source_docs:
+  - "archive/original-posts/嵌入式.md"
+review_status: unverified
 toc: true
 ---
 

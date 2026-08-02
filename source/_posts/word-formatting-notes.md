@@ -1,7 +1,8 @@
 ---
 title: "Word 中文论文排版与公式行距设置"
 date: 2026-08-01 22:06:00
-description: "记录 Word 中文论文的段落、换行、题注和公式排版设置。"
+updated: 2026-08-01 22:06:00
+description: "覆盖 Word 中文论文中的段落、字体、题注与公式排版，不涉及论文内容写作和引用管理。"
 permalink: tools/word-formatting-notes/
 categories:
   - 开发工具
@@ -9,6 +10,13 @@ tags:
   - Word
   - 论文排版
   - 公式
+aliases:
+  - Word 公式排版
+  - 中文论文格式
+related_posts: []
+source_docs:
+  - "archive/original-posts/word使用.md"
+review_status: unverified
 toc: true
 ---
 

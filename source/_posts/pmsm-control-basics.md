@@ -1,7 +1,8 @@
 ---
 title: "PMSM 控制基础：一阶滞后、DOB 与低通滤波器"
 date: 2026-08-01 22:10:00
-description: "从一阶滞后环节出发，整理扰动观测器和低通滤波器的离散实现。"
+updated: 2026-08-01 22:10:00
+description: "覆盖一阶滞后、扰动观测器和低通离散化；不重复 PMSM 完整模型与具体速度环参数整定。"
 permalink: motor-control/pmsm-control-basics/
 categories:
   - 电机控制
@@ -10,6 +11,17 @@ tags:
   - DOB
   - 低通滤波器
   - 离散化
+aliases:
+  - PMSM 自动控制原理
+  - 扰动观测器
+  - 一阶低通滤波器
+related_posts:
+  - analog-filter-design
+  - three-phase-pmsm
+  - pmsm-speed-loop-pi-tuning
+source_docs:
+  - "archive/original-posts/pmsm自动控制原理.md"
+review_status: unverified
 toc: true
 mathjax: true
 ---

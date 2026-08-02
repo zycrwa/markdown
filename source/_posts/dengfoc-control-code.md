@@ -1,7 +1,8 @@
 ---
 title: "DengFOC 常用控制代码与三环结构"
 date: 2026-08-01 22:17:00
-description: "整理 DengFOC 坐标变换、开闭环位置控制、速度环和位置速度电流三环代码。"
+updated: 2026-08-01 22:17:00
+description: "覆盖 DengFOC 坐标变换与三环代码实现；PMSM 理论模型和 PI 参数推导由关联文章维护。"
 permalink: motor-control/dengfoc-control-code/
 categories:
   - 电机控制
@@ -11,6 +12,18 @@ tags:
   - 位置环
   - 速度环
   - 电流环
+aliases:
+  - DengFOC
+  - FOC 三环控制
+  - 位置速度电流三环
+related_posts:
+  - three-phase-pmsm
+  - pmsm-speed-loop-pi-tuning
+  - stm32-clion-development
+  - pmsm-parameter-measurement
+source_docs:
+  - "archive/original-posts/dengfoc学习笔记-常用foc代码.md"
+review_status: unverified
 toc: true
 ---
 

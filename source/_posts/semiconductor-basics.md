@@ -1,7 +1,8 @@
 ---
 title: "半导体基础：PN 结与 MOSFET"
 date: 2026-08-01 22:00:00
-description: "梳理 PN 结的形成、单向导电性，以及增强型 MOSFET 的工作区、关键参数和寄生电容。"
+updated: 2026-08-01 22:00:00
+description: "覆盖 PN 结与增强型 MOSFET 的工作原理；具体器件选型、电源应用和 PCB 布局由关联文章维护。"
 permalink: electronics/semiconductor-basics/
 categories:
   - 电子基础
@@ -9,6 +10,17 @@ tags:
   - PN 结
   - MOSFET
   - 半导体
+aliases:
+  - PN 结
+  - MOSFET 基础
+  - 功率半导体基础
+related_posts:
+  - component-selection-parameters
+  - motor-drive-power-supply
+  - motor-drive-pcb-layout
+source_docs:
+  - "archive/original-posts/基础元器件.md"
+review_status: unverified
 toc: true
 mathjax: true
 ---

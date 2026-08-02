@@ -1,7 +1,8 @@
 ---
 title: "STM32 与 CLion 开发实践"
 date: 2026-08-01 22:04:00
-description: "记录 STM32 在 CLion 和 CMake 环境下的 GPIO、I2C、SPI、UART 与 SVPWM 验证代码。"
+updated: 2026-08-01 22:04:00
+description: "覆盖 STM32 的 CLion/CMake 配置与外设代码；通信协议原理和 FOC 理论由关联文章维护。"
 permalink: embedded/stm32-clion-development/
 categories:
   - 嵌入式开发
@@ -10,6 +11,17 @@ tags:
   - CLion
   - CMake
   - HAL
+aliases:
+  - STM32 CLion
+  - STM32 CMake
+  - STM32 HAL 外设
+related_posts:
+  - embedded-system-basics
+  - embedded-communication-protocols
+  - dengfoc-control-code
+source_docs:
+  - "archive/original-posts/STM32_CLION.md"
+review_status: unverified
 toc: true
 ---
 

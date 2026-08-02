@@ -1,7 +1,8 @@
 ---
 title: "电机驱动电源与保护器件设计笔记"
 date: 2026-08-01 22:08:00
-description: "整理 MAX6495、LM5069、LM5010、LM5005、TPS26213 和 TPS26600 的设计要点。"
+updated: 2026-08-01 22:08:00
+description: "覆盖电机驱动中的过压、热插拔、Buck 与电子保险丝设计；PCB 布局和半导体原理由关联文章维护。"
 permalink: hardware/motor-drive-power-supply/
 categories:
   - 硬件设计
@@ -10,6 +11,18 @@ tags:
   - 过压保护
   - 热插拔
   - Buck
+aliases:
+  - 电机驱动电源
+  - 热插拔与电子保险丝
+  - Buck 电源设计
+related_posts:
+  - component-selection-parameters
+  - embedded-system-basics
+  - motor-drive-pcb-layout
+  - semiconductor-basics
+source_docs:
+  - "archive/original-posts/电机电源.md"
+review_status: unverified
 toc: true
 mathjax: true
 ---

@@ -1,7 +1,8 @@
 ---
 title: "双三相永磁同步电机 SVPWM"
 date: 2026-08-01 22:12:00
-description: "整理双三相电压源逆变器的空间矢量关系、两矢量 SVPWM 和幅值分析。"
+updated: 2026-08-01 22:12:00
+description: "覆盖双三相逆变器空间矢量与两矢量 SVPWM；谐波和 VSD 推导由六相矢量空间文章维护。"
 permalink: motor-control/dual-three-phase-pmsm/
 categories:
   - 电机控制
@@ -9,6 +10,15 @@ tags:
   - 双三相 PMSM
   - SVPWM
   - 六相逆变器
+aliases:
+  - 双三相 PMSM
+  - 六相逆变器 SVPWM
+related_posts:
+  - three-phase-pmsm
+  - pmsm-harmonic-analysis
+source_docs:
+  - "archive/original-posts/双三相永磁同步电机.md"
+review_status: unverified
 toc: true
 mathjax: true
 ---

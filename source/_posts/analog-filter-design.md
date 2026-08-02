@@ -1,7 +1,8 @@
 ---
 title: "模拟滤波器设计：参数、Sallen-Key 与 MFB"
 date: 2026-08-01 22:07:00
-description: "整理模拟滤波器指标、主流响应类型，以及 Sallen-Key 和 MFB 有源滤波器设计。"
+updated: 2026-08-01 22:07:00
+description: "覆盖模拟滤波器指标、Sallen-Key 与 MFB 设计；控制算法中的低通离散化由 PMSM 控制基础文章维护。"
 permalink: hardware/analog-filter-design/
 categories:
   - 硬件设计
@@ -10,6 +11,16 @@ tags:
   - Sallen-Key
   - MFB
   - 运算放大器
+aliases:
+  - 有源滤波器
+  - Sallen-Key 滤波器
+  - MFB 滤波器
+related_posts:
+  - pmsm-control-basics
+  - motor-drive-pcb-layout
+source_docs:
+  - "archive/original-posts/滤波器设计.md"
+review_status: unverified
 toc: true
 ---
 

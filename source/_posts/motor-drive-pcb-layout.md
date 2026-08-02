@@ -1,7 +1,8 @@
 ---
 title: "电机驱动 PCB 布局与布线要点"
 date: 2026-08-01 22:09:00
-description: "总结电机驱动 PCB 的接地、散热、过孔、MOSFET 回路和电流采样布局。"
+updated: 2026-08-01 22:09:00
+description: "覆盖电机驱动 PCB 的接地、散热、功率回路和采样布局；器件原理与电源保护由关联文章维护。"
 permalink: hardware/motor-drive-pcb-layout/
 categories:
   - 硬件设计
@@ -11,6 +12,18 @@ tags:
   - 接地
   - 热设计
   - 电流采样
+aliases:
+  - 电机驱动板布局
+  - 功率 PCB 布线
+related_posts:
+  - altium-designer-notes
+  - analog-filter-design
+  - component-selection-parameters
+  - motor-drive-power-supply
+  - semiconductor-basics
+source_docs:
+  - "archive/original-posts/电机驱动PCB-翻译总结.md"
+review_status: unverified
 toc: true
 ---
 

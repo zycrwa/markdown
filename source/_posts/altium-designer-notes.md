@@ -1,7 +1,8 @@
 ---
 title: "Altium Designer 原理图与 PCB 使用笔记"
 date: 2026-08-01 22:05:00
-description: "整理 Altium Designer 原理图库、原理图和 PCB 编辑中的常用规则与快捷操作。"
+updated: 2026-08-01 22:05:00
+description: "覆盖 Altium Designer 原理图库、原理图和 PCB 编辑操作；电机功率板布局规范由独立文章维护。"
 permalink: tools/altium-designer-notes/
 categories:
   - 开发工具
@@ -9,6 +10,16 @@ tags:
   - Altium Designer
   - 原理图
   - PCB
+aliases:
+  - AD
+  - Altium
+  - AD 原理图与 PCB
+related_posts:
+  - motor-drive-pcb-layout
+  - component-selection-parameters
+source_docs:
+  - "archive/original-posts/AD使用.md"
+review_status: unverified
 toc: true
 ---
 
