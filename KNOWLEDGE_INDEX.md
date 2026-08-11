@@ -193,11 +193,11 @@ AI 处理新资料时，应先在本索引中按标题、别名、标签和范�
 
 - ID：`three-phase-pmsm`
 - 文件：`source/_posts/three-phase-pmsm.md`
-- 范围：覆盖三相 PMSM 模型、坐标变换、SVPWM 与电流环；速度环整定、参数测量和六相分析由独立文章维护。
-- 别名：三相 PMSM、PMSM FOC、永磁同步电机建模
-- 标签：PMSM、数学建模、SVPWM、电流环
+- 范围：面向建模、仿真与分析，整理三相 PMSM 的建模假设、abc/αβ/dq 方程、可直接实现的 Simulink 状态模型、SPMSM 简化、SVPWM 与电流环；速度环、参数测量和谐波分析由关联文章维护。
+- 别名：三相 PMSM、PMSM FOC、永磁同步电机建模、PMSM 数学模型、PMSM Simulink 模型
+- 标签：PMSM、数学建模、状态空间、Simulink、SVPWM、电流环
 - 关联文章：`dual-three-phase-pmsm`、`pmsm-control-basics`、`pmsm-harmonic-analysis`、`pmsm-parameter-measurement`、`pmsm-speed-loop-pi-tuning`、`dengfoc-control-code`、`simulink-motor-simulation`
-- 原稿：`archive/original-posts/三相永磁同步电机.md`
+- 原稿：`archive/original-posts/三相永磁同步电机.md`、`archive/incoming/2026-08-10/pmsm_mathematical_model.md`
 
 ### Word 中文论文排版与公式行距设置
 

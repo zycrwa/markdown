@@ -1,20 +1,24 @@
 ---
 title: "三相永磁同步电机建模与控制"
 date: 2026-08-01 22:11:00
-updated: 2026-08-01 22:11:00
-description: "覆盖三相 PMSM 模型、坐标变换、SVPWM 与电流环；速度环整定、参数测量和六相分析由独立文章维护。"
+updated: 2026-08-11 23:26:51
+description: "面向建模、仿真与分析，整理三相 PMSM 的建模假设、abc/αβ/dq 方程、可直接实现的 Simulink 状态模型、SPMSM 简化、SVPWM 与电流环；速度环、参数测量和谐波分析由关联文章维护。"
 permalink: motor-control/three-phase-pmsm/
 categories:
   - 电机控制
 tags:
   - PMSM
   - 数学建模
+  - 状态空间
+  - Simulink
   - SVPWM
   - 电流环
 aliases:
   - 三相 PMSM
   - PMSM FOC
   - 永磁同步电机建模
+  - PMSM 数学模型
+  - PMSM Simulink 模型
 related_posts:
   - dual-three-phase-pmsm
   - pmsm-control-basics
@@ -25,812 +29,447 @@ related_posts:
   - simulink-motor-simulation
 source_docs:
   - "archive/original-posts/三相永磁同步电机.md"
+  - "archive/incoming/2026-08-10/pmsm_mathematical_model.md"
 review_status: unverified
 toc: true
 mathjax: true
 ---
 
-本文以三相永磁同步电机为对象，从机械方程和三相静止坐标模型出发，推导坐标变换、SVPWM 和电流环设计，并把转速环与参数辨识拆分为独立文章以避免重复。
+本文主线是三相电压输入、Clarke/Park 变换、旋转坐标系下的电气方程以及机械方程；随后给出可以直接拆成 Simulink 积分器的状态方程，并说明它与 SVPWM、电流环之间的接口。
 
 <!-- more -->
 
-## 一、永磁同步电机数学建模
-### 一、视频课程中的推导形式
-![three-phase-pmsm 插图 1](/images/posts/three-phase-pmsm/001-5740e6f2f0.png)
+## 一、建模目标、假设与符号
 
-![three-phase-pmsm 插图 2](/images/posts/three-phase-pmsm/002-20ce192cde.png)
+### 1.1 模型边界
 
-磁链和电感的关系
+本篇把电机本体作为一个连续时间状态空间对象。输入是电机端相对中性点的三相相电压和负载转矩，输出是相电流、转矩、机械角速度和转子电角度，本文所有 Clarke/Park 公式采用幅值不变约定。
 
-![坐标变换矩阵](/images/posts/three-phase-pmsm/003-4e109a6099.png)
+采用以下假设：
 
-![电压方程坐标变换](/images/posts/three-phase-pmsm/004-9db99f1226.png)
+1. 三相定子绕组对称，基波气隙磁场按正弦分布；
+2. 忽略磁饱和、铁耗和空间谐波；
+3. 永磁体磁链 $\psi_f$ 保持恒定；
+4. 电机为星形连接且无中性线，输入电压是相对于电机浮动中性点的相电压，零序分量忽略，因此 $i_a+i_b+i_c=0$；
+5. $d$ 轴与转子永磁体磁链方向重合，并约定正 $i_q$ 产生正电磁转矩。
 
-![磁链方程](/images/posts/three-phase-pmsm/005-6fe4f1734a.png)
-
-![此处左边的l_d,L_q,L_0实际上是想要放原本的矩阵](/images/posts/three-phase-pmsm/006-7a09d8146c.png)
-
-### 二、论文中的推导形式
-![three-phase-pmsm 插图 7](/images/posts/three-phase-pmsm/007-d5a2b32c6e.webp)
-
-### 1.1 机械分析—运动方程
-$ J\frac{d\omega_m}{dt} = T_e - T_L - B\omega_m $
-
-式中：
-
-+ $\omega_m$：电机的机械角速度
-+ $J$：转动惯量
-+ $ B $：阻尼系数
-+ $ T_L $：负载转矩
-+ $T_e$：电磁转矩
+第 4 条是仿真接线时最容易被忽略的边界：逆变器模型常输出相对直流侧参考点 $O$ 的桥臂极点电压，而极点电压不等于绕组相对浮动中性点 $N$ 的相电压。在理想对称、无零序通路的模型中，共同偏置由中性点位移消去，例如
 
 $$
-\begin{cases}
-\omega_m = \omega_e / P_n \\
-N_r = 60\dfrac{\omega_m}{2\pi} = 30\omega_m / \pi \\
-\theta_e = \displaystyle\int_0^t \omega_e dt
-\end{cases}
+v_{NO}=\frac{v_{aO}+v_{bO}+v_{cO}}{3},
+\qquad
+v_{aN}=v_{aO}-v_{NO},
 $$
 
-式中：
+$b$、$c$ 两相同理。非理想逆变器或存在零序通路时，应按实际拓扑另建中性点和共模模型。
 
-+ $ \omega_e $：电角速度
-+ $ P_n $：极对数
-+ $N_r$：电机转速（ r/min ）
-+ $ \theta_e $：转子电角度
+### 1.2 符号约定
 
-### 1.2 三相静止坐标系的数学模型
-#### 1.2.1 电压方程
+| 符号 | 含义 | 备注 |
+| --- | --- | --- |
+| $R_s$ | 定子每相电阻 | $\Omega$ |
+| $L_d,L_q$ | $d$、$q$ 轴电感 | H；IPMSM 中通常不相等 |
+| $\psi_f$ | 永磁体磁链 | Wb |
+| $p$ | 极对数 |  |
+| $\omega_m$ | 机械角速度 | rad/s |
+| $\omega_e$ | 电角速度 | $\omega_e=p\omega_m$ |
+| $\theta_e$ | 转子电角度 | rad |
+| $J$ | 转动惯量 | kg·m² |
+| $B$ | 黏性阻尼系数 | N·m·s/rad |
+| $T_L$ | 负载转矩 | 正值表示阻转矩 |
+
+机械转速和机械角速度的换算为
+
+$$
+n_m=\frac{60}{2\pi}\omega_m.
+$$
+
+
+## 二、从三相静止坐标系到 dq 旋转坐标系
+
+### 2.1 三相静止坐标系
+
+三相定子电压方程写成向量形式：
+
+$$
+\boldsymbol{v}_{abc}
+=R_s\boldsymbol{i}_{abc}
++\frac{\mathrm d\boldsymbol{\psi}_{abc}}{\mathrm dt},
+\qquad
+\boldsymbol{v}_{abc}=
+\begin{bmatrix}v_a&v_b&v_c\end{bmatrix}^{\mathsf T}.
+$$
+
+更一般地，三相磁链可写成
+
+$$
+\boldsymbol{\psi}_{abc}
+=\boldsymbol{L}_{abc}(\theta_e)\boldsymbol{i}_{abc}
++\boldsymbol{\psi}_{f,abc}(\theta_e).
+$$
+
+$\boldsymbol{L}_{abc}$ 随位置变化； Clarke/Park 后吸收到常数 $L_d,L_q$ 中。
+
+### 2.2 幅值不变 Clarke 变换
+
+对任意三相量 $x_a,x_b,x_c$（电压、电流或磁链）定义
+
 $$
 \begin{bmatrix}
-u_a \\
-u_b \\
-u_c
+x_\alpha\\
+x_\beta
 \end{bmatrix}
 =
-\begin{bmatrix}
-R_s & 0 & 0 \\
-0 & R_s & 0 \\
-0 & 0 & R_s
-\end{bmatrix}
-\begin{bmatrix}
-i_a \\
-i_b \\
-i_c
-\end{bmatrix}
-+
-\frac{d}{dt}
-\begin{bmatrix}
-\Psi_a \\
-\Psi_b \\
-\Psi_c
-\end{bmatrix}
-$$
-
-式中：
-
-+ $ R_s $：定子绕组的电枢电阻
-+ $ \Psi_a,\Psi_b,\Psi_c $：a、b、c 三相磁链
-+ $ i_a,i_b,i_c $：a、b、c 三相相电流
-
-#### 1.2.2 磁链方程
-$$
-\begin{bmatrix}
-\Psi_a \\
-\Psi_b \\
-\Psi_c
-\end{bmatrix}
-=
-\begin{bmatrix}
-L_{aa} & M_{ab} & M_{ac} \\
-M_{ba} & L_{bb} & M_{bc} \\
-M_{ca} & M_{cb} & L_{cc}
-\end{bmatrix}
-\begin{bmatrix}
-i_a \\
-i_b \\
-i_c
-\end{bmatrix}
-+
-\Psi_f
-\begin{bmatrix}
-\cos(\theta) \\
-\cos(\theta-2\pi/3) \\
-\cos(\theta+2\pi/3)
-\end{bmatrix}
-$$
-
-$$
-\begin{bmatrix}
-\Psi_a \\
-\Psi_b \\
-\Psi_c
-\end{bmatrix}
-=
-\begin{bmatrix}
-L_{aa} & M_{ab} & M_{ac} \\
-M_{ba} & L_{bb} & M_{bc} \\
-M_{ca} & M_{cb} & L_{cc}
-\end{bmatrix}
-\begin{bmatrix}
-i_a \\
-i_b \\
-i_c
-\end{bmatrix}
-+
-\Psi_f
-\begin{bmatrix}
-\cos(\theta) \\
-\cos(\theta-2\pi/3) \\
-\cos(\theta+2\pi/3)
-\end{bmatrix}
-$$
-
-$$
-\begin{cases}
-L_{aa} = L_1 + \frac{1}{2}(L_{AAd} + L_{AAq})+ \frac{1}{2}(L_{AAd}-L_{AAq})\cos(2\theta) \\
-L_{bb} = L_{s0} + L_{s2}\cos\left(2(\theta-\frac{2\pi}{3})\right) \\
-L_{cc} = L_{s0} + L_{s2}\cos\left(2(\theta+\frac{2\pi}{3})\right)\\
-
-M_{ab}=M_{ba}=-[M_{\sigma} + \frac{1}{4}(L_{AAd}+L_{AAq}) +\frac{1}{2} (L_{AAd}-L_{AAq})\cos\left(2(\theta+\frac{\pi}{6})\right) ]\\
-M_{bc}=M_{cb}=-[M_{s0} + M_{s2}\cos2(\theta-\frac{\pi}{2})] \\
-M_{ca}=M_{ac}=-[M_{s0} + M_{s2}\cos2(\theta+\frac{5\pi}{6})]
-\end{cases}
-$$
-
-此处互感的角度：当-30 的时候，Mab 的磁阻最大，当 60 的时候，Mab 的磁阻最小 Mab 最小
-
-$$
-L_q=\frac{3}{2}L_{AAq}\\
-L_d=\frac{3}{2}L_{AAd}
-$$
-
-等幅值变换下的电感变换，忽略了漏感
-
-式中：
-
-+ $ L_{aa},L_{bb},L_{cc} $：各相绕组自感，与转子位置有关
-+ $ M_{ab},M_{bc},M_{ca} $：绕组之间的互感，该互感一定是一个负值
-+ $ \Psi_f $：永磁体磁链
-+ $ \theta $：转子的电角度
-
-L1 : 漏自感，磁感线没有通过转子
-
-L_AAd ：d 轴对准 A 相绕组轴线，由于 d 轴是永磁体， L_AAd 小于 L_AAq
-
-L_AAq ：q 轴 对准 A 相绕组轴线
-
-M_{\sigma}：A、B 两相定子绕组漏互感平均值
-
-+ 注：$ L_{aa} $中$ L_1、L_2 $和$ M_{ab} $不同。[论文参考_永磁同步电机矢量控制分析_龙明贵](https://kns.cnki.net/kcms2/article/abstract?v=VYuoLtjwl8P-o469VFroH7GQMvioLWRnqoIhXpNcJele2FkWEn5qLP4KNcDl259e6Bp5ocFPRg_AJ1AjyuLnXXTqV5bPifsy4R2DshF4EllA-FQkPBFlJ2taaBqwalb_6dV5a27Z25kvhu29GPyXP1IRtyjHuPyilSsPS90hIVM=&uniplatform=NZKPT)
-
-#### 1.2.3 Clarke 变换
-Clarke 变换的作用是将 **abc 三相静止坐标系**下的电压、电流、磁链等物理量，转换到 **αβ 两相静止坐标系**中。在 αβ 坐标系中，虚拟电机有两个相差 90° 的绕组，分别为直轴（α 轴）和交轴（β 轴），其中 α 轴与 abc 坐标系的 a 轴重合。
-
-$$
-\begin{bmatrix}
-u_a \\
-u_b \\
-u_c
-\end{bmatrix}
-= U
-\begin{bmatrix}
-\cos(\omega t) \\
-\cos\left(\omega t-\frac{2\pi}{3}\right) \\
-\cos\left(\omega t+\frac{2\pi}{3}\right)
-\end{bmatrix}
-$$
-
-式中：
-
-+ $ U $：相电压幅值
-+ $ \omega = 2\pi f $：三相交流电压角频率
-+ $ f $：电压频率
-
-$$
-\begin{bmatrix}
-u_\alpha \\
-u_\beta \\
-u_o
-\end{bmatrix}
-= T_{3s/2s}u(abc)
-= \frac{2}{3}
-\begin{bmatrix}
-1 & -1/2 & -1/2 \\
-0 & \sqrt{3}/2 & -\sqrt{3}/2 \\
-\sqrt{3}/2 & \sqrt{3}/2 & \sqrt{3}/2
-\end{bmatrix}
-\begin{bmatrix}
-u_a \\
-u_b \\
-u_c
-\end{bmatrix}
-$$
-
-Clarke 正变换（abc → αβ0）
-
-$$
-\begin{bmatrix}
-i_\alpha \\
-i_\beta \\
-i_o
-\end{bmatrix}
-= T_{3s/2s}i(abc)
-= \frac{2}{3}
-\begin{bmatrix}
-1 & -1/2 & -1/2 \\
-0 & \sqrt{3}/2 & -\sqrt{3}/2 \\
-\sqrt{3}/2 & \sqrt{3}/2 & \sqrt{3}/2
-\end{bmatrix}
-\begin{bmatrix}
-i_a \\
-i_b \\
-i_c
-\end{bmatrix}
-$$
-
- 变换前后 ，幅值不变，总功率不相等。$ P_{\alpha \beta 0}= \frac{2}{3}P_{abc} $
-
-$$
-\begin{bmatrix}
-u_a \\
-u_b \\
-u_c
-\end{bmatrix}
-= T_{2s/3s}u(\alpha\beta)
-= \frac{2}{3}
-\begin{bmatrix}
-1 & 0 \\
--1/2 & \sqrt{3}/2 \\
--1/2 & -\sqrt{3}/2
-\end{bmatrix}
-\begin{bmatrix}
-u_\alpha \\
-u_\beta
-\end{bmatrix}
-$$
-
-Clarke 反变换（αβ → abc）
-
-#### 1.2.4 Park 变换
-
-$$
-\begin{bmatrix}
-f_d \\
-f_q
-\end{bmatrix}
-= T_{2s/2r}f(\alpha\beta)
-= \begin{bmatrix}
-\cos\theta & \sin\theta \\
--\sin\theta & \cos\theta
-\end{bmatrix}
-\begin{bmatrix}
-f_\alpha \\
-f_\beta
-\end{bmatrix}
-$$
-
-$ T_{2s/2r} $
-
-$$
-\begin{bmatrix}
-u_d \\
-u_q
-\end{bmatrix}
-= T_{2s/2r}\left[T_{3s/2s}u(abc)\right]=
 \frac{2}{3}
 \begin{bmatrix}
-\cos\theta & \cos\left(\theta-\frac{2\pi}{3}\right) & \cos\left(\theta+\frac{2\pi}{3}\right) \\
--\sin\theta & -\sin\left(\theta-\frac{2\pi}{3}\right) & -\sin\left(\theta+\frac{2\pi}{3}\right)
+1&-\frac12&-\frac12\\
+0&\frac{\sqrt3}{2}&-\frac{\sqrt3}{2}
 \end{bmatrix}
 \begin{bmatrix}
-u_a \\
-u_b \\
-u_c
-\end{bmatrix}
+x_a\\
+x_b\\
+x_c
+\end{bmatrix}.
 $$
 
-$T_{3s/2r}$ 是 abc 坐标系到 dq 坐标系的复合变换矩阵。
-
-#### 1.2.5 dq 坐标方程
+在无中性线的平衡模型中，零序量为零，反变换为
 
 $$
 \begin{bmatrix}
-u_d \\
-u_q
+x_a\\
+x_b\\
+x_c
 \end{bmatrix}
 =
 \begin{bmatrix}
-R_s & -\omega_e L_q \\
-\omega_e L_d & R_s
+1&0\\
+-\frac12&\frac{\sqrt3}{2}\\
+-\frac12&-\frac{\sqrt3}{2}
 \end{bmatrix}
 \begin{bmatrix}
-i_d \\
-i_q
-\end{bmatrix}
-+
-\frac{d}{dt}
+x_\alpha\\
+x_\beta
+\end{bmatrix}.
+$$
+
+
+
+### 2.3 Park 变换
+
+以转子电角度 $\theta_e$ 为参考，将静止 $\alpha\beta$ 量变到同步旋转坐标系：
+
+$$
 \begin{bmatrix}
-\psi_d \\
-\psi_q
+x_d\\
+x_q
 \end{bmatrix}
-+
+=
 \begin{bmatrix}
-0 \\
-\omega_e \psi_f
+\cos\theta_e&\sin\theta_e\\
+-\sin\theta_e&\cos\theta_e
 \end{bmatrix}
-$$
-
-$$
-\begin{cases}
-u_d = R_s i_d - \omega_e L_q i_q + L_d \dfrac{di_d}{dt} \\\\
-u_q = R_s i_q + \omega_e L_d i_d + L_q \dfrac{di_q}{dt} + \omega_e \psi_f
-\end{cases}
-$$
-
-式中：
-
-+ $R_s$：定子电阻
-+ $ L_d;L_q $：d、q 轴电感
-+ $ \omega_e $：电角速度
-+ $ \psi_f $：永磁体磁链
-+ $ i_d;i_q $：d、q 轴电流
-+ $ u_d;u_q $：d、q 轴电压
-
-$$
-\begin{cases}
-\psi_d = L_d i_d + \psi_f \\
-\psi_q = L_q i_q
-\end{cases}
-$$
-
-$$
-\begin{cases}
-L_d = \dfrac{3}{2}(L_1 + L_2) \\\\
-L_q = \dfrac{3}{2}(L_1 - L_2)
-\end{cases}
-$$
-
-式中，$ L_1 $表示空间基本气隙磁链产生的电感分量，$ L_2 $表示转子位置依赖磁链产生的电感分量。
-
-$ T_e = \frac{3}{2}n_p\left(\psi_d i_q - \psi_q i_d\right)= \frac{3}{2}P_n\left[\psi_f i_q + (L_d - L_q)i_d i_q\right] $
-
-#### 1.2.6 非正弦三相电流 dq 轴
-
-Clarke 与 Park 变换都是**线性变换**，满足叠加原理。我们可以把非正弦三相电流分解为基波和各次谐波，分别进行变换，再叠加结果，对于任意的信号都可以进行傅里叶分解，距离参考。
-
-假设三相电流包含基波、5 次谐波和 7 次谐波（非正弦的典型情况）：
-
-$$
-\begin{cases}
-i_a = I_1\cos\omega t + I_5\cos5\omega t + I_7\cos7\omega t \\
-i_b = I_1\cos\left(\omega t-\frac{2\pi}{3}\right) + I_5\cos\left(5\omega t-\frac{2\pi}{3}\right) + I_7\cos\left(7\omega t-\frac{2\pi}{3}\right) \\
-i_c = I_1\cos\left(\omega t+\frac{2\pi}{3}\right) + I_5\cos\left(5\omega t+\frac{2\pi}{3}\right) + I_7\cos\left(7\omega t+\frac{2\pi}{3}\right)
-\end{cases}
-$$
-
-$$
-\begin{cases}
-i_\alpha = I_1\cos\omega t + I_5\cos5\omega t + I_7\cos7\omega t \\
-i_\beta = I_1\sin\omega t - I_5\sin5\omega t + I_7\sin7\omega t
-\end{cases}
-$$
-
-Clarke 变换（abc → αβ）
-
-$ T_{2s/2r} = \begin{bmatrix}\cos\theta & \sin\theta \\ -\sin\theta & \cos\theta\end{bmatrix} \quad \theta=\omega t $
-
-Park 变换
-
-将 $ i_\alpha,i_\beta $代入，对每个频率分量单独计算：
-
-+ **基波分量(n=1)**
-$$
-\begin{bmatrix}i_{d1} \\ i_{q1}\end{bmatrix}
-= \begin{bmatrix}\cos\omega t & \sin\omega t \\ -\sin\omega t & \cos\omega t\end{bmatrix}
-\begin{bmatrix}I_1\cos\omega t \\ I_1\sin\omega t\end{bmatrix}
-= \begin{bmatrix}I_1 \\ 0\end{bmatrix}
-$$
- → 基波变换后是直流量
-+ **5 次谐波(n=5)**
-$$
-\begin{bmatrix}i_{d5} \\ i_{q5}\end{bmatrix}
-= \begin{bmatrix}\cos\omega t & \sin\omega t \\ -\sin\omega t & \cos\omega t\end{bmatrix}
-\begin{bmatrix}I_5\cos5\omega t \\ -I_5\sin5\omega t\end{bmatrix}
-= \begin{bmatrix}I_5\cos6\omega t \\ -I_5\sin6\omega t\end{bmatrix}
-$$
-→ 5 次谐波变换后是6 倍基频的交流量
-+ **7 次谐波（(n=7)）**
-$$
-\begin{bmatrix}i_{d7} \\ i_{q7}\end{bmatrix}
-= \begin{bmatrix}\cos\omega t & \sin\omega t \\ -\sin\omega t & \cos\omega t\end{bmatrix}
-\begin{bmatrix}I_7\cos7\omega t \\ I_7\sin7\omega t\end{bmatrix}
-= \begin{bmatrix}I_7\cos6\omega t \\ I_7\sin6\omega t\end{bmatrix}
-$$
-→ 7 次谐波变换后也是**6 倍基频的交流量**。
-
-当三相电流是非正弦时，dq 轴电流不再是纯直流，而是：
-
-+ **直流分量**：由基波电流产生，是我们控制的目标分量
-+ **交流波动分量**：由各次谐波电流产生
-
-## 二、SVPWM
-### 2.1 物理基础
-![three-phase-pmsm 插图 8](/images/posts/three-phase-pmsm/008-101a794e41.png)
-
-![three-phase-pmsm 插图 9](/images/posts/three-phase-pmsm/009-bf26f1bc10.png)
-
-![three-phase-pmsm 插图 10](/images/posts/three-phase-pmsm/010-6b156e0e21.png)
-
-7个基本电压矢量$ V_0, V_1, V_2, V_3, V_4, V_5, V_6, V_7 $的计算方式如下：
-
-$$
-\begin{align*}
-V_4 &= \frac{2}{3}\left(\frac{2}{3}V_{dc} - \frac{1}{3}V_{dc}\cdot e{j2\pi/3} - \frac{1}{3}V_{dc}\cdot e{j4\pi/3}\right) = \frac{2}{3}V_{dc} \\
-V_6 &= \frac{2}{3}\left(\frac{1}{3}V_{dc} + \frac{1}{3}V_{dc}\cdot e{j2\pi/3} - \frac{2}{3}V_{dc}\cdot e{j4\pi/3}\right) = \frac{2}{3}V_{dc}e^{j\frac{1}{3}\pi} \\
-V_2 &= \frac{2}{3}\left(-\frac{1}{3}V_{dc} + \frac{2}{3}V_{dc}\cdot e{j2\pi/3} - \frac{1}{3}V_{dc}\cdot e{j4\pi/3}\right) = \frac{2}{3}V_{dc}e^{j\frac{2}{3}\pi} \\
-V_3 &= \frac{2}{3}\left(-\frac{2}{3}V_{dc} + \frac{1}{3}V_{dc}\cdot e{j2\pi/3} + \frac{1}{3}V_{dc}\cdot e{j4\pi/3}\right) = -\frac{2}{3}V_{dc} \\
-V_1 &= \frac{2}{3}\left(-\frac{1}{3}V_{dc} - \frac{1}{3}V_{dc}\cdot e{j2\pi/3} + \frac{2}{3}V_{dc}\cdot e{j4\pi/3}\right) = \frac{2}{3}V_{dc}e^{j\frac{4}{3}\pi} \\
-V_5 &= \frac{2}{3}\left(\frac{1}{3}V_{dc} - \frac{2}{3}V_{dc}\cdot e{j2\pi/3} + \frac{1}{3}V_{dc}\cdot e{j4\pi/3}\right) = \frac{2}{3}V_{dc}e^{j\frac{5}{3}\pi} \\
-V_0 &= V_7 = 0
-\end{align*}
-$$
-
-+ **零矢量**：$ V_0, V_7 $，幅值为0，不参与空间旋转。
-+ **非零矢量**：$ V_1, V_2, V_3, V_4, V_5, V_6 $
-    - 共有6个，幅值均为 $ \frac{2}{3}V_{dc} $
-    - 在空间上彼此间隔 $ \frac{\pi}{3} $
-    - 顶点连接构成一个正六边形,其中内三角形$ \frac{1}{\sqrt{3}}U_{dc} $可以平滑切换，外三角形$ \frac{2}{3}U_{dc} $也可以生成
-
-公式中的系数 $ \frac{2}{3} $是SVPWM的归一化系数**,**$ U_\alpha $和$ U_\beta $和$ U_a,U_b,U_c $幅值相等，如果由 $ V_0, V_1, V_2, V_3, V_4, V_5, V_6, V_7 $合成$ U_\alpha U_\beta $则磁链与$ U_a,U_b,U_c $同幅值相同。
-
-### 2.2 数学推导
-![three-phase-pmsm 插图 11](/images/posts/three-phase-pmsm/011-e0d36c6679.png)
-
-SVPWM 建模
-
-![three-phase-pmsm 插图 12](/images/posts/three-phase-pmsm/012-cb5f6914d4.png)
-
-一区导通顺序
-
-+ 基本电压矢量幅值：$ |\boldsymbol{U}_4| = |\boldsymbol{U}6| = \dfrac{2}{3}U{\text{dc}} $
-+ 目标合成矢量幅值：$ |\boldsymbol{U}{\text{out}}| = U{\text{m}} $
-+ 两个基本矢量 $ \boldsymbol{U}_4 与 \boldsymbol{U}_6 的夹角为 \dfrac{\pi}{3} $
-+ 合成矢量 $ \boldsymbol{U}_{\text{out}} $ 与 $ \boldsymbol{U}_4 $的夹角为 $ \theta $
-+ 采样周期：$ T_{\text{s}} $
-
-![three-phase-pmsm 插图 13](/images/posts/three-phase-pmsm/013-e499dc51b2.png)
-
-$T_{\mathrm{s}} \boldsymbol{U}_{\mathrm{out}} = T_{4} \boldsymbol{U}_{4} + T_{6} \boldsymbol{U}_{6} + T_{0}$
-
-$ T_{4} + T_{6} + T_{0} = T_{\mathrm{s}} $
-
-$$
-\begin{cases}
-\boldsymbol{U}_{1} = \dfrac{T_{4}}{T_{\mathrm{s}}} \boldsymbol{U}_{4} \\\\
-\boldsymbol{U}_{2} = \dfrac{T_{6}}{T_{\mathrm{s}}} \boldsymbol{U}_{6}
-\end{cases}
-$$
-
-$ \frac{|\boldsymbol{U}{\text{out}}|}{\sin\frac{2\pi}{3}} = \frac{|\boldsymbol{U}_1|}{\sin\left(\frac{\pi}{3}-\theta\right)} = \frac{|\boldsymbol{U}_2|}{\sin\theta} $
-
-$ T_4 = \frac{\sqrt{3}U_{\text{m}}}{U_{\text{dc}}} T_{\text{s}} \sin\left(\frac{\pi}{3}-\theta\right) $
-$ T_6 = \frac{\sqrt{3}U_{\text{m}}}{U_{\text{dc}}} T_{\text{s}} \sin\theta $
-
-$ M = \frac{\sqrt{3}U_{\text{m}}}{U_{\text{dc}}} $
-
-### 2.3 Tcm_a,Tcm_b,Tcm_c 的导通时间推导
-
-![three-phase-pmsm 插图 14](/images/posts/three-phase-pmsm/014-501b8ce889.png)
-
-导通时间图形
-
-备注：图中的初始 $\theta$ 为 0，黄色对应 $T_a$，蓝色对应 $T_b$，红色对应 $T_c$。
-
-作用时间：
-
-$$
-\begin{cases}
-T_4 = M T_{\text{s}} \sin\left(\dfrac{\pi}{3}-\theta\right) \\
-T_6 = M T_{\text{s}} \sin\theta \\
-M = \dfrac{\sqrt{3}U_{\text{m}}}{U_{\text{dc}}}
-\end{cases}
-$$
-
-目标表达式：
-
-$$
-\begin{cases}
-T_a = \dfrac{T_{\text{s}} - T_4 - T_6}{4} \\
-T_b = T_a + \dfrac{T_4}{2} \\
-T_c = T_b + \dfrac{T_6}{2}
-\end{cases}
-$$
-
-$T_a = \dfrac{T_{\text{s}} - T_4 - T_6}{4}$
-
-$ T_a = \frac{T_{\text{s}} - M T_{\text{s}} \left[\sin\left(\frac{\pi}{3}-\theta\right) + \sin\theta\right]}{4}= \frac{T_{\text{s}} \left[1 - M \sin\left(\frac{\pi}{3}+\theta\right)\right]}{4} $
-
-$ T_b = \frac{T_{\text{s}} + T_4 - T_6}{4} $
-
-$ T_b = \frac{T_{\text{s}} + M T_{\text{s}} \left[\sin\left(\frac{\pi}{3}-\theta\right) - \sin\theta\right]}{4}= \frac{T_{\text{s}} \left[1 + M\sqrt{3} \sin\left(\frac{\pi}{6}-\theta\right)\right]}{4} $
-
-$ T_c = T_b + \dfrac{T_6}{2}= \frac{T_{\text{s}} + T_4 + T_6}{4} $
-
-$T_c = \frac{T_{\text{s}} + M T_{\text{s}} \left[\sin\left(\frac{\pi}{3}-\theta\right) + \sin\theta\right]}{4}= \frac{T_{\text{s}} \left[1 + M \sin\left(\frac{\pi}{3}+\theta\right)\right]}{4}$
-
-一区最终导通时间公式：
-
-$$
-\large
-\boldsymbol{
-\begin{cases}
-T_a = \dfrac{T_{\text{s}} - T_4 - T_6}{4} \\
-T_b = \dfrac{T_{\text{s}} + T_4 - T_6}{4} \\
-T_c = \dfrac{T_{\text{s}} + T_4 + T_6}{4}
-\end{cases}}
-$$
-
-$$
-\large
-\begin{cases}
-T_a = \frac{T_{\text{s}} \left[1 - M \sin\left(\frac{\pi}{3}+\theta\right)\right]}{4} \\
-T_b = \frac{T_{\text{s}} \left[1 + M\sqrt{3} \sin\left(\frac{\pi}{6}-\theta\right)\right]}{4} \\
-T_c = \frac{T_{\text{s}} \left[1 + M \sin\left(\frac{\pi}{3}+\theta\right)\right]}{4}
-\end{cases}
-$$
-
-### 2.4 SVPWM 算法实现
-![three-phase-pmsm 插图 15](/images/posts/three-phase-pmsm/015-c40ec60a28.png)
-
-$$
-\begin{cases}
-U_{\text{ref1}} = u_\beta \\
-U_{\text{ref2}} = \dfrac{\sqrt{3}}{2}u_\alpha - \dfrac{1}{2}u_\beta \\
-U_{\text{ref3}} = -\dfrac{\sqrt{3}}{2}u_\alpha - \dfrac{1}{2}u_\beta
-\end{cases}
-$$
-
-定义 3 个变量 (A、B、C)，通过分析可以得出：
-
-+ 若 $ U_{\text{ref1}}>0 $，则 $ A=1 $
-+ 若 $ U_{\text{ref2}}>0 $，则 $  B=1 $
-+ 若 $ U_{\text{ref3}}>0 $，则 $ C=1 $
-
-$N=4C+2B+A$
-
-| N | 3 | 1 | 5 | 4 | 6 | 2 |
-| --- | --- | --- | --- | --- | --- | --- |
-| 扇区 | Ⅰ | Ⅱ | Ⅲ | Ⅳ | Ⅴ | Ⅵ |
-
-$$
-\begin{cases}
-u_\alpha = \dfrac{T_4}{T_s} |U_4| + \dfrac{T_6}{T_s} |U_6| \cos \dfrac{\pi}{3} \\
-u_\beta = \dfrac{T_6}{T_s} |U_6| \sin \dfrac{\pi}{3}
-\end{cases}
-$$
-
-$$
-\begin{cases}
-T_4 = \dfrac{\sqrt{3}T_s}{2U_{\text{dc}}} \left(\sqrt{3}u_\alpha - u_\beta\right) \\
-T_6 = \dfrac{\sqrt{3}T_s}{U_{\text{dc}}} u_\beta
-\end{cases}
-$$
-
-$$
-\begin{cases}
-X = \dfrac{\sqrt{3}T_s}{U_{\text{dc}}} u_\beta \\
-Y = \dfrac{\sqrt{3}T_s}{U_{\text{dc}}} \left( \dfrac{\sqrt{3}}{2} u_\alpha + \dfrac{1}{2} u_\beta \right) \\
-Z = \dfrac{\sqrt{3}T_s}{U_{\text{dc}}} \left( -\dfrac{\sqrt{3}}{2} u_\alpha + \dfrac{1}{2} u_\beta \right)
-\end{cases}
-$$
-
-| $ N $ | 1 | 2 | 3 | 4 | 5 | 6 |
-| --- | --- | --- | --- | --- | --- | --- |
-| $ T_4  $ | Z | Y | -Z | -X | X | -Y |
-| $ T_6  $ | Y | -X | X | Z | -Y | -Z |
-| $ T_0(T_7) $ | $ (\boldsymbol{T_0(T_7)=(T_s-T_4-T_6)/2}) $ | | | | | |
-
-如果 (T_4+T_6>T_s)，则需进行过调制处理，令
-
-$$
-\begin{cases}
-T_4 = \dfrac{T_4}{T_4+T_6} T_s \\
-T_6 = \dfrac{T_6}{T_4+T_6} T_s
-\end{cases}
-$$
-
-$$
-\begin{cases}
-T_a = (T_s-T_4-T_6)/4 \\
-T_b = T_a+T_4/2 \\
-T_c = T_b+T_6/2
-\end{cases}
-$$
-
-| $ N $ | 1 | 2 | 3 | 4 | 5 | 6 |
-| --- | --- | --- | --- | --- | --- | --- |
-| $ T_{\text{cm1}} $ | $ T_b $ | $ T_a $ | $ T_a $ | $ T_c $ | $ T_c $ | $ T_b $ |
-| $ T_{\text{cm2}} $ | $ T_a $ | $ T_c $ | $ T_b $ | $ T_b $ | $ T_a $ | $ T_c $ |
-| $ T_{\text{cm3}} $ | $ T_c $ | $ T_b $ | $ T_c $ | $ T_a  $ | $ T_b $ | $ T_a $ |
-
-## 三、PMSM 转速环 PI
-
-转速环的完整假设、参数推导和闭环验证已经整理到独立文章：[PMSM 转速环 PI 参数整定推导](/motor-control/pmsm-speed-loop-pi-tuning/)。本篇不再重复相同推导。
-
-## 四、PMSM 的电流环 PI
-
-$$
-\begin{cases}
-\dfrac{\mathrm{d}}{\mathrm{d}t} i_d = -\dfrac{R}{L_d} i_d + \dfrac{L_q}{L_d} \omega_e i_q + \dfrac{1}{L_d} u_d \\
-\dfrac{\mathrm{d}}{\mathrm{d}t} i_q = -\dfrac{R}{L_q} i_q - \dfrac{1}{L_q} \omega_e \bigl(L_d i_d + \psi_f\bigr) + \dfrac{1}{L_q} u_q
-\end{cases}
-$$
-
-定子电流 $i_d$、$i_q$ 分别在 $q$ 轴和 $d$ 轴方向产生交叉耦合电动势。完全解耦后：
-
-$$
-\begin{cases}
-u_{d0} = u_d + \omega_e L_q i_q = R i_d + L_d \dfrac{\mathrm{d}}{\mathrm{d}t} i_d \\
-u_{q0} = u_q - \omega_e \bigl(L_d i_d + \psi_f\bigr) = R i_q + L_q \dfrac{\mathrm{d}}{\mathrm{d}t} i_q
-\end{cases}
-$$
-$ \boldsymbol{Y}(s) = \boldsymbol{G}(s) \boldsymbol{U}(s) $
-$$
-\boldsymbol{U}(s) = \begin{bmatrix} u_{d0}(s) \\ u_{q0}(s) \end{bmatrix}\quad
-\boldsymbol{Y}(s) = \begin{bmatrix} i_d(s) \\ i_q(s) \end{bmatrix}\quad
-\boldsymbol{G}(s) = \begin{bmatrix} R + s L_d & 0 \\ 0 & R + s L_q \end{bmatrix}^{-1}
-$$
-
-采用常规的PI调节器并结合前馈解耦控制策略，可得到$ d-q $轴的电压为
-
-$$
-\begin{cases}
-v_d* = \left(K_{pd} + \dfrac{K_{id}}{s}\right) \bigl(i_d* - i_d\bigr) - \omega_e L_q i_q \\
-v_q* = \left(K_{pq} + \dfrac{K_{iq}}{s}\right) \bigl(i_q* - i_q\bigr) + \omega_e \bigl(L_d i_d + \psi_f\bigr)
-\end{cases}
-$$
-
-![内膜控制](/images/posts/three-phase-pmsm/017-43a04f7970.png)
-
-其中：$ \boldsymbol{I} $为单位矩阵。
-
-如果内模建模精确，即$ \hat{\boldsymbol{G}}(s)=\boldsymbol{G}(s) $，系统不存在反馈环节，此时系统传递函数为
-
-$ \boldsymbol{G}_c(s) = \boldsymbol{G}(s) \boldsymbol{C}(s) $
-
-因此要保证系统稳定，只有当且仅当$ \boldsymbol{G}(s) $和$ \boldsymbol{C}(s) $稳定。
-
-由于电机的电磁时间常数比机械时间常数小很多，控制系统的电流环可近似看作一阶系统，根据$ \hat{\boldsymbol{G}}(s)=\boldsymbol{G}(s) $，定义：
-
-$ \boldsymbol{C}(s) = \hat{\boldsymbol{G}}^{-1}(s) \boldsymbol{L}(s) = \boldsymbol{G}^{-1}(s) \boldsymbol{L}(s) $
-
-其中：$ \boldsymbol{L}(s)=a\boldsymbol{I}/(s+a) $，$ a $为设计参数。
-
-$$
-\boldsymbol{F}(s) = a
 \begin{bmatrix}
-L_d + \dfrac{R}{s} & 0 \\
-0 & L_q + \dfrac{R}{s}
-\end{bmatrix}
+x_\alpha\\
+x_\beta
+\end{bmatrix}.
 $$
 
-$ \boldsymbol{G}_c(s) = \dfrac{a}{s + a} \boldsymbol{I} $
+在稳态同步运行、且参考角度与转子基波磁链一致时，基波 $d$、$q$ 量可以近似为直流量。
+
+### 2.4 $dq$ 磁链和电压方程
+
+同步旋转坐标系中的磁链方程为
 
 $$
-\begin{cases}
-K_{pd} = a L_d \\
-K_{id} = a R \\
-K_{pq} = a L_q \\
-K_{iq} = a R
-\end{cases}
+\begin{aligned}
+\psi_d&=L_di_d+\psi_f,\\
+\psi_q&=L_qi_q.
+\end{aligned}
 $$
 
-## 五 、电流环转速换经典传递函数推导
-![PMSM磁场定向的双闭环控制](/images/posts/three-phase-pmsm/018-7576d10f2f.png)
-
-![three-phase-pmsm 插图 19](/images/posts/three-phase-pmsm/019-04417a888a.png)
-
-### 5.1 电流环
-
-$ G_{\text{i}}(s)=K_{\text{p}}+K_{\text{i}}/s  $
-
-+ **PWM逆变器**：可视为一阶惯性环节，时间常数 $ T_{\text{s}}=1/f_{\text{s}} $。
-+ **电机电枢回路**：含电阻$ R $、电感 $ L $，也视为一阶惯性环节，电感时间常数 $ T_{\text{L}}=L/R $，此处使用了前馈解耦。
-+ 比例关系：$ K_{\text{R}}=1/R $，反映 dq坐标系下电机电压与电流的稳态比例。
-+ 逆变器放大倍数：$K_{\text{PWM}}=1$ 。
-+ 电流反馈：滤波时间常数 $ T_{\text{if}} $，放大倍数 $ K_{\text{if}}=1 $。
-
-$ P(s)=\frac{K_{\text{p}} K_{\text{PWM}} K_{\text{R}} K_{\text{if}}(\tau_{\text{c}} s+1)}{\tau_{\text{c}} s  (T_{\text{s}} s+1)  (T_{\text{L}} s+1)  (T_{\text{if}} s+1)}  $选择电流调节器的零点对消被控对象的大时间常数极点：$ \tau_{\text{c}}=T_{\text{L}}=L/R  $
-$ K_{\text{PWM}}=K_{\text{if}}=1 $
-
-$ P(s)=\frac{K_{\text{p}}}{R\tau_{\text{c}}s(T_{\text{s}} s+1)  (T_{\text{if}} s+1)} $
-
-$ P(s)=\frac{K}{s(T_{\Sigma\text{i}} s+1)} $
-
-+ $ T_{\Sigma\text{i}} = T_{\text{s}} + T_{\text{if}} $：是PWM开关延迟和电流滤波延迟合并后的等效小时间常数。
-+ $K = \frac{K_{\text{p}}}{L}$：开环增益。
-
-闭环传递函数
-
-$ C(s)=\frac{P(s)}{1+P(s)}=\frac{\displaystyle \frac{K}{s(T_{\Sigma\text{i}} s+1)}}{1+\displaystyle \frac{K}{s(T_{\Sigma\text{i}} s+1)}} $
-$ C(s)=\frac{\omega_{\text{n}}^2}{s^2+2\xi\omega_{\text{n}} s+\omega_{\text{n}}^2} $
-$ \xi=\frac{1}{2\sqrt{K T_{\Sigma\text{i}}}} $
-
-+ 阻尼比 $ \xi $决定了二阶系统的动态响应：
-    - $ \xi=0.707 $ 是工程上的**最优阻尼比**，此时系统超调量最小，同时响应速度最快。
-
-$K=\frac{1}{2 T_{\Sigma\text{i}}}$
+旋转坐标系电压方程为
 
 $$
-\begin{cases}
-\tau_{\text{c}} = T_{\text{L}} = L/R \\
-K_{\text{p}} = \dfrac{L}{2 T_{\Sigma\text{i}}} \\
-K_{\text{i}} = \dfrac{R}{2 T_{\Sigma\text{i}}}
-\end{cases}
+\begin{aligned}
+v_d&=R_si_d+\frac{\mathrm d\psi_d}{\mathrm dt}-\omega_e\psi_q,\\
+v_q&=R_si_q+\frac{\mathrm d\psi_q}{\mathrm dt}+\omega_e\psi_d.
+\end{aligned}
 $$
 
-### 5.2 两种 PI 参数整定示例
-我们用永磁同步电机的典型参数：
-
-+ 电机参数：$L_d = L_q = 8\text{mH} = 0.008\text{H}$，$R = 0.5\Omega$
-+ 系统时间常数：$ T_{\text{s}} = 100\mu\text{s} = 0.0001\text{s} $ $ T_{\text{if}} = 50\mu\text{s} = 0.00005\text{s} $
-+ 合并小时间常数：$ T_{\Sigma\text{i}} = T_{\text{s}} + T_{\text{if}} = 0.00015\text{s} $
-+ 内模控制设计参数：$ a = 1000\text{rad/s} $对应期望带宽约159 Hz
-
-经典典型I型系统设计
-$$
-\begin{cases}
-\tau_{\text{c}} = T_{\text{L}} = \dfrac{L}{R} = \dfrac{0.008}{0.5} = 0.016\text{s} \\
-K_{\text{p}} = \dfrac{L}{2 T_{\Sigma\text{i}}} = \dfrac{0.008}{2 \times 0.00015} \approx 26.67 \\
-K_{\text{i}} = \dfrac{R}{2 T_{\Sigma\text{i}}} = \dfrac{0.5}{2 \times 0.00015} \approx 1666.67
-\end{cases}
-$$
-
-内模控制设计
-
-$ a = 1000\text{rad/s} $
+代入磁链关系后得到可用于求解电流的形式：
 
 $$
-\begin{cases}
-K_{\text{pd}} = K_{\text{pq}} = a L_d = 1000 \times 0.008 = 8 \\
-K_{\text{id}} = K_{\text{iq}} = a R = 1000 \times 0.5 = 500
-\end{cases}
+\begin{aligned}
+v_d&=R_si_d+L_d\frac{\mathrm di_d}{\mathrm dt}
+-\omega_eL_qi_q,\\
+v_q&=R_si_q+L_q\frac{\mathrm di_q}{\mathrm dt}
++\omega_e\left(L_di_d+\psi_f\right).
+\end{aligned}
 $$
 
-$ a = 2000\text{rad/s} $
-$$
-\begin{cases}
-K_{\text{pd}} = K_{\text{pq}} = 2000 \times 0.008 = 16 \\
-K_{\text{id}} = K_{\text{iq}} = 2000 \times 0.5 = 1000
-\end{cases}
-$$
+其中 $-\omega_eL_qi_q$ 和 $\omega_e(L_di_d+\psi_f)$ 是旋转坐标系引入的速度耦合项及反电动势项。
 
-### 5.3  速度环
-+ 电流环是速度环的内环，我们已经设计好了电流闭环传递函数 $ C_s $。
-+ 转速环的截止频率比电流环低很多，电流环近似成一个**一阶惯性环节**：
-$ C(s) \approx \frac{1}{2T_{sf} s + 1} $
-![three-phase-pmsm 插图 20](/images/posts/three-phase-pmsm/020-73a4f9035f.png)
-+ 电机的积分环节  $ \frac{1}{J s}  $
-+ $ W_n(s) = \frac{K(\tau_n s + 1)}{s^2 (T_\Sigma s + 1)} $
-+ $T_\Sigma =2T_d+T_w$
+## 三、电磁转矩与机械方程
 
-速度环的开环传递函数为：
-
-$ W_n(s) = \frac{k_n K_t (\tau_n s + 1)}{\tau_nJ s^2 (T_\Sigma s + 1)} $
+在上述幅值不变、正转矩约定下，电磁转矩为
 
 $$
-\begin{cases}
-\tau_n = h \times  T_\Sigma \\
-k_n = \frac{(h+1) J}{2 h \times  T_\Sigma K_i}
-\end{cases}
+T_e
+=\frac{3}{2}p\left(\psi_di_q-\psi_qi_d\right)
+=\frac{3}{2}p\left[\psi_fi_q+\left(L_d-L_q\right)i_di_q\right].
 $$
 
-+ 其中$ h $是中频带宽，通常取$ h=5 $。
-+ $ K_t $是转矩常数，定义为额定转矩与额定电流的比值 $ K_i = \frac{T_N}{I_N} $。
+第一项是永磁转矩，第二项是凸极引起的磁阻转矩。
 
-## 六、传统滑膜观测器
+机械运动方程为
 
-## 七、参数辨识
+$$
+J\frac{\mathrm d\omega_m}{\mathrm dt}
+=T_e-T_L-B\omega_m,
+$$
 
-相电感、$d$/$q$ 轴电感和永磁体磁链的测量换算已经整理到独立文章：[PMSM 电感与磁链参数测量](/motor-control/pmsm-parameter-measurement/)。
+转子位置方程为
+
+$$
+\frac{\mathrm d\theta_e}{\mathrm dt}
+=\omega_e=p\omega_m.
+$$
+
+
+## 四、 Simulink 完整状态模型
+
+### 4.1 输入、状态和参数
+
+以三相相电压和负载转矩为输入：
+
+$$
+\boldsymbol{u}=
+\begin{bmatrix}
+v_a&v_b&v_c&T_L
+\end{bmatrix}^{\mathsf T},
+\qquad
+\boldsymbol{x}=
+\begin{bmatrix}
+i_d&i_q&\omega_m&\theta_e
+\end{bmatrix}^{\mathsf T}.
+$$
+
+模型参数至少包括 $R_s,L_d,L_q,\psi_f,p,J,B$。
+
+### 4.2 四个状态导数
+
+$$
+\begin{aligned}
+\dot i_d
+&=\frac{v_d-R_si_d+p\omega_mL_qi_q}{L_d},\\
+\dot i_q
+&=\frac{v_q-R_si_q-p\omega_m\left(L_di_d+\psi_f\right)}{L_q},\\
+\dot\omega_m
+&=\frac{T_e-T_L-B\omega_m}{J},\\
+\dot\theta_e
+&=p\omega_m.
+\end{aligned}
+$$
+
+这组方程可以直接映射为四个积分器。连续 Simulink 模型中的信号流和求解关系为：
+
+1. 从 $\theta_e$、$\omega_m$ 得到 Park 角度和 $\omega_e$；
+2. 将 $v_a,v_b,v_c$ 变换为 $v_d,v_q$；
+3. 用当前状态计算 $T_e$ 和 $\dot i_d,\dot i_q$；
+4. 用机械方程计算 $\dot\omega_m$，并把四个状态导数交给求解器；
+5. 求解器同步更新四个积分器状态，取模后的 $\theta_e$ 只用于生成变换矩阵。
+
+
+### 4.3 输出和初值
+
+由 $i_d,i_q$ 反变换可得到相电流：
+
+$$
+\begin{aligned}
+i_\alpha&=i_d\cos\theta_e-i_q\sin\theta_e,\\
+i_\beta&=i_d\sin\theta_e+i_q\cos\theta_e,
+\end{aligned}
+$$
+
+再由逆 Clarke 变换得到
+
+$$
+\begin{aligned}
+i_a&=i_\alpha,\\
+i_b&=-\frac12i_\alpha+\frac{\sqrt3}{2}i_\beta,\\
+i_c&=-\frac12i_\alpha-\frac{\sqrt3}{2}i_\beta.
+\end{aligned}
+$$
+
+初值应显式设置为 $i_d(0),i_q(0),\omega_m(0),\theta_e(0)$。电机从静止、未通电状态启动时可先全部取 0；若用于带初始转速或已知转子位置的工况，则必须使初值与反电动势、Park 角度和外部机械负载保持一致。建议记录 $i_a,i_b,i_c,i_d,i_q,T_e,\omega_m,\theta_e$。
+
+
+
+## 五、SPMSM 简化
+
+表贴式 PMSM（SPMSM）通常可近似为
+
+$$
+L_d=L_q=L_s.
+$$
+
+此时磁阻转矩消失，转矩方程简化为
+
+$$
+T_e=\frac{3}{2}p\psi_fi_q.
+$$
+
+在基速范围内的常规 FOC 中，常令 $i_d^*=0$，用 $i_q$ 直接调节转矩。
+
+## 六、SVPWM 与电机模型的接口
+
+SVPWM 的职责是把 $\alpha\beta$ 电压参考和直流母线电压转换为三相桥臂占空比；电机状态方程接收的是经过逆变器等效后的相电压。两者之间的电压定义必须保持一致。
+
+![两电平逆变器空间电压矢量示意](/images/posts/three-phase-pmsm/008-101a794e41.png)
+
+### 6.1 开关状态和空间电压矢量
+
+令上桥臂开关状态 $s_a,s_b,s_c\in\{0,1\}$，在幅值不变 Clarke 约定下，空间电压矢量可写成
+
+$$
+\boldsymbol{v}_s
+=\frac{2}{3}V_{\mathrm{dc}}
+\left(s_a+s_b e^{j\frac{2\pi}{3}}+s_c e^{j\frac{4\pi}{3}}\right).
+$$
+
+000 和 111 是两个零矢量；100、110、010、011、001、101 是六个等幅有功矢量，幅值均为 $2V_{\mathrm{dc}}/3$，相邻矢量相差 $\pi/3$。因此一个两电平逆变器共有八个开关状态，而不是七个。
+
+![SVPWM 的 Simulink 计算结构示意](/images/posts/three-phase-pmsm/011-e0d36c6679.png)
+
+![SVPWM 在 alpha-beta 平面中的扇区判定边界](/images/posts/three-phase-pmsm/015-c40ec60a28.png)
+
+### 6.2 线性区作用时间
+
+设参考矢量幅值为 $U^*$，位于某一扇区内，且相对该扇区起始矢量的角度为 $\theta_s\in[0,\pi/3]$。相邻两个有功矢量的作用时间为
+
+$$
+\begin{aligned}
+T_1&=\frac{\sqrt{3}T_sU^*}{V_{\mathrm{dc}}}
+\sin\left(\frac{\pi}{3}-\theta_s\right),\\
+T_2&=\frac{\sqrt{3}T_sU^*}{V_{\mathrm{dc}}}
+\sin\theta_s,\\
+T_0&=T_s-T_1-T_2.
+\end{aligned}
+$$
+
+逐点的线性调制条件是 $T_1+T_2\leq T_s$，即
+
+$$
+U^*
+\leq
+\frac{V_{\mathrm{dc}}}
+{\sqrt{3}\cos\left(\theta_s-\frac{\pi}{6}\right)}.
+$$
+
+若希望幅值恒定的旋转参考在所有角度均不进入过调制区，则采用圆形轨迹上限 $U^*\leq V_{\mathrm{dc}}/\sqrt{3}$。若某一时刻超出逐点条件，可按
+
+$$
+\kappa=\frac{T_s}{T_1+T_2},\qquad
+T_1\leftarrow\kappa T_1,\qquad
+T_2\leftarrow\kappa T_2,\qquad
+T_0\leftarrow 0
+$$
+
+进行限幅。缩放后 $T_1+T_2=T_s$，因此必须同步重算 $T_0$，不能继续使用限幅前的负值。这是一种保持方向的过调制前处理，不能替代专门的过调制策略。
+
+以第一扇区的对称序列 000-100-110-111-110-100-000 为例，将零矢量总时间 $T_0$ 在 000 和 111 之间各分一半：周期两端的 000 各作用 $T_0/4$，中央的 111 作用 $T_0/2$；两个有功矢量每次分别作用 $T_1/2$、$T_2/2$。此时占空比为
+
+$$
+\begin{aligned}
+d_a&=\frac{T_0/2+T_1+T_2}{T_s},\\
+d_b&=\frac{T_0/2+T_2}{T_s},\\
+d_c&=\frac{T_0/2}{T_s}.
+\end{aligned}
+$$
+
+为了避免在代码中凭相序轮换，先将参考矢量角度归一化到 $\varphi\in[0,2\pi)$，再定义
+
+$$
+k=\left\lfloor\frac{\varphi}{\pi/3}\right\rfloor+1,
+\qquad
+\theta_s=\varphi-(k-1)\frac{\pi}{3}.
+$$
+
+扇区边界上任取相邻扇区之一即可。令
+
+$$
+h_0=\frac{T_0}{2T_s},\qquad
+h_1=\frac{T_1}{T_s},\qquad
+h_2=\frac{T_2}{T_s},
+$$
+
+其中 $T_1$ 对应扇区起始有功矢量，$T_2$ 对应下一个有功矢量，六个扇区的对称调制占空比可直接写成：
+
+| 扇区 $k$ | $d_a$ | $d_b$ | $d_c$ |
+| --- | --- | --- | --- |
+| 1 | $h_0+h_1+h_2$ | $h_0+h_2$ | $h_0$ |
+| 2 | $h_0+h_1$ | $h_0+h_1+h_2$ | $h_0$ |
+| 3 | $h_0$ | $h_0+h_1+h_2$ | $h_0+h_2$ |
+| 4 | $h_0$ | $h_0+h_1$ | $h_0+h_1+h_2$ |
+| 5 | $h_0+h_2$ | $h_0$ | $h_0+h_1+h_2$ |
+| 6 | $h_0+h_1+h_2$ | $h_0$ | $h_0+h_1$ |
+
+工程实现应对 $d_a,d_b,d_c$ 做 $[0,1]$ 限幅，并将死区、最小脉宽和采样延迟作为逆变器模型的独立参数。
+
+## 七、dq 电流环 PI 与解耦
+
+由电压模型可得电流状态方程
+
+$$
+\begin{aligned}
+\dot i_d&=-\frac{R_s}{L_d}i_d
++\frac{\omega_eL_q}{L_d}i_q+\frac{v_d}{L_d},\\
+\dot i_q&=-\frac{R_s}{L_q}i_q
+-\frac{\omega_e}{L_q}\left(L_di_d+\psi_f\right)
++\frac{v_q}{L_q}.
+\end{aligned}
+$$
+
+把速度耦合和反电动势作为前馈项，PI 输出可以写成
+
+$$
+\begin{aligned}
+v_d^*&=\left(K_{pd}+\frac{K_{id}}{s}\right)(i_d^*-i_d)
+-\omega_eL_qi_q,\\
+v_q^*&=\left(K_{pq}+\frac{K_{iq}}{s}\right)(i_q^*-i_q)
++\omega_e\left(L_di_d+\psi_f\right).
+\end{aligned}
+$$
+
+![内模控制结构示意](/images/posts/three-phase-pmsm/017-43a04f7970.png)
+
+在忽略 PWM 和采样延迟、且参数模型准确时，内模一阶目标 $a/(s+a)$ 给出一组便于仿真的初始参数：
+
+$$
+\begin{aligned}
+K_{pd}&=aL_d,&K_{id}&=aR_s,\\
+K_{pq}&=aL_q,&K_{iq}&=aR_s.
+\end{aligned}
+$$
+
+若把 PWM 延迟和电流反馈滤波合并为小时间常数 $T_{\Sigma i}$，并假设 PI 零点抵消电机的 $L/R_s$ 极点、逆变器与反馈通道的等效增益均为 1，再取阻尼比 $\zeta=1/\sqrt{2}$，可在解耦后得到典型二阶近似
+
+$$
+K_p=\frac{L}{2T_{\Sigma i}},\qquad
+K_i=\frac{R_s}{2T_{\Sigma i}},
+$$
+
+其中 $L$ 应分别取 $L_d$ 或 $L_q$。这两个公式依赖于延迟模型、阻尼比和限幅假设，适合作为初值而不是未经验证的最终参数。PI 输出还应受可用电压矢量限制，并配合积分抗饱和。
+
+转速环的完整假设、推导和闭环验证见 [PMSM 转速环 PI 参数整定推导](/motor-control/pmsm-speed-loop-pi-tuning/)，这里不再重复。FOC 代码和三环实现可参见 [DengFOC 常用控制代码与三环结构](/motor-control/dengfoc-control-code/)。
+
+## 八、来源、验证说明与关联文章
+
+本次入库的原始笔记没有附文献、实验数据或仿真工程，因此新增的假设和状态方程仍属于待核验的 AI 整理内容。原有资料保留了两条参考来源：
+
+- [《永磁同步电机矢量控制分析》](https://kns.cnki.net/kcms2/article/abstract?v=VYuoLtjwl8P-o469VFroH7GQMvioLWRnqoIhXpNcJele2FkWEn5qLP4KNcDl259e6Bp5ocFPRg_AJ1AjyuLnXXTqV5bPifsy4R2DshF4EllA-FQkPBFlJ2taaBqwalb_6dV5a27Z25kvhu29GPyXP1IRtyjHuPyilSsPS90hIVM=&uniplatform=NZKPT)，原稿将其用于电机模型推导；
+- [《永磁同步电动机驱动系统数字 PI 调节器参数设计》](https://kns.cnki.net/kcms2/article/abstract?v=lSOmZDqoX8NczW9XDV0VUxaCWkNGTEqyDkS6bg3WjoEPz2DQNycJR0HKl5JvSLYGhU2f0t16vkpF3KMmy_DIuWrjgpu5E12HKjKzHREJXp9ODdlh1wHYA1CIMllSPXDgJ_vHVpCrbaK76edcrYAST9Ao8HH8BI38&uniplatform=NZKPT)，原稿将其用于 PI 环节设计。
+
+两条链接的可访问性、原文结论和本文参数定义均未在本次处理中复核。
+
+需要谐波、六相或 VSD 分析时，转到 [PMSM 谐波与六相矢量空间分析](/motor-control/pmsm-harmonic-analysis/)；需要 Simulink 模块、采样时间和模型组织建议时，参见 [Simulink 电机控制仿真常用模块与建议](/simulation/simulink-motor-simulation/)。模型参数的测量换算见 [PMSM 电感与磁链参数测量](/motor-control/pmsm-parameter-measurement/)。这些文章保持独立，以免把理想电机本体方程、参数来源和控制实现混在同一段中。
