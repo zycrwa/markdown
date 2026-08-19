@@ -20,17 +20,17 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"zycrwa.github.io","root":"/markdown/","images":"/markdown/images","scheme":"Gemini","darkmode":false,"version":"8.28.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"flat"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":true,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/markdown/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/markdown/js/config.js" defer></script>
 
-    <meta name="description" content="从一阶滞后环节出发，整理扰动观测器和低通滤波器的离散实现。">
+    <meta name="description" content="覆盖一阶滞后、扰动观测器和低通离散化；不重复 PMSM 完整模型与具体速度环参数整定。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="PMSM 控制基础：一阶滞后、DOB 与低通滤波器">
 <meta property="og:url" content="https://zycrwa.github.io/markdown/motor-control/pmsm-control-basics/index.html">
 <meta property="og:site_name" content="ZY 的技术笔记">
-<meta property="og:description" content="从一阶滞后环节出发，整理扰动观测器和低通滤波器的离散实现。">
+<meta property="og:description" content="覆盖一阶滞后、扰动观测器和低通离散化；不重复 PMSM 完整模型与具体速度环参数整定。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://zycrwa.github.io/markdown/images/posts/pmsm-control-basics/001-45c0898d0c.png">
 <meta property="og:image" content="https://zycrwa.github.io/markdown/images/posts/pmsm-control-basics/002-592adc41e7.png">
 <meta property="article:published_time" content="2026-08-01T14:10:00.000Z">
-<meta property="article:modified_time" content="2026-08-01T16:00:15.865Z">
+<meta property="article:modified_time" content="2026-08-01T14:10:00.000Z">
 <meta property="article:author" content="ZY">
 <meta property="article:tag" content="DOB">
 <meta property="article:tag" content="PMSM">
@@ -229,7 +229,7 @@ mjx-container[display="true"] + br {
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/markdown/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/markdown/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">18</span></a></li><li class="menu-item menu-item-categories"><a href="/markdown/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">6</span></a></li><li class="menu-item menu-item-tags"><a href="/markdown/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">60</span></a></li><li class="menu-item menu-item-about"><a href="/markdown/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/markdown/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/markdown/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">18</span></a></li><li class="menu-item menu-item-categories"><a href="/markdown/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">6</span></a></li><li class="menu-item menu-item-tags"><a href="/markdown/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">61</span></a></li><li class="menu-item menu-item-知识阅读器"><a href="/markdown/reader/" rel="section"><i class="fa fa-book-open fa-fw"></i>知识阅读器</a></li><li class="menu-item menu-item-about"><a href="/markdown/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -306,7 +306,7 @@ mjx-container[display="true"] + br {
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/markdown/tags/">
-        <span class="site-state-item-count">60</span>
+        <span class="site-state-item-count">61</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -352,7 +352,7 @@ mjx-container[display="true"] + br {
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
       <meta itemprop="name" content="PMSM 控制基础：一阶滞后、DOB 与低通滤波器 | ZY 的技术笔记">
-      <meta itemprop="description" content="从一阶滞后环节出发，整理扰动观测器和低通滤波器的离散实现。">
+      <meta itemprop="description" content="覆盖一阶滞后、扰动观测器和低通离散化；不重复 PMSM 完整模型与具体速度环参数整定。">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -371,13 +371,6 @@ mjx-container[display="true"] + br {
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-08-02 00:00:15" itemprop="dateModified" datetime="2026-08-02T00:00:15+08:00">2026-08-02</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
       </span>
       <span class="post-meta-item-text">分类于</span>
@@ -389,7 +382,7 @@ mjx-container[display="true"] + br {
   
 </div>
 
-            <div class="post-description">从一阶滞后环节出发，整理扰动观测器和低通滤波器的离散实现。</div>
+            <div class="post-description">覆盖一阶滞后、扰动观测器和低通离散化；不重复 PMSM 完整模型与具体速度环参数整定。</div>
         </div>
       </header>
 

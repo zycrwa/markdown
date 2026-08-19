@@ -1,0 +1,165 @@
+<article class="reader-content post-body" data-post-id="altium-designer-notes"><p>本文整理 Altium Designer 中原理图库、原理图和 PCB 的常用操作，重点覆盖引脚与封装关联、ERC&#x2F;DRC、板层、丝印和板框等容易遗漏的环节。</p>
+<span id="more"></span>
+
+<h2 id="项目组成"><a href="#项目组成" class="headerlink" title="项目组成"></a>项目组成</h2><p>一个完整项目通常包含原理图、PCB、原理图库和 PCB 封装库四类核心文件。</p>
+<h2 id="原理图库"><a href="#原理图库" class="headerlink" title="原理图库"></a>原理图库</h2><p>AD（Altium Designer）元件符号必须包含<strong>图形主体、引脚定义、核心属性、关联封装、电气&#x2F;仿真信息</strong>五大类信息，以确保原理图逻辑清晰、与PCB&#x2F;生产&#x2F;仿真完全匹配。</p>
+<h3 id="一、图形主体（视觉表达）"><a href="#一、图形主体（视觉表达）" class="headerlink" title="一、图形主体（视觉表达）"></a>一、图形主体（视觉表达）</h3><ul>
+<li><strong>标准符号轮廓</strong>：遵循 IEEE 315 规范，如电阻矩形、电容平行线、运放三角形、IC矩形框。</li>
+<li><strong>极性&#x2F;功能标记</strong>：二极管箭头、电解电容+&#x2F;-、三极管箭头、MOSFET衬底箭头、晶振波浪线等。</li>
+<li><strong>多单元拆分</strong>：如 74HC00 拆为 4 个与非门（Part A&#x2F;B&#x2F;C&#x2F;D），电源引脚可全局隐藏。</li>
+</ul>
+<h3 id="二、引脚定义（电气连接核心）"><a href="#二、引脚定义（电气连接核心）" class="headerlink" title="二、引脚定义（电气连接核心）"></a>二、引脚定义（电气连接核心）</h3><p>每个引脚必须包含：</p>
+<ol>
+<li><strong>引脚编号（Number）</strong>：与实物管脚、PCB 封装焊盘号<strong>严格一一对应</strong>（必填）。</li>
+<li><strong>引脚名称（Name）</strong>：功能名（如 VCC、GND、SDA、PA0、OUT），可隐藏但必须正确。</li>
+<li><strong>电气类型（Electrical Type）</strong>：Input&#x2F;Output&#x2F;Power&#x2F;Passive&#x2F;Open Collector 等，用于 DRC 检查。</li>
+<li><strong>引脚长度&#x2F;方向</strong>：标准 100mil，编号朝外、名称朝内；可设置隐藏（如全局电源）。</li>
+</ol>
+<h3 id="三、核心属性（标识与描述）"><a href="#三、核心属性（标识与描述）" class="headerlink" title="三、核心属性（标识与描述）"></a>三、核心属性（标识与描述）</h3><ul>
+<li><strong>Designator（位号）</strong>：唯一标识符，如 R?、C?、U?、J?（必填，自动编号用）。</li>
+<li><strong>Comment（注释&#x2F;值）</strong>：阻值 10k、容值 0.1μF、型号 ATmega328P、LED 等（必填）。</li>
+<li><strong>Description（描述）</strong>：功能说明，如“双运放、轨到轨”。</li>
+<li><strong>Component Name（库内名称）</strong>：如 RES、CAP、LM358（库内唯一）。</li>
+</ul>
+<h3 id="四、关联封装与生产信息（原理图→PCB-桥梁）"><a href="#四、关联封装与生产信息（原理图→PCB-桥梁）" class="headerlink" title="四、关联封装与生产信息（原理图→PCB 桥梁）"></a>四、关联封装与生产信息（原理图→PCB 桥梁）</h3><ul>
+<li><strong>Footprint（封装）</strong>：如 0805、SOIC-8、DIP-16、SOT-23（必须与引脚编号匹配）。</li>
+<li><strong>Link（厂商和联系方式）</strong>。</li>
+<li><strong>其他参数</strong>：功率、耐压、精度、温度等级等（按需添加）。</li>
+</ul>
+<h3 id="五、电气-仿真-高级信息"><a href="#五、电气-仿真-高级信息" class="headerlink" title="五、电气&#x2F;仿真&#x2F;高级信息"></a>五、电气&#x2F;仿真&#x2F;高级信息</h3><ul>
+<li><strong>隐藏电源&#x2F;地</strong>：VCC、GND 设为全局网络（Power Port），简化图纸。</li>
+<li><strong>仿真模型链接</strong>：SPICE 子电路、IBIS 模型路径（仿真用）。</li>
+<li><strong>3D 模型关联</strong>：STEP 文件（3D 预览用）。</li>
+<li><strong>设计规则（DRC）</strong>：引脚电气类型、网络约束。</li>
+</ul>
+<h2 id="原理图操作"><a href="#原理图操作" class="headerlink" title="原理图操作"></a>原理图操作</h2><h3 id="1-Compiler-Off-Grid：电气栅格未对齐"><a href="#1-Compiler-Off-Grid：电气栅格未对齐" class="headerlink" title="1. Compiler Off Grid：电气栅格未对齐"></a>1. Compiler Off Grid：电气栅格未对齐</h3><p>右键→对齐→对齐到栅格上</p>
+<h3 id="2-引脚悬空"><a href="#2-引脚悬空" class="headerlink" title="2. 引脚悬空"></a>2. 引脚悬空</h3><p>放置→指示→通用 No_ERC</p>
+<p>防止报错</p>
+<h3 id="3-原理图接线角度切换"><a href="#3-原理图接线角度切换" class="headerlink" title="3. 原理图接线角度切换"></a>3. 原理图接线角度切换</h3><p>切换：shift+space</p>
+<h3 id="4-标注-Designator"><a href="#4-标注-Designator" class="headerlink" title="4. 标注 Designator"></a>4. 标注 Designator</h3><p>工具-标注-原理图标注</p>
+<p>标注类型：</p>
+<table>
+<thead>
+<tr>
+<th align="left"><strong>R</strong></th>
+<th align="left">Resistor「电阻」</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>C</strong></td>
+<td align="left">Capacitor「电容」</td>
+</tr>
+<tr>
+<td align="left"><strong>U</strong></td>
+<td align="left">IC&#x2F;Integrated Circuit「集成电路」</td>
+</tr>
+<tr>
+<td align="left"><strong>D</strong></td>
+<td align="left">Diode「二极管」</td>
+</tr>
+<tr>
+<td align="left"><strong>Q</strong></td>
+<td align="left">Transistor「晶体管」</td>
+</tr>
+<tr>
+<td align="left"><strong>J</strong></td>
+<td align="left">Connector&#x2F;Jumper「连接器 &#x2F; 接插件」</td>
+</tr>
+<tr>
+<td align="left"><strong>L</strong></td>
+<td align="left">Inductor「电感」</td>
+</tr>
+<tr>
+<td align="left"><strong>F</strong></td>
+<td align="left">Fuse「保险丝」</td>
+</tr>
+</tbody></table>
+<h3 id="5-X-Y-方向移动"><a href="#5-X-Y-方向移动" class="headerlink" title="5. X&#x2F;Y 方向移动"></a>5. X&#x2F;Y 方向移动</h3><p>M</p>
+<h2 id="PCB-操作"><a href="#PCB-操作" class="headerlink" title="PCB 操作"></a>PCB 操作</h2><h3 id="1-清除-PCB-测量标记"><a href="#1-清除-PCB-测量标记" class="headerlink" title="1. 清除 PCB 测量标记"></a>1. 清除 PCB 测量标记</h3><pre><code>	SHIFT+C
+</code></pre>
+<h3 id="2-PCB-各层"><a href="#2-PCB-各层" class="headerlink" title="2. PCB 各层"></a>2. PCB 各层</h3><table>
+<thead>
+<tr>
+<th align="left">**Mechanical **</th>
+<th align="left">机械层</th>
+<th align="left">用于标注尺寸、工艺说明、板框、定位孔</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>Top Overlay</strong></td>
+<td align="left">顶层丝印层</td>
+<td align="left">放置元件位号（R1&#x2F;C2&#x2F;U3）、元件轮廓</td>
+</tr>
+<tr>
+<td align="left"><strong>Bottom Overlay</strong></td>
+<td align="left">底层丝印层</td>
+<td align="left">底层元件的丝印、位号、标识</td>
+</tr>
+<tr>
+<td align="left"><strong>Top Paste</strong></td>
+<td align="left">顶层锡膏层</td>
+<td align="left">生成 SMT 贴片钢网，控制焊盘上锡量</td>
+</tr>
+<tr>
+<td align="left"><strong>Bottom Paste</strong></td>
+<td align="left">底层锡膏层</td>
+<td align="left">底层贴片元件的钢网开口</td>
+</tr>
+<tr>
+<td align="left"><strong>Top Solder</strong></td>
+<td align="left">顶层阻焊层</td>
+<td align="left">阻焊绿油层，</td>
+</tr>
+<tr>
+<td align="left"><strong>Bottom Solder</strong></td>
+<td align="left">底层阻焊层</td>
+<td align="left">底层阻焊绿油层</td>
+</tr>
+<tr>
+<td align="left"><strong>Drill Guide</strong></td>
+<td align="left">钻孔引导层</td>
+<td align="left">生成钻孔位置、孔径的参考图</td>
+</tr>
+<tr>
+<td align="left"><strong>Keep-Out Layer</strong></td>
+<td align="left">禁止布线层</td>
+<td align="left">定义 PCB 板框、禁止布线</td>
+</tr>
+<tr>
+<td align="left"><strong>Drill Drawing</strong></td>
+<td align="left">钻孔图层</td>
+<td align="left">汇总所有钻孔的孔径、数量、位置</td>
+</tr>
+<tr>
+<td align="left"><strong>Multi-Layer</strong></td>
+<td align="left">多层</td>
+<td align="left">贯穿所有层，用于通孔焊盘、过孔</td>
+</tr>
+</tbody></table>
+<h3 id="3-X-Y-方向移动"><a href="#3-X-Y-方向移动" class="headerlink" title="3. X&#x2F;Y 方向移动"></a>3. X&#x2F;Y 方向移动</h3><p>选中，按 M</p>
+<h3 id="4-单层与多层显示"><a href="#4-单层与多层显示" class="headerlink" title="4. 单层与多层显示"></a>4. 单层与多层显示</h3><p>shift+s</p>
+<h3 id="5-丝印裁剪"><a href="#5-丝印裁剪" class="headerlink" title="5. 丝印裁剪"></a>5. 丝印裁剪</h3><p>丝印不能放到焊盘上</p>
+<p>编辑-移动-打断走线</p>
+<h3 id="6-3D-视图旋转"><a href="#6-3D-视图旋转" class="headerlink" title="6. 3D 视图旋转"></a>6. 3D 视图旋转</h3><p>panels-View_Configuration-3D</p>
+<p>shift+鼠标右键：旋转</p>
+<p>Ctrl+鼠标右键：放大缩小</p>
+<p>鼠标右键：移动</p>
+<h3 id="7-从设计生成-PCB-库"><a href="#7-从设计生成-PCB-库" class="headerlink" title="7. 从设计生成 PCB 库"></a>7. 从设计生成 PCB 库</h3><p>设计-生成 PCB 库</p>
+<h3 id="8-使用封装管理器检查封装"><a href="#8-使用封装管理器检查封装" class="headerlink" title="8. 使用封装管理器检查封装"></a>8. 使用封装管理器检查封装</h3><p>工具-封装管理器</p>
+<h3 id="9-更新原理图库"><a href="#9-更新原理图库" class="headerlink" title="9. 更新原理图库"></a>9. 更新原理图库</h3><p>修改了原理图库之后-&gt;更新到原理图 -&gt;</p>
+<p>工具-从库更新</p>
+<p><img src="/markdown/images/posts/altium-designer-notes/001-7d12c0486a.png" alt="altium-designer-notes 插图 1"></p>
+<p> 图形属性：原理图里元件的<strong>图形、引脚、线、形状</strong></p>
+<p> 更新参数: 元器件参数</p>
+<p> 更新模型: PCB 封装-&gt;footprint</p>
+<h3 id="10-矩形器件摆放"><a href="#10-矩形器件摆放" class="headerlink" title="10. 矩形器件摆放"></a>10. 矩形器件摆放</h3><p>全选器件-工具-器件摆放</p>
+<h3 id="11-PCB-板框"><a href="#11-PCB-板框" class="headerlink" title="11. PCB 板框"></a>11. PCB 板框</h3><p>画线-&gt;设计-板子形状</p>
+<h3 id="12-设置原点"><a href="#12-设置原点" class="headerlink" title="12. 设置原点"></a>12. 设置原点</h3><p>EOS</p>
+<h3 id="13-绘制板框尺寸"><a href="#13-绘制板框尺寸" class="headerlink" title="13. 绘制板框尺寸"></a>13. 绘制板框尺寸</h3><p>放置-尺寸-线性尺寸</p>
+<p>space 纵横切换</p>
+<h3 id="14-多层板层叠设置"><a href="#14-多层板层叠设置" class="headerlink" title="14. 多层板层叠设置"></a>14. 多层板层叠设置</h3><p>d-k</p>
+<p>core-&gt;中间层两边都是铜箔</p>
+<p>prepreg-&gt;两层没有铜箔</p>
+<p>plane-&gt;负极片-&gt;铜覆盖所有，画线去铜</p>
+<p>signal-&gt;正极片</p>
+</article>

@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; font-src 'self'; object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'; manifest-src 'self'; worker-src 'self'">
+  <meta name="theme-color" content="#132a2a">
+  <meta name="zy-reader-app" content="v1">
+  <meta name="description" content="ZY 的个人知识笔记阅读器">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="ZY 笔记">
+  <title>ZY 知识笔记</title>
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="./icons/icon-192.png">
+  <link rel="stylesheet" href="./reader.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <button class="icon-button mobile-only" id="menu-button" type="button" aria-label="打开分类" title="打开分类">
+        <span aria-hidden="true">☰</span>
+      </button>
+      <a class="brand" href="./" aria-label="返回知识笔记首页">
+        <span class="brand-mark" aria-hidden="true">ZY</span>
+        <span class="brand-copy">
+          <strong>知识笔记</strong>
+          <small>PERSONAL LIBRARY</small>
+        </span>
+      </a>
+      <div class="top-actions">
+        <span class="network-status" id="network-status" role="status">在线</span>
+        <button class="text-button install-button" id="install-button" type="button" hidden>安装</button>
+        <button class="icon-button" id="theme-button" type="button" aria-label="切换深色模式" title="切换深色模式">
+          <span aria-hidden="true">◐</span>
+        </button>
+      </div>
+    </header>
+
+    <div class="workspace">
+      <aside class="sidebar" id="sidebar" aria-label="资料导航">
+        <div class="sidebar-header">
+          <div>
+            <span class="sidebar-label">我的资料</span>
+            <strong id="library-count">读取中…</strong>
+          </div>
+          <button class="icon-button small" id="refresh-button" type="button" aria-label="刷新文章目录" title="刷新文章目录">
+            <span aria-hidden="true">↻</span>
+          </button>
+        </div>
+
+        <label class="search-box" for="search-input">
+          <span class="search-icon" aria-hidden="true">⌕</span>
+          <input id="search-input" type="search" inputmode="search" autocomplete="off" placeholder="搜索标题、标签或别名">
+          <kbd>Ctrl K</kbd>
+        </label>
+
+        <nav class="category-list" id="category-list" aria-label="文章分类"></nav>
+
+        <div class="sidebar-footer">
+          <button class="plain-action" id="clear-cache-button" type="button">清理离线内容</button>
+          <a class="plain-action" href="../" target="_blank" rel="noopener">打开原网站</a>
+        </div>
+      </aside>
+
+      <button class="sidebar-scrim" id="sidebar-scrim" type="button" aria-label="关闭分类" tabindex="-1"></button>
+
+      <main class="main-panel">
+        <div class="notice" id="notice" role="status" aria-live="polite" aria-atomic="true" hidden></div>
+
+        <section class="library-view" id="library-view" aria-labelledby="view-title">
+          <header class="section-header">
+            <div>
+              <p class="eyebrow">LIBRARY</p>
+              <h1 id="view-title">全部文章</h1>
+              <p class="section-summary" id="view-summary">正在读取文章目录</p>
+            </div>
+            <label class="sort-control" for="sort-select">
+              <span>排序</span>
+              <select id="sort-select">
+                <option value="updated">最近更新</option>
+                <option value="title">标题</option>
+              </select>
+            </label>
+          </header>
+
+          <div class="post-list" id="post-list" aria-live="polite"></div>
+
+          <div class="empty-state" id="empty-state" hidden>
+            <span aria-hidden="true">⌕</span>
+            <h2>没有找到文章</h2>
+            <p>换一个关键词或分类试试。</p>
+          </div>
+        </section>
+
+        <section class="reader-view" id="reader-view" aria-labelledby="reader-title" hidden>
+          <div class="reader-toolbar">
+            <button class="back-button" id="back-button" type="button">
+              <span aria-hidden="true">←</span>
+              <span>返回文章列表</span>
+            </button>
+            <div class="reader-actions">
+              <button class="toolbar-button" id="favorite-button" type="button" aria-label="收藏文章" title="收藏文章">
+                <span aria-hidden="true">☆</span><span class="action-label">收藏</span>
+              </button>
+              <button class="toolbar-button" id="download-button" type="button" aria-label="下载以便离线阅读" title="下载以便离线阅读">
+                <span aria-hidden="true">⇩</span><span class="action-label">离线</span>
+              </button>
+              <button class="toolbar-button" id="external-button" type="button" aria-label="在原网页中打开" title="在原网页中打开">
+                <span aria-hidden="true">↗</span><span class="action-label">原网页</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="reader-scroll" id="reader-scroll">
+            <header class="reader-heading">
+              <p class="eyebrow" id="reader-category">文章</p>
+              <h1 id="reader-title">正在打开</h1>
+              <div class="reader-details" id="reader-details"></div>
+            </header>
+
+            <div class="reader-loading" id="reader-loading" role="status">
+              <span class="loading-line"></span>
+              <span class="loading-line short"></span>
+              <span>正在载入正文…</span>
+            </div>
+            <div class="reader-error" id="reader-error" role="alert" hidden>
+              <h2>正文暂时无法打开</h2>
+              <p id="reader-error-message">请检查网络后重试。</p>
+              <button class="text-button" id="retry-button" type="button">重新载入</button>
+            </div>
+            <div id="reader-content"></div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <dialog class="image-dialog" id="image-dialog">
+    <button class="image-dialog-close" id="image-dialog-close" type="button" aria-label="关闭图片" title="关闭图片">×</button>
+    <img id="image-dialog-image" alt="">
+    <p id="image-dialog-caption"></p>
+  </dialog>
+
+  <noscript>请启用 JavaScript 后使用知识笔记阅读器。</noscript>
+  <script src="./reader.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<article class="reader-content post-body" data-post-id="analog-filter-design"><p>本文从截止频率、品质因数和响应类型入手，整理 Sallen-Key 与多重反馈（MFB）有源滤波器的拓扑、计算关系和器件选择要点。</p>
+<span id="more"></span>
+
+<p><strong>【数字时代还需要学习模拟滤波器设计吗？滤波器是怎么设计出来的？】</strong><a href="https://www.bilibili.com/video/BV1MA4m1L72c?vd_source=aca1ede7fcbd3c2ebbaa4b638f88f631"><strong>https://www.bilibili.com/video/BV1MA4m1L72c?vd_source&#x3D;aca1ede7fcbd3c2ebbaa4b638f88f631</strong></a></p>
+<h2 id="1、滤波器参数"><a href="#1、滤波器参数" class="headerlink" title="1、滤波器参数"></a>1、滤波器参数</h2><p><img src="/markdown/images/posts/analog-filter-design/001-c8f01aa0d4.png" alt="analog-filter-design 插图 1"></p>
+<p>类型:低通；高通；带通；带阻；全通</p>
+<p>增益： 通带内增益（0dB、10dB…）</p>
+<p>阶数：阶数越高，滤波越陡</p>
+<p>1 阶：-20db</p>
+<p>2 阶：-40db</p>
+<p>通道频率：</p>
+<p>截止频率 fc：</p>
+<p>阻带衰减  ： 截止频率时的衰减强度；</p>
+<p>品质因数 Q:较小比较好</p>
+<p>相位延迟：电机电流采样相位延迟需要较小</p>
+<p>共模抑制：</p>
+<p>运算放大器的核心参数：单位增益带宽（GBW）</p>
+<p>一般情况下，带宽<em>增益&#x3D;常数；对于低频滤波，必须在截至之前，增益够大才能负反馈；GBW&gt;10</em>闭环增益*最大工作频率</p>
+<ul>
+<li><strong>Q 小（如 &lt; 0.707）</strong>：幅频响应曲线圆钝、平缓，通带内没有凸起，相位线性度好。 响应<strong>过冲小，无振铃</strong>，波形平滑。Q 值越小，响应越平缓</li>
+<li><strong>Q &#x3D; 0.707</strong>：这是巴特沃斯（Butterworth）滤波器的标准值，通带 “最大平坦”。 响应有轻微过冲（约 4.3%），是临界阻尼状态。</li>
+<li><strong>Q 大（如 &gt; 0.707）</strong>：幅频响应会出现一个明显的 “峰值”，即通带内产生波纹（如切比雪夫 Chebyshev 滤波器），同时阻带衰减更陡峭。 响应会出现明显的<strong>过冲和振铃</strong>，Q 值越大，震荡越剧烈，恢复到稳态的时间越长。</li>
+</ul>
+<p>滤波器设计：</p>
+<h2 id="2、主流滤波器类型"><a href="#2、主流滤波器类型" class="headerlink" title="2、主流滤波器类型"></a>2、主流滤波器类型</h2><p><img src="/markdown/images/posts/analog-filter-design/002-ec474530ce.png" alt="analog-filter-design 插图 2"></p>
+<h2 id="3-Sallen-Key-拓扑"><a href="#3-Sallen-Key-拓扑" class="headerlink" title="3. Sallen-Key 拓扑"></a>3. Sallen-Key 拓扑</h2><p>参考资料：<a href="https://blog.csdn.net/weixin_42837669/article/details/127375511">https://blog.csdn.net/weixin_42837669&#x2F;article&#x2F;details&#x2F;127375511</a><br><img src="/markdown/images/posts/analog-filter-design/003-7e3968050b.png" alt="analog-filter-design 插图 3"></p>
+<p><strong>sk 拓扑可以设计不同类型滤波器,以低通设计为例子</strong></p>
+<p><img src="/markdown/images/posts/analog-filter-design/004-8fa67026ac.png" alt="analog-filter-design 插图 4"></p>
+<p>低通滤波</p>
+<p><img src="/markdown/images/posts/analog-filter-design/005-f5da488c39.png" alt="analog-filter-design 插图 5"></p>
+<p><img src="/markdown/images/posts/analog-filter-design/006-36d73fb8b5.png" alt="analog-filter-design 插图 6"></p>
+<p><img src="/markdown/images/posts/analog-filter-design/007-a945fb0445.png" alt="analog-filter-design 插图 7"></p>
+<p><img src="/markdown/images/posts/analog-filter-design/008-7b5cb74f59.png" alt="analog-filter-design 插图 8"></p>
+<p><img src="/markdown/images/posts/analog-filter-design/009-2be258931b.png" alt="analog-filter-design 插图 9"></p>
+<p><img src="/markdown/images/posts/analog-filter-design/010-24e1c729b2.png" alt="analog-filter-design 插图 10"></p>
+<p><img src="/markdown/images/posts/analog-filter-design/011-f870bcdc2c.png" alt="analog-filter-design 插图 11"></p>
+<p><img src="/markdown/images/posts/analog-filter-design/012-2376edf504.png" alt="analog-filter-design 插图 12"></p>
+<p><img src="/markdown/images/posts/analog-filter-design/013-a2c28098e5.png" alt="analog-filter-design 插图 13"></p>
+<h2 id="4、MFB多反馈滤波器"><a href="#4、MFB多反馈滤波器" class="headerlink" title="4、MFB多反馈滤波器"></a>4、MFB多反馈滤波器</h2><p>低通滤波</p>
+<p><img src="/markdown/images/posts/analog-filter-design/014-d8be388d38.png" alt="analog-filter-design 插图 14"></p>
+<p><img src="/markdown/images/posts/analog-filter-design/015-b442860f38.png" alt="analog-filter-design 插图 15"></p>
+<p><img src="/markdown/images/posts/analog-filter-design/016-52d02241cc.png" alt="analog-filter-design 插图 16"></p>
+<p><img src="/markdown/images/posts/analog-filter-design/017-815eb7841a.png" alt="analog-filter-design 插图 17"></p>
+</article>

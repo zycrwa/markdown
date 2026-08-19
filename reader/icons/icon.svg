@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title description">
+  <title id="title">ZY 知识笔记</title>
+  <desc id="description">深绿色底上的橙色书签与白色打开书本</desc>
+  <rect width="512" height="512" rx="72" fill="#132f2e"/>
+  <path d="M361 82h65v172l-32.5-25-32.5 25z" fill="#c85f39"/>
+  <path d="M94 150c54-13 108-4 162 28v247c-54-32-108-41-162-28z" fill="#fffdf7"/>
+  <path d="M418 150c-54-13-108-4-162 28v247c54-32 108-41 162-28z" fill="#e7e5dc"/>
+  <path d="M256 178v247" fill="none" stroke="#b8bbb2" stroke-width="10"/>
+  <path d="M126 208c35-4 67 2 96 17M126 254c35-4 67 2 96 17M126 300c35-4 67 2 96 17" fill="none" stroke="#2d605c" stroke-linecap="round" stroke-width="12"/>
+  <path d="M290 225h89M290 271h89M290 317h65" fill="none" stroke="#2d605c" stroke-linecap="round" stroke-width="12"/>
+</svg>
