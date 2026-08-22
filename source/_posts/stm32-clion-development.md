@@ -1,7 +1,7 @@
 ---
 title: "STM32 与 CLion 开发实践"
 date: 2026-08-01 22:04:00
-updated: 2026-08-01 22:04:00
+updated: 2026-08-22 19:14:00
 description: "覆盖 STM32 的 CLion/CMake 配置与外设代码；通信协议原理和 FOC 理论由关联文章维护。"
 permalink: embedded/stm32-clion-development/
 categories:
@@ -19,6 +19,7 @@ related_posts:
   - embedded-system-basics
   - embedded-communication-protocols
   - dengfoc-control-code
+  - motor-embedded-software-roadmap
 source_docs:
   - "archive/original-posts/STM32_CLION.md"
 review_status: unverified

@@ -1,7 +1,7 @@
 ---
 title: "PMSM 电感与磁链参数测量"
 date: 2026-08-01 22:15:00
-updated: 2026-08-01 22:15:00
+updated: 2026-08-22 19:14:00
 description: "覆盖 PMSM 相电感、dq 轴电感与永磁体磁链测量；控制模型和代码实现由关联文章维护。"
 permalink: motor-control/pmsm-parameter-measurement/
 categories:
@@ -19,6 +19,7 @@ related_posts:
   - three-phase-pmsm
   - dengfoc-control-code
   - simulink-motor-simulation
+  - motor-embedded-software-roadmap
 source_docs:
   - "archive/original-posts/电机疑问讨论.md"
 review_status: unverified

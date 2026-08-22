@@ -3,13 +3,20 @@
   "version": "1.0.0",
   "private": true,
   "description": "A Hexo blog deployed to GitHub Pages",
+  "engines": {
+    "node": ">=20.19.0",
+    "npm": ">=10.0.0"
+  },
   "scripts": {
-    "build": "npm run check:posts && hexo clean && hexo generate",
+    "build": "npm run check:posts && hexo clean && hexo generate && npm run reader:manifest && npm run reader:prune && npm run check:reader",
     "check:posts": "node scripts/check-posts.js",
+    "check:reader": "node scripts/check-reader.js",
     "clean": "hexo clean",
-    "deploy": "npm run check:posts && hexo clean && hexo generate && hexo deploy",
+    "deploy": "npm run check:posts && hexo clean && hexo generate && npm run reader:manifest && npm run reader:prune && npm run check:reader && hexo deploy",
     "knowledge:index": "node scripts/build-knowledge-index.js",
     "new": "hexo new",
+    "reader:manifest": "node scripts/build-reader-sync-manifest.js",
+    "reader:prune": "node scripts/prune-public-post-images.js",
     "server": "hexo server"
   },
   "hexo": {

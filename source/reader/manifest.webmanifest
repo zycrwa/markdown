@@ -1,0 +1,48 @@
+{
+  "id": "/markdown/reader/",
+  "name": "ZY 知识笔记",
+  "short_name": "ZY 笔记",
+  "description": "分类、搜索、收藏并离线阅读 ZY 的个人知识文档",
+  "lang": "zh-CN",
+  "start_url": "/markdown/reader/",
+  "scope": "/markdown/reader/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#f4f1e8",
+  "theme_color": "#132a2a",
+  "categories": ["education", "productivity", "utilities"],
+  "icons": [
+    {
+      "src": "./icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "我的收藏",
+      "short_name": "收藏",
+      "url": "/markdown/reader/?view=favorites",
+      "icons": [
+        {
+          "src": "./icons/icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    }
+  ]
+}

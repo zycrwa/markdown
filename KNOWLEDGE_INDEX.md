@@ -15,8 +15,10 @@ AI 处理新资料时，应先在本索引中按标题、别名、标签和范�
 | `dual-three-phase-pmsm` | 双三相永磁同步电机 SVPWM | 电机控制 | `unverified` |
 | `embedded-communication-protocols` | 嵌入式通信协议：UART、I2C、SPI 与 CAN | 嵌入式开发 | `unverified` |
 | `embedded-system-basics` | 嵌入式基础：GPIO 输出、Keil 工程与自举电荷泵 | 嵌入式开发 | `unverified` |
+| `llm-inference-acceleration-career-report` | 大模型推理加速就业与技术方向调研报告（2026） | 人工智能 | `unverified` |
 | `motor-drive-pcb-layout` | 电机驱动 PCB 布局与布线要点 | 硬件设计 | `unverified` |
 | `motor-drive-power-supply` | 电机驱动电源与保护器件设计笔记 | 硬件设计 | `unverified` |
+| `motor-embedded-software-roadmap` | 电机嵌入式软件实习路线：从 PMSM/FOC 到可交付固件 | 学习路线 | `unverified` |
 | `pmsm-control-basics` | PMSM 控制基础：一阶滞后、DOB 与低通滤波器 | 电机控制 | `unverified` |
 | `pmsm-harmonic-analysis` | 永磁同步电机谐波与六相矢量空间分析 | 电机控制 | `unverified` |
 | `pmsm-parameter-measurement` | PMSM 电感与磁链参数测量 | 电机控制 | `unverified` |
@@ -66,7 +68,7 @@ AI 处理新资料时，应先在本索引中按标题、别名、标签和范�
 - 范围：覆盖 DengFOC 坐标变换与三环代码实现；PMSM 理论模型和 PI 参数推导由关联文章维护。
 - 别名：DengFOC、FOC 三环控制、位置速度电流三环
 - 标签：DengFOC、FOC、位置环、速度环、电流环
-- 关联文章：`three-phase-pmsm`、`pmsm-speed-loop-pi-tuning`、`stm32-clion-development`、`pmsm-parameter-measurement`
+- 关联文章：`three-phase-pmsm`、`pmsm-speed-loop-pi-tuning`、`stm32-clion-development`、`pmsm-parameter-measurement`、`motor-embedded-software-roadmap`
 - 原稿：`archive/original-posts/dengfoc学习笔记-常用foc代码.md`
 
 ### 双三相永磁同步电机 SVPWM
@@ -86,7 +88,7 @@ AI 处理新资料时，应先在本索引中按标题、别名、标签和范�
 - 范围：覆盖 UART、I2C、SPI 与 CAN 的协议原理和工程约束；STM32 代码实现由开发实践文章维护。
 - 别名：串口与总线协议、UART I2C SPI CAN
 - 标签：UART、I2C、SPI、CAN
-- 关联文章：`embedded-system-basics`、`stm32-clion-development`
+- 关联文章：`embedded-system-basics`、`stm32-clion-development`、`motor-embedded-software-roadmap`
 - 原稿：`archive/original-posts/嵌入式.md`
 
 ### 嵌入式基础：GPIO 输出、Keil 工程与自举电荷泵
@@ -96,8 +98,18 @@ AI 处理新资料时，应先在本索引中按标题、别名、标签和范�
 - 范围：覆盖 GPIO 输出模式、Keil 工程结构和自举电荷泵；通信协议与 STM32 实现由关联文章维护。
 - 别名：GPIO 输出模式、Keil 工程结构、自举电荷泵
 - 标签：GPIO、Keil、电荷泵
-- 关联文章：`embedded-communication-protocols`、`stm32-clion-development`、`motor-drive-power-supply`
+- 关联文章：`embedded-communication-protocols`、`stm32-clion-development`、`motor-drive-power-supply`、`motor-embedded-software-roadmap`
 - 原稿：`archive/original-posts/嵌入式基础知识.md`
+
+### 大模型推理加速就业与技术方向调研报告（2026）
+
+- ID：`llm-inference-acceleration-career-report`
+- 文件：`source/_posts/llm-inference-acceleration-career-report.md`
+- 范围：基于 2026-08-23 可核对的官方岗位样本、开源项目文档和论文，分析大模型推理加速的就业岗位族、技术栈、进入门槛、硬件与内存方向匹配度及 12 周验证路线。
+- 别名：大模型推理加速就业报告、LLM Inference 加速方向、推理系统工程师路线
+- 标签：大模型推理、推理加速、CUDA、GPU、C++、KV Cache、AI 编译器、量化、就业调研
+- 关联文章：无
+- 原稿：`archive/incoming/2026-08-23/llm-inference-acceleration-career-report-research.md`
 
 ### 电机驱动 PCB 布局与布线要点
 
@@ -119,6 +131,16 @@ AI 处理新资料时，应先在本索引中按标题、别名、标签和范�
 - 关联文章：`component-selection-parameters`、`embedded-system-basics`、`motor-drive-pcb-layout`、`semiconductor-basics`
 - 原稿：`archive/original-posts/电机电源.md`
 
+### 电机嵌入式软件实习路线：从 PMSM/FOC 到可交付固件
+
+- ID：`motor-embedded-software-roadmap`
+- 文件：`source/_posts/motor-embedded-software-roadmap.md`
+- 范围：面向未来 12–16 周的电机嵌入式软件求职路线，基于现有 PMSM/FOC 与 STM32 笔记，覆盖 C、实时外设、同步采样、控制实现、保护、通信、测试、项目作品和面试验收。
+- 别名：电机嵌入式软件学习路线、PMSM FOC 嵌入式路线、电机控制固件求职路线
+- 标签：电机嵌入式、STM32、FOC、PMSM、C 语言、实时系统、实习求职、项目制学习
+- 关联文章：`embedded-system-basics`、`stm32-clion-development`、`embedded-communication-protocols`、`three-phase-pmsm`、`pmsm-control-basics`、`dengfoc-control-code`、`pmsm-parameter-measurement`、`pmsm-speed-loop-pi-tuning`、`simulink-motor-simulation`
+- 原稿：`archive/incoming/2026-08-22/motor-embedded-software-roadmap-research.md`、`archive/original-posts/嵌入式基础知识.md`、`archive/original-posts/嵌入式.md`、`archive/original-posts/STM32_CLION.md`、`archive/original-posts/三相永磁同步电机.md`、`archive/original-posts/dengfoc学习笔记-常用foc代码.md`、`archive/original-posts/转速环PI参数整定.md`、`archive/original-posts/电机疑问讨论.md`、`archive/original-posts/simulink仿真.md`
+
 ### PMSM 控制基础：一阶滞后、DOB 与低通滤波器
 
 - ID：`pmsm-control-basics`
@@ -126,7 +148,7 @@ AI 处理新资料时，应先在本索引中按标题、别名、标签和范�
 - 范围：覆盖一阶滞后、扰动观测器和低通离散化；不重复 PMSM 完整模型与具体速度环参数整定。
 - 别名：PMSM 自动控制原理、扰动观测器、一阶低通滤波器
 - 标签：PMSM、DOB、低通滤波器、离散化
-- 关联文章：`analog-filter-design`、`three-phase-pmsm`、`pmsm-speed-loop-pi-tuning`
+- 关联文章：`analog-filter-design`、`three-phase-pmsm`、`pmsm-speed-loop-pi-tuning`、`motor-embedded-software-roadmap`
 - 原稿：`archive/original-posts/pmsm自动控制原理.md`
 
 ### 永磁同步电机谐波与六相矢量空间分析
@@ -146,7 +168,7 @@ AI 处理新资料时，应先在本索引中按标题、别名、标签和范�
 - 范围：覆盖 PMSM 相电感、dq 轴电感与永磁体磁链测量；控制模型和代码实现由关联文章维护。
 - 别名：PMSM 参数辨识、电机电感测量、永磁体磁链测量
 - 标签：PMSM、参数辨识、电感测量、磁链
-- 关联文章：`three-phase-pmsm`、`dengfoc-control-code`、`simulink-motor-simulation`
+- 关联文章：`three-phase-pmsm`、`dengfoc-control-code`、`simulink-motor-simulation`、`motor-embedded-software-roadmap`
 - 原稿：`archive/original-posts/电机疑问讨论.md`
 
 ### PMSM 转速环 PI 参数整定推导
@@ -156,7 +178,7 @@ AI 处理新资料时，应先在本索引中按标题、别名、标签和范�
 - 范围：覆盖带有功阻尼的 PMSM 转速环 PI 推导；电流环、完整电机模型和代码实现由关联文章维护。
 - 别名：转速环 PI、速度环参数整定、PMSM 速度环
 - 标签：PMSM、PI 控制、转速环、有功阻尼
-- 关联文章：`pmsm-control-basics`、`dengfoc-control-code`、`three-phase-pmsm`
+- 关联文章：`pmsm-control-basics`、`dengfoc-control-code`、`three-phase-pmsm`、`motor-embedded-software-roadmap`
 - 原稿：`archive/original-posts/转速环PI参数整定.md`
 
 ### 半导体基础：PN 结与 MOSFET
@@ -176,7 +198,7 @@ AI 处理新资料时，应先在本索引中按标题、别名、标签和范�
 - 范围：覆盖 Simulink 电机控制模块、建模建议与无感仿真入口；电机和谐波理论由关联文章维护。
 - 别名：电机 Simulink 仿真、PMSM 仿真、无感控制仿真
 - 标签：Simulink、电机仿真、无感控制
-- 关联文章：`three-phase-pmsm`、`pmsm-harmonic-analysis`、`pmsm-parameter-measurement`
+- 关联文章：`three-phase-pmsm`、`pmsm-harmonic-analysis`、`pmsm-parameter-measurement`、`motor-embedded-software-roadmap`
 - 原稿：`archive/original-posts/simulink仿真.md`
 
 ### STM32 与 CLion 开发实践
@@ -186,7 +208,7 @@ AI 处理新资料时，应先在本索引中按标题、别名、标签和范�
 - 范围：覆盖 STM32 的 CLion/CMake 配置与外设代码；通信协议原理和 FOC 理论由关联文章维护。
 - 别名：STM32 CLion、STM32 CMake、STM32 HAL 外设
 - 标签：STM32、CLion、CMake、HAL
-- 关联文章：`embedded-system-basics`、`embedded-communication-protocols`、`dengfoc-control-code`
+- 关联文章：`embedded-system-basics`、`embedded-communication-protocols`、`dengfoc-control-code`、`motor-embedded-software-roadmap`
 - 原稿：`archive/original-posts/STM32_CLION.md`
 
 ### 三相永磁同步电机建模与控制
@@ -196,7 +218,7 @@ AI 处理新资料时，应先在本索引中按标题、别名、标签和范�
 - 范围：面向建模、仿真与分析，整理三相 PMSM 的建模假设、abc/αβ/dq 方程、可直接实现的 Simulink 状态模型、SPMSM 简化、SVPWM 与电流环；速度环、参数测量和谐波分析由关联文章维护。
 - 别名：三相 PMSM、PMSM FOC、永磁同步电机建模、PMSM 数学模型、PMSM Simulink 模型
 - 标签：PMSM、数学建模、状态空间、Simulink、SVPWM、电流环
-- 关联文章：`dual-three-phase-pmsm`、`pmsm-control-basics`、`pmsm-harmonic-analysis`、`pmsm-parameter-measurement`、`pmsm-speed-loop-pi-tuning`、`dengfoc-control-code`、`simulink-motor-simulation`
+- 关联文章：`dual-three-phase-pmsm`、`pmsm-control-basics`、`pmsm-harmonic-analysis`、`pmsm-parameter-measurement`、`pmsm-speed-loop-pi-tuning`、`dengfoc-control-code`、`simulink-motor-simulation`、`motor-embedded-software-roadmap`
 - 原稿：`archive/original-posts/三相永磁同步电机.md`、`archive/incoming/2026-08-10/pmsm_mathematical_model.md`
 
 ### Word 中文论文排版与公式行距设置

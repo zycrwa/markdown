@@ -1,7 +1,7 @@
 ---
 title: "嵌入式基础：GPIO 输出、Keil 工程与自举电荷泵"
 date: 2026-08-01 22:02:00
-updated: 2026-08-01 22:02:00
+updated: 2026-08-22 19:14:00
 description: "覆盖 GPIO 输出模式、Keil 工程结构和自举电荷泵；通信协议与 STM32 实现由关联文章维护。"
 permalink: embedded/embedded-system-basics/
 categories:
@@ -18,6 +18,7 @@ related_posts:
   - embedded-communication-protocols
   - stm32-clion-development
   - motor-drive-power-supply
+  - motor-embedded-software-roadmap
 source_docs:
   - "archive/original-posts/嵌入式基础知识.md"
 review_status: unverified

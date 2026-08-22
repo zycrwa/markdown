@@ -10,6 +10,7 @@ menu:
   archives: /archives/ || fa fa-archive
   categories: /categories/ || fa fa-th
   tags: /tags/ || fa fa-tags
+  知识阅读器: /reader/ || fa fa-book-open
   about: /about/ || fa fa-user
 
 menu_settings:

@@ -1,7 +1,7 @@
 ---
 title: "三相永磁同步电机建模与控制"
 date: 2026-08-01 22:11:00
-updated: 2026-08-11 23:26:51
+updated: 2026-08-22 19:14:00
 description: "面向建模、仿真与分析，整理三相 PMSM 的建模假设、abc/αβ/dq 方程、可直接实现的 Simulink 状态模型、SPMSM 简化、SVPWM 与电流环；速度环、参数测量和谐波分析由关联文章维护。"
 permalink: motor-control/three-phase-pmsm/
 categories:
@@ -27,6 +27,7 @@ related_posts:
   - pmsm-speed-loop-pi-tuning
   - dengfoc-control-code
   - simulink-motor-simulation
+  - motor-embedded-software-roadmap
 source_docs:
   - "archive/original-posts/三相永磁同步电机.md"
   - "archive/incoming/2026-08-10/pmsm_mathematical_model.md"

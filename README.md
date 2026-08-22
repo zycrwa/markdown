@@ -230,6 +230,7 @@ Front Matter 字段说明：
 | `npm run knowledge:index` | 根据全部文章元数据重建 `KNOWLEDGE_INDEX.md` |
 | `npm run check:posts` | 检查元数据、关联、原稿、图片、公式、标题和知识索引 |
 | `npm run build` | 检查通过后生成静态网页到 `public/` |
+| `npm run check:reader` | 检查已生成的阅读器目录、正文、图片、图标和安装清单 |
 | `npm run server` | 启动本地预览服务器 |
 | `npm run clean` | 清理 Hexo 生成文件和缓存 |
 | `npm run deploy` | 检查、重新生成并发布到 GitHub Pages |
@@ -244,6 +245,34 @@ npm run build
 ```
 
 `build` 和 `deploy` 都会先运行检查，但不会自动改写知识索引；索引过期时会停止并提示运行 `npm run knowledge:index`。
+
+## 知识笔记阅读器
+
+仓库包含位于 `/markdown/reader/` 的可安装阅读器。它直接使用 Hexo 构建后的正文片段，支持分类、全文搜索、收藏、阅读历史、深色模式、图片查看和按篇离线下载，不会加载体积较大的 `search.xml`。
+
+### Android 安装包（最方便的试用方式）
+
+本地 `app/ZY知识笔记-试用版.apk` 可直接安装到 Android 7.0 或更高版本的手机：
+
+1. 把 APK 复制或发送到手机，点击文件开始安装。
+2. 如果系统提示禁止安装，请按提示只为当前文件管理器开启“允许安装未知应用”，安装完成后可以再关闭该权限。
+3. 第一次安装可能显示“未知来源”或 Play Protect 提醒，这是因为试用包使用本地调试签名、没有上架应用商店；确认文件来自本仓库后选择继续安装即可。
+4. 首次打开时保持联网，应用会从 GitHub Pages 下载文章目录、全部正文和正文图片；同步完成后即可断网阅读。
+
+APK 只包含程序和阅读器界面，不包含文章目录、正文或正文图片。应用每次打开都会检查云端：有更新时先下载并校验一份完整快照，全部成功后才切换；没有网络或同步失败时继续使用上一次成功同步的本地版本。首次安装、卸载重装或清除应用数据后，本机没有快照，必须联网完成一次同步。收藏、历史记录和深色模式也保存在应用数据中，卸载或清除数据会一并删除。
+
+只有阅读器已经通过 `npm run deploy` 发布到 GitHub Pages 后，首次同步才会成功。文章更新只需重新发布网站，不需要重新制作 APK；只有 Android 程序本身变化时才需要运行 `app/android-reader/build-debug.ps1` 并覆盖安装。请备份被 Git 忽略的 `app/android-reader/.signing/debug.keystore`，覆盖安装必须继续使用同一签名密钥。构建细节见 `app/android-reader/README.md`。
+
+### Windows/PWA 试用
+
+1. 如果电脑还没有 Node.js，请先从 [Node.js 官网](https://nodejs.org/) 安装当前 LTS 版本（要求 Node.js 20.19、npm 10 或更高版本）。
+2. 双击 `app/启动笔记阅读器.cmd`；脚本会自动检查依赖、构建内容，并从 4000—4010 中选择一个端口。首次选择会保存在 `.tmp/reader-port.txt`，以后保持同一个安装地址。
+3. 等待浏览器自动打开，然后点击页面右上角的“安装”，将阅读器安装为独立应用。
+4. 第一次打开后，等待页面提示“18 篇正文已保存到本机”。此后停止本地服务仍可阅读全部文字正文；文章页的“离线”按钮用于额外保存该篇文章的图片。使用结束时回到启动窗口按 Enter，让脚本正常停止服务。
+
+这是从当前仓库内容生成的本地试用版。第一次缓存正文及查看尚未保存的图片时需要保持本地服务运行；正文准备完成后，日常文字阅读不再依赖启动窗口。以后明确执行 `npm run deploy` 发布阅读器后，可以直接从 GitHub Pages 安装在线版。
+
+阅读器数据由 `scripts/reader-index.js` 在 Hexo 构建时自动生成，不需要手工维护。`scripts/check-reader.js` 会在 `npm run build` 和 `npm run deploy` 过程中验证全部文章的真实 URL、正文片段及其本地图片。
 
 ## 目录说明
 
@@ -261,6 +290,8 @@ public/                           Hexo 生成的网页，不手工修改或提�
 _config.yml                       Hexo 网站和部署配置
 _config.next.yml                  NexT 主题配置
 source/_data/                     NexT 自定义样式
+source/reader/                    发布到网站的阅读器源码（构建必需）
+app/                              本地 App 工程、安装包和启动器（Git 忽略）
 package.json                      npm 命令及项目依赖
 ```
 
