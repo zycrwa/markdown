@@ -1,0 +1,334 @@
+<article class="reader-content post-body" data-post-id="motor-embedded-software-roadmap"><p>这篇路线不是从“什么是电机”重新开始，而是把你已有的 PMSM、FOC、SVPWM、PI、Simulink 和 STM32 笔记，重排成一条能在几个月内产出求职证据的工程路径。目标是：在低压、限流、可复现的台架或仿真环境中，独立写出一套能解释、能测量、能保护、能调试的电机控制固件。</p>
+<span id="more"></span>
+
+<h2 id="先定目标：你要成为哪类候选人"><a href="#先定目标：你要成为哪类候选人" class="headerlink" title="先定目标：你要成为哪类候选人"></a>先定目标：你要成为哪类候选人</h2><p>“京东、抖音等大公司”并不对应一个统一的电机岗位。电机软件岗位可能挂在机器人、物流自动化、硬件平台、运动控制或通用嵌入式团队下。你应同时准备下面三种岗位画像，但把第一种作为主线：</p>
+<table>
+<thead>
+<tr>
+<th>岗位画像</th>
+<th>面试官想看到的证据</th>
+<th>你的投递策略</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>电机控制嵌入式</td>
+<td>C、MCU 定时器&#x2F;ADC&#x2F;DMA、编码器、FOC&#x2F;SVPWM、保护、示波器波形</td>
+<td>主简历，突出低压 PMSM FOC 项目</td>
+</tr>
+<tr>
+<td>机器人&#x2F;物流运动控制</td>
+<td>C&#x2F;C++、控制算法、嵌入式联调、CAN、仿真&#x2F;HIL；有些团队还要 ROS、规划或视觉</td>
+<td>第二份简历，突出控制器接口、故障状态机和仿真</td>
+</tr>
+<tr>
+<td>通用嵌入式&#x2F;硬件系统</td>
+<td>ARM&#x2F;MCU、RTOS、OS 移植、总线、硬件调试、C&#x2F;C++、构建与测试</td>
+<td>用同一项目展示底层和工程化，弱化过深的电机理论</td>
+</tr>
+</tbody></table>
+<p>截至 2026-08-22，本次核对到的京东校园岗位样本包含“嵌入式技术工程师”（ARM&#x2F;MCU&#x2F;SoC、OS 移植、CAN&#x2F;RS485&#x2F;SPI、硬件调试）、“具身智能与机器人开发”（C++&#x2F;Python、嵌入式调试、FOC、机器人控制）以及物流机器人和导航控制岗位（C&#x2F;C++、Matlab&#x2F;Simulink、SIL&#x2F;MIL&#x2F;HIL、控制算法）。这些是某一时点的公开样本，不是未来岗位的承诺。抖音&#x2F;字节跳动在本次整理中没有确认一个稳定、直接对应电机控制的公开岗位，因此应把通用嵌入式、机器人和硬件系统岗位作为相邻投递面，并在投递前重新查看官方职位页。</p>
+<p>本次样本的可追溯信息如下；岗位标识只用于复核，不代表岗位仍在开放：</p>
+<table>
+<thead>
+<tr>
+<th>样本</th>
+<th>公开标识与日期</th>
+<th>对学习路线的启示</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>京东嵌入式技术工程师</td>
+<td>publishId 9103 &#x2F; reqId 2367，2026-07-23</td>
+<td>ARM&#x2F;MCU&#x2F;SoC、OS 移植、CAN&#x2F;RS485&#x2F;SPI、硬件调试</td>
+</tr>
+<tr>
+<td>京东具身智能与机器人开发</td>
+<td>publishId 9207 &#x2F; reqId 2348，2026-08-04</td>
+<td>C++&#x2F;Python、FOC、机器人学和嵌入式联调</td>
+</tr>
+<tr>
+<td>京东物流仓储机器人、无人机导航控制</td>
+<td>publishId 8620&#x2F;2321、9030&#x2F;2454，2026-07-20 至 2026-07-23</td>
+<td>控制算法、Matlab&#x2F;Simulink、SIL&#x2F;MIL&#x2F;HIL 和传感器融合</td>
+</tr>
+<tr>
+<td>字节&#x2F;抖音中国大陆北京检索</td>
+<td>2026-08-22 未找到稳定的电机&#x2F;嵌入式&#x2F;机器人&#x2F;运动控制岗位</td>
+<td>不把相邻岗位当成确定机会，投递前重新核对官方页面</td>
+</tr>
+</tbody></table>
+<p>字节公开的相邻岗位（多为海外或研究型）更偏 C&#x2F;C++、Linux、ARM&#x2F;RTOS、端侧性能与功耗、FPGA&#x2F;ASIC 或感知算法；因此把这些作为第二技能轨道即可，主线仍应先做出可测量的 PWM&#x2F;ADC&#x2F;FOC&#x2F;CAN 固件。</p>
+<p>公开入口：</p>
+<ul>
+<li><a href="https://campus.jd.com/">京东校园招聘</a></li>
+<li><a href="https://joinbytedance.com/search">字节跳动招聘</a></li>
+</ul>
+<h2 id="你的起点与真正缺口"><a href="#你的起点与真正缺口" class="headerlink" title="你的起点与真正缺口"></a>你的起点与真正缺口</h2><p>你不是“没有基础”，而是电机控制理论明显领先于实时固件工程。现有文章均为 <code>review_status: unverified</code>，下面的“已具备”表示已经有学习材料或原型，不等于已经通过实机验证。</p>
+<table>
+<thead>
+<tr>
+<th>领域</th>
+<th>现有证据</th>
+<th>求职前必须升级的能力</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>电机与控制</td>
+<td><code>three-phase-pmsm</code> 有模型、坐标变换、SVPWM 和电流环；另有速度环、参数测量、谐波文章</td>
+<td>把符号、幅值约定、采样延迟、限压和抗饱和落实到逐点测试</td>
+</tr>
+<tr>
+<td>FOC 代码</td>
+<td><code>dengfoc-control-code</code> 有开环、编码器对齐和三环示例</td>
+<td>从 Arduino&#x2F;ESP32 轮询迁移到 STM32 固定频率 PWM-ADC ISR；测周期、抖动和 CPU 占用</td>
+</tr>
+<tr>
+<td>STM32 外设</td>
+<td>已有 GPIO、EXTI、I2C、SPI、UART、CMake&#x2F;HAL 笔记</td>
+<td>补高级定时器互补 PWM、死区、Break、ADC 触发、DMA、编码器接口和看门狗</td>
+</tr>
+<tr>
+<td>C&#x2F;工具链</td>
+<td>能阅读示例和写外设片段</td>
+<td>系统掌握指针、数组、结构体、位操作、<code>volatile</code>、内存&#x2F;链接、未定义行为、GDB、Git 和可复现构建</td>
+</tr>
+<tr>
+<td>通信</td>
+<td>已有 UART&#x2F;I2C&#x2F;SPI&#x2F;CAN 帧原理</td>
+<td>实现 DMA 环形缓冲、长度&#x2F;CRC&#x2F;超时&#x2F;序号、CAN 应用层、错误计数和总线恢复</td>
+</tr>
+<tr>
+<td>工程质量</td>
+<td>有零散实验，但没有完整项目证据</td>
+<td>主机单测、故障注入、示波器&#x2F;逻辑分析仪记录、README、CI 和一次 bug 复盘</td>
+</tr>
+<tr>
+<td>系统软件</td>
+<td>尚无实时任务边界和状态机作品</td>
+<td>先做好裸机快速环，再用 FreeRTOS 承载通信、日志和参数管理</td>
+</tr>
+</tbody></table>
+<p>最大的断点不是再读一篇六相谐波，而是完成这条链：</p>
+<p><code>定时器 PWM → ADC 同步采样 → 标定/滤波 → Clarke/Park → 电流 PI → SVPWM → 保护关断 → 遥测与测试</code>。</p>
+<h2 id="概念依赖图与优先级"><a href="#概念依赖图与优先级" class="headerlink" title="概念依赖图与优先级"></a>概念依赖图与优先级</h2><p>按下面的依赖关系学习；箭头左侧没有稳定，右侧就不要急着上板：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">C11/指针/内存/Git/CMake</span><br><span class="line">        ↓</span><br><span class="line">MCU 启动/时钟/NVIC/定时器/DMA/调试器</span><br><span class="line">        ↓</span><br><span class="line">中心对齐 PWM/互补死区/Break + ADC 触发/编码器</span><br><span class="line">        ↓</span><br><span class="line">固定周期与执行时间预算/采样标定/故障状态机</span><br><span class="line">        ↓</span><br><span class="line">离散 PI/限幅/抗饱和/滤波 + Clarke/Park/电角度</span><br><span class="line">        ↓</span><br><span class="line">SVPWM → 电流环 → 速度环/位置环 → 参数辨识</span><br><span class="line">        ↓</span><br><span class="line">CAN/UART 诊断/Flash 参数/RTOS/测试与 CI</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>优先级</th>
+<th>现在学什么</th>
+<th>暂时不学什么</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>P0，必须完成</td>
+<td>C 与编译链接、TIM&#x2F;ADC&#x2F;DMA&#x2F;编码器、离散 PI、Clarke&#x2F;Park、SVPWM、有感 FOC、保护、UART&#x2F;CAN、Git&#x2F;CMake、示波器和单测</td>
+<td>任何没有可测验收标准的“看过”</td>
+</tr>
+<tr>
+<td>P1，有余力再做</td>
+<td>FreeRTOS、参数 Flash、HIL、定点优化、无感 SMO、弱磁&#x2F;MTPA、Bootloader</td>
+<td>先确保 P0 的闭环稳定</td>
+</tr>
+<tr>
+<td>P2，求职前可砍</td>
+<td>双三相&#x2F;VSD 深挖、复杂谐波、量产级无感高频注入、复杂 PCB、汇编优化、AUTOSAR&#x2F;Linux 内核</td>
+<td>不要用高阶主题掩盖实时链路缺失</td>
+</tr>
+</tbody></table>
+<h2 id="学习方法：每个概念必须落到证据"><a href="#学习方法：每个概念必须落到证据" class="headerlink" title="学习方法：每个概念必须落到证据"></a>学习方法：每个概念必须落到证据</h2><h3 id="1-采用-20-60-20-节奏"><a href="#1-采用-20-60-20-节奏" class="headerlink" title="1. 采用 20&#x2F;60&#x2F;20 节奏"></a>1. 采用 20&#x2F;60&#x2F;20 节奏</h3><ul>
+<li>20% 阅读：先查 <code>KNOWLEDGE_INDEX.md</code>，再读候选文章和数据手册对应章节。</li>
+<li>60% 实现：写最小 C 模块、Python&#x2F;Simulink 黄金模型、主机测试，再接低压硬件。</li>
+<li>20% 测量与复盘：记录波形、周期、误差、故障和仍不确定的假设。</li>
+</ul>
+<p>如果每周有 15–20 小时，工作日做 1–2 小时小实验，周末留半天做联调；只有 10 小时时，删掉 P1&#x2F;P2 扩展，不删同步采样、保护和测试。</p>
+<h3 id="2-对每个功能使用同一张实验卡"><a href="#2-对每个功能使用同一张实验卡" class="headerlink" title="2. 对每个功能使用同一张实验卡"></a>2. 对每个功能使用同一张实验卡</h3><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">问题：我想证明什么？</span><br><span class="line">假设：坐标、单位、采样时刻、边界条件是什么？</span><br><span class="line">最小实现：能否在主机或仿真中单独运行？</span><br><span class="line">测量：看哪条波形、日志或计时器？</span><br><span class="line">结论：数据支持、否定，还是仍待确认？</span><br><span class="line">回归：怎样让下一次构建自动检查它？</span><br></pre></td></tr></table></figure>
+
+<p>所有接口文档都写清楚单位、正方向、机械角&#x2F;电角、幅值不变还是功率不变变换，以及限幅前后的位置。不要把仿真曲线直接当成实机结论。</p>
+<h3 id="3-用“三层对拍”替代抄代码"><a href="#3-用“三层对拍”替代抄代码" class="headerlink" title="3. 用“三层对拍”替代抄代码"></a>3. 用“三层对拍”替代抄代码</h3><ol>
+<li>Python&#x2F;Simulink 参考模型：先确认方程、符号和边界。</li>
+<li>主机 C 实现：对 Clarke&#x2F;Park、PI、滤波器、SVPWM 做逐点和随机测试。</li>
+<li>STM32 低压实机：加入 ADC 偏置、量化、死区、延迟和噪声，再比较波形。</li>
+</ol>
+<p>DengFOC 代码适合用来读控制意图，不适合原样当生产固件：其中循环频率不固定，且没有完整的同步采样、硬件刹车和故障状态机。</p>
+<h3 id="4-现有笔记的阅读顺序"><a href="#4-现有笔记的阅读顺序" class="headerlink" title="4. 现有笔记的阅读顺序"></a>4. 现有笔记的阅读顺序</h3><ol>
+<li><a href="/embedded/embedded-system-basics/">嵌入式基础</a></li>
+<li><a href="/embedded/stm32-clion-development/">STM32 与 CLion</a></li>
+<li><a href="/embedded/communication-protocols/">通信协议</a></li>
+<li><a href="/simulation/simulink-motor-simulation/">Simulink 电机仿真</a></li>
+<li><a href="/motor-control/three-phase-pmsm/">三相 PMSM 建模与控制</a></li>
+<li><a href="/motor-control/dengfoc-control-code/">DengFOC 代码与三环</a></li>
+<li><a href="/motor-control/pmsm-control-basics/">PMSM 控制基础</a></li>
+<li><a href="/motor-control/pmsm-speed-loop-pi-tuning/">速度环 PI 整定</a></li>
+<li><a href="/motor-control/pmsm-parameter-measurement/">参数测量</a></li>
+</ol>
+<p>读到公式或 HAL API 时，回到对应芯片参考手册核对；这些笔记的审核状态仍是 <code>unverified</code>。</p>
+<h2 id="14-周主线计划"><a href="#14-周主线计划" class="headerlink" title="14 周主线计划"></a>14 周主线计划</h2><p>默认每周 15–20 小时，使用 STM32G4&#x2F;F3 或手头等价 MCU、12–24 V 限流电源、编码器&#x2F;霍尔和低压 BLDC&#x2F;PMSM 台架。没有硬件时，用电机离散模型、录播 ADC 数据和主机测试替代。</p>
+<table>
+<thead>
+<tr>
+<th>周次</th>
+<th>学习与实现</th>
+<th>本周交付和退出条件</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>C11、指针&#x2F;数组&#x2F;结构体、位操作、<code>const</code>&#x2F;<code>static</code>&#x2F;<code>volatile</code>、栈堆；Git、CMake、GCC&#x2F;GDB</td>
+<td>环形缓冲、CRC、PI 小模块可主机编译；<code>-Wall -Wextra</code> 无未解释警告，至少 20 个测试</td>
+</tr>
+<tr>
+<td>2</td>
+<td>启动流程、时钟树、Flash&#x2F;RAM&#x2F;map、NVIC、SysTick、SWD 调试</td>
+<td>可复现的 blink&#x2F;按键&#x2F;1 kHz tick 工程；能从 map 文件解释内存占用</td>
+</tr>
+<tr>
+<td>3</td>
+<td>高级定时器中心对齐 PWM、互补输出、死区、Break；ADC 外部触发、DMA、编码器接口</td>
+<td>示波器确认频率、占空、死区和采样时刻；测出 ISR 周期抖动</td>
+</tr>
+<tr>
+<td>4</td>
+<td>电流&#x2F;母线&#x2F;温度采样校准、异常值和 DMA 双缓冲；驱动层与控制层分离</td>
+<td>遥测器连续运行并输出 CSV；模拟故障后 PWM 在示例的两个 PWM 周期内关闭，实际阈值按硬件复核</td>
+</tr>
+<tr>
+<td>5</td>
+<td>一阶对象、离散 PI、限幅、抗饱和、斜坡和状态机</td>
+<td>C 与 Python&#x2F;Simulink 逐点对拍；先做低压直流电机或六步速度闭环</td>
+</tr>
+<tr>
+<td>6</td>
+<td>UART DMA 环形缓冲、帧长度&#x2F;CRC&#x2F;超时&#x2F;序号；CAN ID、仲裁、过滤和错误计数</td>
+<td>PC CLI 可读写目标、限流和状态；丢帧&#x2F;坏 CRC 能被拒绝并计数</td>
+</tr>
+<tr>
+<td>7</td>
+<td>PMSM 电压&#x2F;磁链&#x2F;转矩方程、Clarke&#x2F;Park、机械角到电角、方向和零偏</td>
+<td>变换逆变换性质测试通过；明确每个角度和电流的单位、符号及误差阈值</td>
+</tr>
+<tr>
+<td>8</td>
+<td>SVPWM 扇区、零矢量、占空限幅、采样点；仿真电流环和解耦</td>
+<td>仿真中电流跟踪误差达到预设目标（示例 ≤5%），不同采样周期下不发散</td>
+</tr>
+<tr>
+<td>9</td>
+<td>编码器对齐、开环爬升、有感 FOC 上板；固定 <code>i_d^*=0</code>、限速、限流</td>
+<td>同时记录 PWM、ADC 触发、相电流和角度；出现异常能安全回退到停机状态</td>
+</tr>
+<tr>
+<td>10</td>
+<td>速度环带宽分离、速度 PI、负载阶跃、Rs&#x2F;Ld&#x2F;Lq&#x2F;磁链&#x2F;J 粗测</td>
+<td>给出工况、参数和波形；速度稳态误差、超调和响应时间均有实测而非只报仿真值</td>
+</tr>
+<tr>
+<td>11</td>
+<td>过流&#x2F;过压&#x2F;欠压&#x2F;过温&#x2F;堵转&#x2F;编码器失联、看门狗、故障锁存与恢复</td>
+<td>故障注入矩阵完整；硬件 Break 优先，软件状态机能解释每个错误码</td>
+</tr>
+<tr>
+<td>12</td>
+<td>模块接口、配置版本、Flash 参数双备份、Doxygen、静态检查、主机 CI</td>
+<td>clean build 一键完成；README 有架构图、时序图、接线、参数、限制和复现步骤</td>
+</tr>
+<tr>
+<td>13</td>
+<td>裸机闭环稳定后再学 FreeRTOS&#x2F;CMSIS-RTOS；任务、队列、通知、互斥</td>
+<td>快速电流环仍留在定时 ISR；通信&#x2F;日志&#x2F;参数任务不阻塞控制环，记录 CPU 和栈余量</td>
+</tr>
+<tr>
+<td>14</td>
+<td>DWT&#x2F;ITM&#x2F;逻辑分析仪&#x2F;SWV、WCET、抖动、RAM&#x2F;Flash、故障复盘和面试演示</td>
+<td>2 分钟讲清架构，10 分钟解释一条波形，能用数据复盘一次 bug</td>
+</tr>
+</tbody></table>
+<p>第 15–16 周只选一个差异化方向：无感 SMO、弱磁&#x2F;MTPA、HIL 回归、Bootloader&#x2F;DFU 或 CANopen。若只有 12 周，合并第 1–2、5–6、7–8、11–12 周，砍掉 RTOS 和无感；不要砍第 3、4、9、11 周。</p>
+<h2 id="三个递进项目"><a href="#三个递进项目" class="headerlink" title="三个递进项目"></a>三个递进项目</h2><h3 id="项目一：Motor-Firmware-Lab"><a href="#项目一：Motor-Firmware-Lab" class="headerlink" title="项目一：Motor-Firmware-Lab"></a>项目一：Motor-Firmware-Lab</h3><p>先不追求电机性能，做一个“能采、能报、能停”的安全节点：</p>
+<ul>
+<li>STM32 定时器输出 PWM，ADC 由定时器触发并经 DMA 搬运；编码器&#x2F;霍尔提供速度。</li>
+<li>UART 或 CAN 提供目标值、限流、状态和故障码；协议有长度、CRC、超时和序号。</li>
+<li>采样偏置&#x2F;增益校准、看门狗、硬件故障输入和软件状态机同时存在。</li>
+<li>交付 Git 仓库、BOM&#x2F;接线图、主机单测、CSV 波形和故障报告。</li>
+</ul>
+<p>示例验收值（需按板卡调整）：连续采样 10 分钟无丢帧；过流输入触发后两个 PWM 周期内关闭；主机测试覆盖核心模块 80% 以上分支。</p>
+<h3 id="项目二：Sensor-Foc-Drive"><a href="#项目二：Sensor-Foc-Drive" class="headerlink" title="项目二：Sensor-Foc-Drive"></a>项目二：Sensor-Foc-Drive</h3><p>在项目一上加入有感 PMSM&#x2F;BLDC FOC，先仿真再实机：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ADC/编码器 → 标定与时间戳 → Clarke/Park</span><br><span class="line">          → Id/Iq PI + 限压/抗饱和/解耦</span><br><span class="line">          → 反 Park → SVPWM → 互补 PWM</span><br></pre></td></tr></table></figure>
+
+<p>必须包含转子对齐、开环爬升、闭环切换、方向检查、限速限流、急停和编码器零电角校准。示例目标为 20 kHz 电流环、1 kHz 速度环；具体频率取决于 MCU、驱动板和电机。</p>
+<p>验收要给出测试条件：电流阶跃误差、速度阶跃超调&#x2F;稳态误差、ISR 抖动、CPU 占用、母线电压和负载。仿真结果和实机结果要能逐项对拍，不能只放“电机转起来”的视频。</p>
+<h3 id="项目三：Production-Like-Motor-Controller"><a href="#项目三：Production-Like-Motor-Controller" class="headerlink" title="项目三：Production-Like-Motor-Controller"></a>项目三：Production-Like-Motor-Controller</h3><p>把项目二包装成大厂能读懂的固件栈：</p>
+<ul>
+<li>快速控制 ISR、1 kHz 控制任务、10–100 Hz 通信&#x2F;遥测任务、日志任务明确分层。</li>
+<li>CAN 参数协议有版本、缩放、心跳、超时、故障码和错误计数；Flash 参数有 CRC 和双备份。</li>
+<li>过流、欠压、过温、堵转、传感器断线和看门狗都有状态转移、恢复条件和复现步骤。</li>
+<li>主机单测、录播数据回放、HIL 或故障注入进入 CI；README 说明已知限制和未验证项。</li>
+</ul>
+<p>可选指标：CPU 峰值低于 70%、栈余量高于 20%、控制 ISR 抖动低于周期的 5%、连续回归 2 小时无崩溃。指标只是示例，必须带硬件、编译选项和测量方法。</p>
+<h2 id="必须能讲清的概念"><a href="#必须能讲清的概念" class="headerlink" title="必须能讲清的概念"></a>必须能讲清的概念</h2><table>
+<thead>
+<tr>
+<th>模块</th>
+<th>面试前的最低解释深度</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>C 与内存</td>
+<td><code>volatile</code> 解决什么问题、不能解决什么问题；ISR 共享数据如何避免竞态；栈&#x2F;堆&#x2F;链接脚本&#x2F;map 如何影响固件</td>
+</tr>
+<tr>
+<td>PWM 与采样</td>
+<td>为什么中心对齐、何时触发 ADC、互补输出和死区怎样避免直通、Break 为什么要走硬件链路</td>
+</tr>
+<tr>
+<td>实时性</td>
+<td>ISR 周期、最坏执行时间、抖动、优先级和 DMA 缓冲怎样测量；为什么控制环不能 <code>delay</code> 或阻塞通信</td>
+</tr>
+<tr>
+<td>FOC</td>
+<td>Clarke&#x2F;Park 的约定、$	heta_e&#x3D;p	heta_m+	heta_0$、$i_d&#x2F;i_q$ 的物理意义、编码器零偏和方向如何校准</td>
+</tr>
+<tr>
+<td>PI 与 SVPWM</td>
+<td>离散化、积分抗饱和、限压、采样&#x2F;PWM 延迟、六扇区和线性调制边界如何影响稳定性</td>
+</tr>
+<tr>
+<td>保护</td>
+<td>过流、欠压、过温、堵转和传感器失联的检测路径、响应时间、锁存&#x2F;恢复策略和故障码</td>
+</tr>
+<tr>
+<td>通信</td>
+<td>CAN 仲裁&#x2F;过滤&#x2F;错误状态，UART 帧同步、CRC、超时、序号和心跳；应用信号如何缩放并处理越界</td>
+</tr>
+<tr>
+<td>RTOS</td>
+<td>哪些工作放 ISR、哪些放任务；队列&#x2F;通知&#x2F;互斥和优先级反转；栈水位与看门狗如何验证</td>
+</tr>
+<tr>
+<td>调试</td>
+<td>电机不转、抖动、过流、速度漂移时，如何按“供电→PWM→采样→角度→变换→PI→负载”排查并用波形证伪</td>
+</tr>
+</tbody></table>
+<p>每道题用四句话回答：定义或现象 → 取舍 → 项目证据 → 失败与修复。这样比背一段控制理论更接近面试追问。</p>
+<h2 id="求职交付包"><a href="#求职交付包" class="headerlink" title="求职交付包"></a>求职交付包</h2><p>投递前至少准备以下材料：</p>
+<ol>
+<li>一个可 clean build 的 Git 仓库，包含源码、构建命令、芯片&#x2F;板卡版本和参数文件。</li>
+<li>一张架构图、一张 PWM-ADC-ISR 时序图、一张故障状态机图。</li>
+<li>三组数据：电流&#x2F;速度阶跃、实时性（周期&#x2F;抖动&#x2F;CPU&#x2F;内存）、故障注入（触发到关断的时间）。</li>
+<li>3–5 分钟演示和 1 页技术报告；明确哪些是仿真、示例阈值或尚未验证。</li>
+<li>两个简历版本：电机控制版突出 FOC&#x2F;采样&#x2F;保护，通用嵌入式版突出 C&#x2F;RTOS&#x2F;通信&#x2F;测试。</li>
+</ol>
+<p>项目经历不要写“学习了 FOC”。写成“在某 MCU 上用定时器同步 ADC，完成有感 PMSM 电流环；通过示波器测得采样时刻和 ISR 抖动，加入硬件 Break 与软件故障状态机，并用录播数据回归验证”。所有数字都必须能从仓库或实验记录追溯。</p>
+<h2 id="安全、核验与资料入口"><a href="#安全、核验与资料入口" class="headerlink" title="安全、核验与资料入口"></a>安全、核验与资料入口</h2><p>只在 12–24 V、限流、带急停和隔离条件下做上板实验；不要把裸 MOSFET 半桥或高压母线作为几个月内的学习捷径。先用示波器确认 PWM 互补、死区、ADC 触发和故障关断，再接电机。</p>
+<p>当前笔记有几类必须主动复核的风险：DengFOC 示例是轮询&#x2F;SPWM 风格，不能直接代表固定频率 FOC；STM32 示例中的阻塞式回调不能放进快速 ISR；部分低通离散化、参数测量和 PI 推导依赖特定假设。发现矛盾时保留原始条件和“不确定”，不要把 AI 整理内容改写成已验证事实。</p>
+<p>推荐的官方资料入口：</p>
+<ul>
+<li><a href="https://www.st.com/en/microcontrollers-microprocessors/stm32g4-series.html">STM32G4 系列</a> 与对应参考手册&#x2F;数据手册</li>
+<li><a href="https://www.st.com/en/embedded-software/stm32cubeg4.html">STM32CubeG4</a></li>
+<li><a href="https://arm-software.github.io/CMSIS_6/latest/">Arm CMSIS 文档</a></li>
+<li><a href="https://www.freertos.org/">FreeRTOS 文档</a></li>
+<li><a href="https://www.ti.com/tool/C2000WARE-MOTORCONTROL-SDK">TI C2000 MotorControl SDK</a></li>
+</ul>
+<p>这篇路线是 AI 基于现有笔记和公开岗位样本整理的未验证规划；岗位开放状态、芯片外设细节、控制指标和安全阈值都应在实际项目中重新核对。</p>
+</article>

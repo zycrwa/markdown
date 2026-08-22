@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "revision": "a139dbd42915dbb00fadb65ec8b854d30992fac38026c2c8c98a448b21f1cbf3",
-  "generatedAt": "2026-08-19T16:14:08.373Z",
+  "revision": "7858db15ccd28930debe63cd3185215702f779bfcb941f6d70d04f9fda5db340",
+  "generatedAt": "2026-08-22T17:48:24.564Z",
   "siteRoot": "/markdown/",
-  "postCount": 18,
-  "fileCount": 144,
-  "totalBytes": 18760825,
+  "postCount": 20,
+  "fileCount": 146,
+  "totalBytes": 18873930,
   "files": [
     {
       "path": "images/posts/altium-designer-notes/001-7d12c0486a.png",
@@ -634,8 +634,8 @@
     },
     {
       "path": "reader/data/posts.json",
-      "bytes": 144060,
-      "sha256": "4ca4a581f427e78043bf57e0fb36bc6a9a3d7ecf2ad5689201371c84ed9701ec"
+      "bytes": 190191,
+      "sha256": "2b33c8a6e813f7f8def53c73b7072cbec804ae7062c7e222d49fa36051972639"
     },
     {
       "path": "reader/data/posts/altium-designer-notes.html",
@@ -673,6 +673,11 @@
       "sha256": "a74dac10d0d1e1bd7f1161cab51b3add99eb0222e7edfd7538743214fc7b5431"
     },
     {
+      "path": "reader/data/posts/llm-inference-acceleration-career-report.html",
+      "bytes": 42288,
+      "sha256": "0eb2a1bc44b23f8982922bff586154ab961a02b30d91dc5459de876197afe319"
+    },
+    {
       "path": "reader/data/posts/motor-drive-pcb-layout.html",
       "bytes": 8865,
       "sha256": "ec50e2c2f5e5183e934995d0fd9fb75b83711e2280a267ca54932dcb5ea42ceb"
@@ -681,6 +686,11 @@
       "path": "reader/data/posts/motor-drive-power-supply.html",
       "bytes": 691426,
       "sha256": "ccc2c3f4b9c0d28712ac69b7a90fe82da6212c5a38fb324544eeb3113f3e7112"
+    },
+    {
+      "path": "reader/data/posts/motor-embedded-software-roadmap.html",
+      "bytes": 24686,
+      "sha256": "b5f7d5ac82d25b0ac13be9020b13b940dc4d726190e0b084e43c007f9f4eafee"
     },
     {
       "path": "reader/data/posts/pmsm-control-basics.html",
