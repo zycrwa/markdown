@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "revision": "7858db15ccd28930debe63cd3185215702f779bfcb941f6d70d04f9fda5db340",
-  "generatedAt": "2026-08-22T17:48:24.564Z",
+  "revision": "c1dae6af2a9cabb8fae1580e1cb30fb2edeb0f9e9dac85e90f8c0be0dfa68dbe",
+  "generatedAt": "2026-08-23T15:24:00.559Z",
   "siteRoot": "/markdown/",
   "postCount": 20,
-  "fileCount": 146,
-  "totalBytes": 18873930,
+  "fileCount": 144,
+  "totalBytes": 19091442,
   "files": [
     {
       "path": "images/posts/altium-designer-notes/001-7d12c0486a.png",
@@ -603,24 +603,14 @@
       "sha256": "cb40effeb279959887bf372602610e4d9ad8f9b5f2ce87a192690f7734de2b00"
     },
     {
-      "path": "images/posts/three-phase-pmsm/008-101a794e41.png",
-      "bytes": 75007,
-      "sha256": "034fb95e234ac03495307134c65ec6009ff486f07c13f454f2dc16da7d41d6e4"
+      "path": "images/posts/three-phase-pmsm/image1.png",
+      "bytes": 229388,
+      "sha256": "7872d74ccc253d556dfebcd804ce544fdde8a0b5666119935ff3ae21dc02332b"
     },
     {
-      "path": "images/posts/three-phase-pmsm/011-e0d36c6679.png",
-      "bytes": 73693,
-      "sha256": "d810f1038109e48c288e02069e6db77dc1f61371f9c5cd82ada721288f24f12a"
-    },
-    {
-      "path": "images/posts/three-phase-pmsm/015-c40ec60a28.png",
-      "bytes": 213649,
-      "sha256": "9879dc8b427399bc1ffe7fa40c87c6c8e04c0c4093f215208e445fb51a564fbd"
-    },
-    {
-      "path": "images/posts/three-phase-pmsm/017-43a04f7970.png",
-      "bytes": 51680,
-      "sha256": "3efc5c86be8b688313928b1eb85a23db127c753e10bdf22a397a1f3672dc0f19"
+      "path": "images/posts/three-phase-pmsm/image2.png",
+      "bytes": 165985,
+      "sha256": "88afac1bf6e16ea5a485c3494779a5dd39cefd4f4516f9735c38c104fa8fe4cf"
     },
     {
       "path": "images/posts/word-formatting-notes/001-f5221076e8.png",
@@ -634,8 +624,8 @@
     },
     {
       "path": "reader/data/posts.json",
-      "bytes": 190191,
-      "sha256": "2b33c8a6e813f7f8def53c73b7072cbec804ae7062c7e222d49fa36051972639"
+      "bytes": 190609,
+      "sha256": "e305424d1f0f389fc259294dbb4238bcc17be467c0a14e2e634966fda8315556"
     },
     {
       "path": "reader/data/posts/altium-designer-notes.html",
@@ -729,8 +719,8 @@
     },
     {
       "path": "reader/data/posts/three-phase-pmsm.html",
-      "bytes": 921821,
-      "sha256": "44251e9f7c5d8346445d91caf164c63b2f4324fd02bd10acd944e2347834b116"
+      "bytes": 1157571,
+      "sha256": "f2720260460e2a0e8f284fc1e44aee3c2194caa7f01edfa1a627dd458dcbbffd"
     },
     {
       "path": "reader/data/posts/word-formatting-notes.html",
