@@ -28,3 +28,6 @@ db.json
 
 # Local application files stay outside the knowledge site and are not uploaded.
 /app/
+
+# Local mapping for VS Code Markdown image previews.
+/images/

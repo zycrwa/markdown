@@ -1,8 +1,8 @@
 ---
 title: "三相永磁同步电机建模与控制"
 date: 2026-08-01 22:11:00
-updated: 2026-08-22 19:14:00
-description: "面向建模、仿真与分析，整理三相 PMSM 的建模假设、abc/αβ/dq 方程、可直接实现的 Simulink 状态模型、SPMSM 简化、SVPWM 与电流环；速度环、参数测量和谐波分析由关联文章维护。"
+updated: 2026-08-23 22:57:33
+description: "三相 PMSM 的建模假设、abc/αβ/dq 方程、Simulink 状态模型、SPMSM 简化、SVPWM 三种占空比算法与电流环；速度环、参数测量和谐波分析由关联文章维护。"
 permalink: motor-control/three-phase-pmsm/
 categories:
   - 电机控制
@@ -31,7 +31,7 @@ related_posts:
 source_docs:
   - "archive/original-posts/三相永磁同步电机.md"
   - "archive/incoming/2026-08-10/pmsm_mathematical_model.md"
-review_status: unverified
+review_status: human-verified
 toc: true
 mathjax: true
 ---
@@ -54,22 +54,13 @@ mathjax: true
 4. 电机为星形连接且无中性线，输入电压是相对于电机浮动中性点的相电压，零序分量忽略，因此 $i_a+i_b+i_c=0$；
 5. $d$ 轴与转子永磁体磁链方向重合，并约定正 $i_q$ 产生正电磁转矩。
 
-第 4 条是仿真接线时最容易被忽略的边界：逆变器模型常输出相对直流侧参考点 $O$ 的桥臂极点电压，而极点电压不等于绕组相对浮动中性点 $N$ 的相电压。在理想对称、无零序通路的模型中，共同偏置由中性点位移消去，例如
-
-$$
-v_{NO}=\frac{v_{aO}+v_{bO}+v_{cO}}{3},
-\qquad
-v_{aN}=v_{aO}-v_{NO},
-$$
-
-$b$、$c$ 两相同理。非理想逆变器或存在零序通路时，应按实际拓扑另建中性点和共模模型。
 
 ### 1.2 符号约定
 
 | 符号 | 含义 | 备注 |
 | --- | --- | --- |
-| $R_s$ | 定子每相电阻 | $\Omega$ |
-| $L_d,L_q$ | $d$、$q$ 轴电感 | H；IPMSM 中通常不相等 |
+| $R_s$ | 相电阻 | $\Omega$ |
+| $L_d、L_q$ | $d$、$q$ 轴电感 | H |
 | $\psi_f$ | 永磁体磁链 | Wb |
 | $p$ | 极对数 |  |
 | $\omega_m$ | 机械角速度 | rad/s |
@@ -77,7 +68,7 @@ $b$、$c$ 两相同理。非理想逆变器或存在零序通路时，应按实�
 | $\theta_e$ | 转子电角度 | rad |
 | $J$ | 转动惯量 | kg·m² |
 | $B$ | 黏性阻尼系数 | N·m·s/rad |
-| $T_L$ | 负载转矩 | 正值表示阻转矩 |
+| $T_L$ | 负载转矩 |  |
 
 机械转速和机械角速度的换算为
 
@@ -109,7 +100,7 @@ $$
 +\boldsymbol{\psi}_{f,abc}(\theta_e).
 $$
 
-$\boldsymbol{L}_{abc}$ 随位置变化； Clarke/Park 后吸收到常数 $L_d,L_q$ 中。
+$\boldsymbol{L}_{abc}$ 随角度位置变化。
 
 ### 2.2 幅值不变 Clarke 变换
 
@@ -272,16 +263,8 @@ $$
 \end{aligned}
 $$
 
-这组方程可以直接映射为四个积分器。连续 Simulink 模型中的信号流和求解关系为：
 
-1. 从 $\theta_e$、$\omega_m$ 得到 Park 角度和 $\omega_e$；
-2. 将 $v_a,v_b,v_c$ 变换为 $v_d,v_q$；
-3. 用当前状态计算 $T_e$ 和 $\dot i_d,\dot i_q$；
-4. 用机械方程计算 $\dot\omega_m$，并把四个状态导数交给求解器；
-5. 求解器同步更新四个积分器状态，取模后的 $\theta_e$ 只用于生成变换矩阵。
-
-
-### 4.3 输出和初值
+### 4.3 输出
 
 由 $i_d,i_q$ 反变换可得到相电流：
 
@@ -302,7 +285,7 @@ i_c&=-\frac12i_\alpha-\frac{\sqrt3}{2}i_\beta.
 \end{aligned}
 $$
 
-初值应显式设置为 $i_d(0),i_q(0),\omega_m(0),\theta_e(0)$。电机从静止、未通电状态启动时可先全部取 0；若用于带初始转速或已知转子位置的工况，则必须使初值与反电动势、Park 角度和外部机械负载保持一致。建议记录 $i_a,i_b,i_c,i_d,i_q,T_e,\omega_m,\theta_e$。
+建议记录 $i_a,i_b,i_c,i_d,i_q,T_e,\omega_m,\theta_e$。
 
 
 
@@ -322,15 +305,23 @@ $$
 
 在基速范围内的常规 FOC 中，常令 $i_d^*=0$，用 $i_q$ 直接调节转矩。
 
-## 六、SVPWM 与电机模型的接口
+## 六、SVPWM
 
-SVPWM 的职责是把 $\alpha\beta$ 电压参考和直流母线电压转换为三相桥臂占空比；电机状态方程接收的是经过逆变器等效后的相电压。两者之间的电压定义必须保持一致。
+电流环输出电压指令 $v_d^*,v_q^*$，而逆变器最终需要的是三相桥臂的门极信号。
 
-![两电平逆变器空间电压矢量示意](/images/posts/three-phase-pmsm/008-101a794e41.png)
+实现前必须先区分三种电压：
 
-### 6.1 开关状态和空间电压矢量
+1. $v_d^*,v_q^*$ 是电流调节器输出的旋转坐标系电压；
+2. $v_\alpha^*,v_\beta^*$ 是逆 Park 变换后的静止坐标系参考；
+3. $v_{aN},v_{bN},v_{cN}$ 是电机绕组相对中性点 $N$ 的电压；
 
-令上桥臂开关状态 $s_a,s_b,s_c\in\{0,1\}$，在幅值不变 Clarke 约定下，空间电压矢量可写成
+$$
+v_{NO}=\frac{v_{aO}+v_{bO}+v_{cO}}{3}
+$$
+
+### 6.1 两电平逆变器与空间电压矢量
+
+三个上桥臂的开关状态为 $s_a,s_b,s_c\in\{0,1\}$
 
 $$
 \boldsymbol{v}_s
@@ -338,73 +329,79 @@ $$
 \left(s_a+s_b e^{j\frac{2\pi}{3}}+s_c e^{j\frac{4\pi}{3}}\right).
 $$
 
-000 和 111 是两个零矢量；100、110、010、011、001、101 是六个等幅有功矢量，幅值均为 $2V_{\mathrm{dc}}/3$，相邻矢量相差 $\pi/3$。因此一个两电平逆变器共有八个开关状态，而不是七个。
+八个开关状态对应两个零矢量和六个有功矢量：
 
-![SVPWM 的 Simulink 计算结构示意](/images/posts/three-phase-pmsm/011-e0d36c6679.png)
+| 状态 | 矢量 | 角度  |
+| --- | --- | ---:  |
+| 000、111 | $V_0$、$V_7$ | —  |
+| 100 | $V_1$ | $0^\circ$  |
+| 110 | $V_2$ | $60^\circ$  |
+| 010 | $V_3$ | $120^\circ$  |
+| 011 | $V_4$ | $180^\circ$  |
+| 001 | $V_5$ | $240^\circ$  |
+| 101 | $V_6$ | $300^\circ$  |
 
-![SVPWM 在 alpha-beta 平面中的扇区判定边界](/images/posts/three-phase-pmsm/015-c40ec60a28.png)
+六个有功矢量幅值均为 $2V_{\mathrm{dc}}/3$。
+![SVPWM 六扇区空间矢量图](/images/posts/three-phase-pmsm/image1.png)
 
-### 6.2 线性区作用时间
-
-设参考矢量幅值为 $U^*$，位于某一扇区内，且相对该扇区起始矢量的角度为 $\theta_s\in[0,\pi/3]$。相邻两个有功矢量的作用时间为
+### 6.2 伏秒平衡与作用时间
+由正弦定理得到
 
 $$
 \begin{aligned}
 T_1&=\frac{\sqrt{3}T_sU^*}{V_{\mathrm{dc}}}
 \sin\left(\frac{\pi}{3}-\theta_s\right),\\
-T_2&=\frac{\sqrt{3}T_sU^*}{V_{\mathrm{dc}}}
-\sin\theta_s,\\
-T_0&=T_s-T_1-T_2.
+T_2&=\frac{\sqrt{3}T_sU^*}{V_{\mathrm{dc}}}\sin\theta_s.
 \end{aligned}
 $$
 
-逐点的线性调制条件是 $T_1+T_2\leq T_s$，即
+ $T_1+T_2\leq T_s$，等价于
 
 $$
-U^*
-\leq
-\frac{V_{\mathrm{dc}}}
-{\sqrt{3}\cos\left(\theta_s-\frac{\pi}{6}\right)}.
+U^*\leq\frac{V_{\mathrm{dc}}}{\sqrt{3}\cos(\theta_s-\pi/6)}.
 $$
 
-若希望幅值恒定的旋转参考在所有角度均不进入过调制区，则采用圆形轨迹上限 $U^*\leq V_{\mathrm{dc}}/\sqrt{3}$。若某一时刻超出逐点条件，可按
+如果参考矢量幅值保持不变并完整旋转一周，为避免任意角度进入过调制区，取该逐点边界的最小值，得到常用圆形上限
 
 $$
-\kappa=\frac{T_s}{T_1+T_2},\qquad
-T_1\leftarrow\kappa T_1,\qquad
-T_2\leftarrow\kappa T_2,\qquad
-T_0\leftarrow 0
+U^*\leq\frac{V_{\mathrm{dc}}}{\sqrt{3}}.
 $$
 
-进行限幅。缩放后 $T_1+T_2=T_s$，因此必须同步重算 $T_0$，不能继续使用限幅前的负值。这是一种保持方向的过调制前处理，不能替代专门的过调制策略。
+### 6.3 对称开关序列与占空比
 
-以第一扇区的对称序列 000-100-110-111-110-100-000 为例，将零矢量总时间 $T_0$ 在 000 和 111 之间各分一半：周期两端的 000 各作用 $T_0/4$，中央的 111 作用 $T_0/2$；两个有功矢量每次分别作用 $T_1/2$、$T_2/2$。此时占空比为
-
-$$
-\begin{aligned}
-d_a&=\frac{T_0/2+T_1+T_2}{T_s},\\
-d_b&=\frac{T_0/2+T_2}{T_s},\\
-d_c&=\frac{T_0/2}{T_s}.
-\end{aligned}
-$$
-
-为了避免在代码中凭相序轮换，先将参考矢量角度归一化到 $\varphi\in[0,2\pi)$，再定义
+以扇区 1 为例，采用中心对称序列
 
 $$
-k=\left\lfloor\frac{\varphi}{\pi/3}\right\rfloor+1,
+000\;\frac{T_0}{4}
+\rightarrow100\;\frac{T_1}{2}
+\rightarrow110\;\frac{T_2}{2}
+\rightarrow111\;\frac{T_0}{2}
+\rightarrow110\;\frac{T_2}{2}
+\rightarrow100\;\frac{T_1}{2}
+\rightarrow000\;\frac{T_0}{4}.
+$$
+
+上桥臂占空比由对应开关为 1 的总时间除以 $T_s$ 得到：
+
+$$
+d_a=\frac{T_0/2+T_1+T_2}{T_s},
 \qquad
-\theta_s=\varphi-(k-1)\frac{\pi}{3}.
+d_b=\frac{T_0/2+T_2}{T_s},
+\qquad
+d_c=\frac{T_0/2}{T_s}.
 $$
 
-扇区边界上任取相邻扇区之一即可。令
+令
 
 $$
-h_0=\frac{T_0}{2T_s},\qquad
-h_1=\frac{T_1}{T_s},\qquad
+h_0=\frac{T_0}{2T_s},
+\qquad
+h_1=\frac{T_1}{T_s},
+\qquad
 h_2=\frac{T_2}{T_s},
 $$
 
-其中 $T_1$ 对应扇区起始有功矢量，$T_2$ 对应下一个有功矢量，六个扇区的对称调制占空比可直接写成：
+其中 $T_1$ 始终对应当前扇区的起始有功矢量，$T_2$ 对应终止矢量。六个扇区只需轮换三相占空比：
 
 | 扇区 $k$ | $d_a$ | $d_b$ | $d_c$ |
 | --- | --- | --- | --- |
@@ -415,36 +412,163 @@ $$
 | 5 | $h_0+h_2$ | $h_0$ | $h_0+h_1+h_2$ |
 | 6 | $h_0+h_1+h_2$ | $h_0$ | $h_0+h_1$ |
 
-工程实现应对 $d_a,d_b,d_c$ 做 $[0,1]$ 限幅，并将死区、最小脉宽和采样延迟作为逆变器模型的独立参数。
+![扇区 1 三相上桥臂波形](/images/posts/three-phase-pmsm/image2.png)
+
+
+### 6.4 算法构建：由 $v_\alpha^*,v_\beta^*$ 计算 $d_a,d_b,d_c$
+
+设直流母线电压为 $V_{\mathrm{dc}}$、PWM 周期为 $T_s$，并先保证参考矢量处在线性调制区。三种方法都基于同一个目标：在一个周期内满足伏秒平衡
+
+$$
+\boldsymbol v^*T_s=\boldsymbol V_kT_1+\boldsymbol V_{k^+}T_2,
+\qquad
+k^+=\begin{cases}k+1,&k<6,\\1,&k=6,\end{cases}
+\qquad
+T_0=T_s-T_1-T_2,
+$$
+
+再把 $T_1,T_2,T_0$ 按 6.3 节的对称序列换算为 $d_a,d_b,d_c$。区别只在于作用时间（或占空比）的求法。
+
+#### 方法一：角度—作用时间法
+
+由 $v_\alpha^*,v_\beta^*$ 求参考矢量的幅值和角度：
+
+$$
+U^*=\sqrt{(v_\alpha^*)^2+(v_\beta^*)^2},
+\qquad
+\varphi=\operatorname{atan2}(v_\beta^*,v_\alpha^*).
+$$
+
+将 $\varphi$ 归一化到 $[0,2\pi)$，确定扇区
+
+$$
+k=\left\lfloor\frac{\varphi}{\pi/3}\right\rfloor+1,
+\qquad
+\theta_s=\varphi-(k-1)\frac{\pi}{3}.
+$$
+
+用正弦定理求相邻有功矢量的作用时间：
+
+$$
+\begin{aligned}
+T_1&=\frac{\sqrt{3}T_sU^*}{V_{\mathrm{dc}}}
+       \sin\left(\frac{\pi}{3}-\theta_s\right),\\
+T_2&=\frac{\sqrt{3}T_sU^*}{V_{\mathrm{dc}}}\sin\theta_s,\\
+T_0&=T_s-T_1-T_2.
+\end{aligned}
+$$
+
+令 $h_0=T_0/(2T_s)$、$h_1=T_1/T_s$、$h_2=T_2/T_s$，代入 6.3 节表格即可得到三相占空比。该方法几何意义清楚，但需要 `atan2` 和三角函数。
+
+当 $U^*=0$ 时不需要判断扇区，直接取 $d_a=d_b=d_c=1/2$。
+
+#### 方法二：$X/Y/Z$ 线性组合法
+
+把伏秒平衡方程直接投影到固定的 $\alpha\beta$ 轴，得到三个线性组合。令
+
+$$
+K=\frac{\sqrt{3}T_s}{V_{\mathrm{dc}}},
+\qquad
+\begin{aligned}
+X&=K v_\beta^*,\\
+Y&=K\left(\frac{\sqrt{3}}{2}v_\alpha^*+\frac12v_\beta^*\right),\\
+Z&=K\left(-\frac{\sqrt{3}}{2}v_\alpha^*+\frac12v_\beta^*\right).
+\end{aligned}
+$$
+
+它们本质上是按三条有功矢量方向得到的“候选作用时间”，例如也可写成
+
+$$
+X=\frac{T_s}{V_{\mathrm{dc}}}(v_b^*-v_c^*),\quad
+Y=\frac{T_s}{V_{\mathrm{dc}}}(v_a^*-v_c^*),\quad
+Z=-\frac{T_s}{V_{\mathrm{dc}}}(v_a^*-v_b^*).
+$$
+
+根据扇区选择符号：
+
+| 扇区 $k$ | $T_1$ | $T_2$ |
+| --- | --- | --- |
+| 1 | $-Z$ | $X$ |
+| 2 | $Y$ | $Z$ |
+| 3 | $X$ | $-Y$ |
+| 4 | $Z$ | $-X$ |
+| 5 | $-Y$ | $-Z$ |
+| 6 | $-X$ | $Y$ |
+
+随后同样计算 $T_0$ 和 $h_0,h_1,h_2$，再查 6.3 节表格。该方法仍需通过符号或三相电压大小关系判断扇区，但没有角度和三角函数；$X,Y,Z$ 不是额外的物理量，而是伏秒方程的线性投影。
+
+#### 方法三：公共模式注入法
+
+逆 Clarke 变换先得到三相参考电压：
+
+$$
+v_a^*=v_\alpha^*,\qquad
+v_b^*=-\frac12v_\alpha^*+\frac{\sqrt{3}}{2}v_\beta^*,\qquad
+v_c^*=-\frac12v_\alpha^*-\frac{\sqrt{3}}{2}v_\beta^*.
+$$
+
+给三相同时加上公共模式不会改变线电压，也不会改变 $\alpha\beta$ 矢量。取三相最大值与最小值中点的相反数作为公共模式电压：
+
+$$
+v_{\mathrm{cm}}=-\frac12\left[
+\max(v_a^*,v_b^*,v_c^*)+
+\min(v_a^*,v_b^*,v_c^*)\right].
+$$
+
+令 $u_x^*=v_x^*+v_{\mathrm{cm}}$。以直流母线中点为零电位，桥臂平均电压满足 $u_x^*=V_{\mathrm{dc}}(d_x-1/2)$，因此上桥臂占空比为
+
+$$
+d_x=\frac12+\frac{u_x^*}{V_{\mathrm{dc}}},
+\qquad x\in\{a,b,c\}.
+$$
+
+当 $\max(v_a^*,v_b^*,v_c^*)-\min(v_a^*,v_b^*,v_c^*)\leq V_{\mathrm{dc}}$ 时，占空比均在 $[0,1]$ 内。该方法不需要作用时间、三角函数或显式扇区判断，在线性区内与前两种方法等价；超出边界时应统一缩放参考矢量或采用过调制策略，不能分别裁剪三相占空比。
+
+三种方法的输入和输出相同：方法一适合推导，方法二适合无三角函数实现，方法三计算链最短。若输入为 $v_d^*,v_q^*$，逆 Park 变换所需的三角函数属于前级坐标变换，而不是 SVPWM 占空比算法本身。
+
 
 ## 七、dq 电流环 PI 与解耦
 
-由电压模型可得电流状态方程
+
+### 7.1 解耦
+
+采用本文的符号约定，PMSM 的 dq 电压方程可写成
 
 $$
 \begin{aligned}
-\dot i_d&=-\frac{R_s}{L_d}i_d
-+\frac{\omega_eL_q}{L_d}i_q+\frac{v_d}{L_d},\\
-\dot i_q&=-\frac{R_s}{L_q}i_q
--\frac{\omega_e}{L_q}\left(L_di_d+\psi_f\right)
-+\frac{v_q}{L_q}.
+L_d\dot i_d&=v_d-R_si_d+\omega_eL_qi_q,\\
+L_q\dot i_q&=v_q-R_si_q-\omega_e\left(L_di_d+\psi_f\right).
 \end{aligned}
 $$
 
-把速度耦合和反电动势作为前馈项，PI 输出可以写成
+加入前馈补偿，把已知的耦合项抵消：
 
 $$
+\boxed{
 \begin{aligned}
-v_d^*&=\left(K_{pd}+\frac{K_{id}}{s}\right)(i_d^*-i_d)
--\omega_eL_qi_q,\\
-v_q^*&=\left(K_{pq}+\frac{K_{iq}}{s}\right)(i_q^*-i_q)
-+\omega_e\left(L_di_d+\psi_f\right).
-\end{aligned}
+v_d^*&=u_d-\omega_eL_qi_q,\\
+v_q^*&=u_q+\omega_e\left(L_di_d+\psi_f\right).
+\end{aligned}}
 $$
 
-![内模控制结构示意](/images/posts/three-phase-pmsm/017-43a04f7970.png)
 
-在忽略 PWM 和采样延迟、且参数模型准确时，内模一阶目标 $a/(s+a)$ 给出一组便于仿真的初始参数：
+$$
+L_d\dot i_d=u_d-R_si_d,
+$$
+
+q 轴同理。这样两个电流环就近似成为两个相互独立的 RL 一阶对象。
+
+低速时这些补偿较小，转速越高，数值越大，它们通常越重要。
+
+### 7.2 PI 参数怎么选
+
+电机的电流开环传递函数为：
+
+$$
+G(s)=\frac{1}{Ls+R_s}.
+$$
+
+选一个期望电流环带宽 $a$（单位为 rad/s），用 PI 零点抵消 $R_s/L$ 极点，并令闭环速度约为 $a$，可得到简单的初始参数：
 
 $$
 \begin{aligned}
@@ -453,24 +577,20 @@ K_{pq}&=aL_q,&K_{iq}&=aR_s.
 \end{aligned}
 $$
 
-若把 PWM 延迟和电流反馈滤波合并为小时间常数 $T_{\Sigma i}$，并假设 PI 零点抵消电机的 $L/R_s$ 极点、逆变器与反馈通道的等效增益均为 1，再取阻尼比 $\zeta=1/\sqrt{2}$，可在解耦后得到典型二阶近似
+抵消以后，以单轴为例，PI 和电机对象组成的开环传递函数为
 
 $$
-K_p=\frac{L}{2T_{\Sigma i}},\qquad
-K_i=\frac{R_s}{2T_{\Sigma i}},
+C(s)G(s)
+=\left(K_p+\frac{K_i}{s}\right)\frac{1}{Ls+R_s}
+=\frac{a}{s}.
 $$
 
-其中 $L$ 应分别取 $L_d$ 或 $L_q$。这两个公式依赖于延迟模型、阻尼比和限幅假设，适合作为初值而不是未经验证的最终参数。PI 输出还应受可用电压矢量限制，并配合积分抗饱和。
+$a/s$ 是积分环节，但它只是开环传递函数。接成单位负反馈后，给定电流到实际电流的闭环传递函数为
 
-转速环的完整假设、推导和闭环验证见 [PMSM 转速环 PI 参数整定推导](/motor-control/pmsm-speed-loop-pi-tuning/)，这里不再重复。FOC 代码和三环实现可参见 [DengFOC 常用控制代码与三环结构](/motor-control/dengfoc-control-code/)。
+$$
+\frac{i(s)}{i^*(s)}
+=\frac{a/s}{1+a/s}
+=\frac{a}{s+a}.
+$$
 
-## 八、来源、验证说明与关联文章
-
-本次入库的原始笔记没有附文献、实验数据或仿真工程，因此新增的假设和状态方程仍属于待核验的 AI 整理内容。原有资料保留了两条参考来源：
-
-- [《永磁同步电机矢量控制分析》](https://kns.cnki.net/kcms2/article/abstract?v=VYuoLtjwl8P-o469VFroH7GQMvioLWRnqoIhXpNcJele2FkWEn5qLP4KNcDl259e6Bp5ocFPRg_AJ1AjyuLnXXTqV5bPifsy4R2DshF4EllA-FQkPBFlJ2taaBqwalb_6dV5a27Z25kvhu29GPyXP1IRtyjHuPyilSsPS90hIVM=&uniplatform=NZKPT)，原稿将其用于电机模型推导；
-- [《永磁同步电动机驱动系统数字 PI 调节器参数设计》](https://kns.cnki.net/kcms2/article/abstract?v=lSOmZDqoX8NczW9XDV0VUxaCWkNGTEqyDkS6bg3WjoEPz2DQNycJR0HKl5JvSLYGhU2f0t16vkpF3KMmy_DIuWrjgpu5E12HKjKzHREJXp9ODdlh1wHYA1CIMllSPXDgJ_vHVpCrbaK76edcrYAST9Ao8HH8BI38&uniplatform=NZKPT)，原稿将其用于 PI 环节设计。
-
-两条链接的可访问性、原文结论和本文参数定义均未在本次处理中复核。
-
-需要谐波、六相或 VSD 分析时，转到 [PMSM 谐波与六相矢量空间分析](/motor-control/pmsm-harmonic-analysis/)；需要 Simulink 模块、采样时间和模型组织建议时，参见 [Simulink 电机控制仿真常用模块与建议](/simulation/simulink-motor-simulation/)。模型参数的测量换算见 [PMSM 电感与磁链参数测量](/motor-control/pmsm-parameter-measurement/)。这些文章保持独立，以免把理想电机本体方程、参数来源和控制实现混在同一段中。
+因此理想电流环是一个稳定的一阶系统：时间常数为 $1/a$，带宽约为 $a$，阶跃响应没有超调，约经过 $4/a$ 秒进入 2% 误差范围。$a$ 越大，响应越快，但实际还要为 PWM、采样和计算延迟留出余量。

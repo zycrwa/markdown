@@ -26,7 +26,7 @@ AI 处理新资料时，应先在本索引中按标题、别名、标签和范�
 | `semiconductor-basics` | 半导体基础：PN 结与 MOSFET | 电子基础 | `unverified` |
 | `simulink-motor-simulation` | Simulink 电机控制仿真常用模块与建议 | 仿真工具 | `unverified` |
 | `stm32-clion-development` | STM32 与 CLion 开发实践 | 嵌入式开发 | `unverified` |
-| `three-phase-pmsm` | 三相永磁同步电机建模与控制 | 电机控制 | `unverified` |
+| `three-phase-pmsm` | 三相永磁同步电机建模与控制 | 电机控制 | `human-verified` |
 | `word-formatting-notes` | Word 中文论文排版与公式行距设置 | 开发工具 | `unverified` |
 
 ## 检索信息
@@ -215,7 +215,7 @@ AI 处理新资料时，应先在本索引中按标题、别名、标签和范�
 
 - ID：`three-phase-pmsm`
 - 文件：`source/_posts/three-phase-pmsm.md`
-- 范围：面向建模、仿真与分析，整理三相 PMSM 的建模假设、abc/αβ/dq 方程、可直接实现的 Simulink 状态模型、SPMSM 简化、SVPWM 与电流环；速度环、参数测量和谐波分析由关联文章维护。
+- 范围：三相 PMSM 的建模假设、abc/αβ/dq 方程、Simulink 状态模型、SPMSM 简化、SVPWM 三种占空比算法与电流环；速度环、参数测量和谐波分析由关联文章维护。
 - 别名：三相 PMSM、PMSM FOC、永磁同步电机建模、PMSM 数学模型、PMSM Simulink 模型
 - 标签：PMSM、数学建模、状态空间、Simulink、SVPWM、电流环
 - 关联文章：`dual-three-phase-pmsm`、`pmsm-control-basics`、`pmsm-harmonic-analysis`、`pmsm-parameter-measurement`、`pmsm-speed-loop-pi-tuning`、`dengfoc-control-code`、`simulink-motor-simulation`、`motor-embedded-software-roadmap`
