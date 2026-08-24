@@ -15,6 +15,8 @@ AI 处理新资料时，应先在本索引中按标题、别名、标签和范�
 | `dual-three-phase-pmsm` | 双三相永磁同步电机 SVPWM | 电机控制 | `unverified` |
 | `embedded-communication-protocols` | 嵌入式通信协议：UART、I2C、SPI 与 CAN | 嵌入式开发 | `unverified` |
 | `embedded-system-basics` | 嵌入式基础：GPIO 输出、Keil 工程与自举电荷泵 | 嵌入式开发 | `unverified` |
+| `encoder-pll-speed-estimation` | 编码器 PLL 位置跟踪与速度估计 | 电机控制 | `unverified` |
+| `git-daily-usage` | Git 日常使用指南 | 开发工具 | `unverified` |
 | `llm-inference-acceleration-career-report` | 大模型推理加速就业与技术方向调研报告（2026） | 人工智能 | `unverified` |
 | `motor-drive-pcb-layout` | 电机驱动 PCB 布局与布线要点 | 硬件设计 | `unverified` |
 | `motor-drive-power-supply` | 电机驱动电源与保护器件设计笔记 | 硬件设计 | `unverified` |
@@ -65,10 +67,10 @@ AI 处理新资料时，应先在本索引中按标题、别名、标签和范�
 
 - ID：`dengfoc-control-code`
 - 文件：`source/_posts/dengfoc-control-code.md`
-- 范围：覆盖 DengFOC 坐标变换与三环代码实现；PMSM 理论模型和 PI 参数推导由关联文章维护。
+- 范围：覆盖 DengFOC 坐标变换与三环代码实现；PMSM 理论、PI 参数推导与编码器 PLL 由关联文章维护。
 - 别名：DengFOC、FOC 三环控制、位置速度电流三环
 - 标签：DengFOC、FOC、位置环、速度环、电流环
-- 关联文章：`three-phase-pmsm`、`pmsm-speed-loop-pi-tuning`、`stm32-clion-development`、`pmsm-parameter-measurement`、`motor-embedded-software-roadmap`
+- 关联文章：`three-phase-pmsm`、`pmsm-speed-loop-pi-tuning`、`stm32-clion-development`、`pmsm-parameter-measurement`、`motor-embedded-software-roadmap`、`encoder-pll-speed-estimation`
 - 原稿：`archive/original-posts/dengfoc学习笔记-常用foc代码.md`
 
 ### 双三相永磁同步电机 SVPWM
@@ -100,6 +102,26 @@ AI 处理新资料时，应先在本索引中按标题、别名、标签和范�
 - 标签：GPIO、Keil、电荷泵
 - 关联文章：`embedded-communication-protocols`、`stm32-clion-development`、`motor-drive-power-supply`、`motor-embedded-software-roadmap`
 - 原稿：`archive/original-posts/嵌入式基础知识.md`
+
+### 编码器 PLL 位置跟踪与速度估计
+
+- ID：`encoder-pll-speed-estimation`
+- 文件：`source/_posts/encoder-pll-speed-estimation.md`
+- 范围：分析编码器二阶 PLL 的连续模型、传递函数、稳态跟踪能力、环形位置处理与参数选择；具体控制环设计由关联文章维护。
+- 别名：编码器 PLL、编码器锁相环、PLL 速度估计
+- 标签：编码器、PLL、速度估计、位置观测器
+- 关联文章：`pmsm-control-basics`、`dengfoc-control-code`、`pmsm-speed-loop-pi-tuning`、`motor-embedded-software-roadmap`
+- 原稿：`archive/incoming/2026-08-03/编码器PLL理论分析.md`
+
+### Git 日常使用指南
+
+- ID：`git-daily-usage`
+- 文件：`source/_posts/git-daily-usage.md`
+- 范围：整理 Git 日常工作流、分支与提交原理、差异复核、历史查看、Merge Request，以及 pre-commit 和 GitLab CI 排错。
+- 别名：Git 日常使用、Git 工作流、GitLab MR、Git 分支与提交、Git CI 排错
+- 标签：Git、版本控制、GitLab
+- 关联文章：`motor-embedded-software-roadmap`
+- 原稿：`archive/incoming/2026-08-24/Git分支、提交与CI问题整理.md`
 
 ### 大模型推理加速就业与技术方向调研报告（2026）
 
@@ -138,17 +160,17 @@ AI 处理新资料时，应先在本索引中按标题、别名、标签和范�
 - 范围：面向未来 12–16 周的电机嵌入式软件求职路线，基于现有 PMSM/FOC 与 STM32 笔记，覆盖 C、实时外设、同步采样、控制实现、保护、通信、测试、项目作品和面试验收。
 - 别名：电机嵌入式软件学习路线、PMSM FOC 嵌入式路线、电机控制固件求职路线
 - 标签：电机嵌入式、STM32、FOC、PMSM、C 语言、实时系统、实习求职、项目制学习
-- 关联文章：`embedded-system-basics`、`stm32-clion-development`、`embedded-communication-protocols`、`three-phase-pmsm`、`pmsm-control-basics`、`dengfoc-control-code`、`pmsm-parameter-measurement`、`pmsm-speed-loop-pi-tuning`、`simulink-motor-simulation`
+- 关联文章：`embedded-system-basics`、`stm32-clion-development`、`embedded-communication-protocols`、`three-phase-pmsm`、`pmsm-control-basics`、`dengfoc-control-code`、`pmsm-parameter-measurement`、`pmsm-speed-loop-pi-tuning`、`simulink-motor-simulation`、`encoder-pll-speed-estimation`、`git-daily-usage`
 - 原稿：`archive/incoming/2026-08-22/motor-embedded-software-roadmap-research.md`、`archive/original-posts/嵌入式基础知识.md`、`archive/original-posts/嵌入式.md`、`archive/original-posts/STM32_CLION.md`、`archive/original-posts/三相永磁同步电机.md`、`archive/original-posts/dengfoc学习笔记-常用foc代码.md`、`archive/original-posts/转速环PI参数整定.md`、`archive/original-posts/电机疑问讨论.md`、`archive/original-posts/simulink仿真.md`
 
 ### PMSM 控制基础：一阶滞后、DOB 与低通滤波器
 
 - ID：`pmsm-control-basics`
 - 文件：`source/_posts/pmsm-control-basics.md`
-- 范围：覆盖一阶滞后、扰动观测器和低通离散化；不重复 PMSM 完整模型与具体速度环参数整定。
+- 范围：覆盖一阶滞后、扰动观测器和低通离散化；PMSM 完整模型、速度环整定与编码器 PLL 由关联文章维护。
 - 别名：PMSM 自动控制原理、扰动观测器、一阶低通滤波器
 - 标签：PMSM、DOB、低通滤波器、离散化
-- 关联文章：`analog-filter-design`、`three-phase-pmsm`、`pmsm-speed-loop-pi-tuning`、`motor-embedded-software-roadmap`
+- 关联文章：`analog-filter-design`、`three-phase-pmsm`、`pmsm-speed-loop-pi-tuning`、`motor-embedded-software-roadmap`、`encoder-pll-speed-estimation`
 - 原稿：`archive/original-posts/pmsm自动控制原理.md`
 
 ### 永磁同步电机谐波与六相矢量空间分析
@@ -175,10 +197,10 @@ AI 处理新资料时，应先在本索引中按标题、别名、标签和范�
 
 - ID：`pmsm-speed-loop-pi-tuning`
 - 文件：`source/_posts/pmsm-speed-loop-pi-tuning.md`
-- 范围：覆盖带有功阻尼的 PMSM 转速环 PI 推导；电流环、完整电机模型和代码实现由关联文章维护。
+- 范围：覆盖带有功阻尼的 PMSM 转速环 PI 推导；电流环、完整电机模型、反馈估计和代码实现由关联文章维护。
 - 别名：转速环 PI、速度环参数整定、PMSM 速度环
 - 标签：PMSM、PI 控制、转速环、有功阻尼
-- 关联文章：`pmsm-control-basics`、`dengfoc-control-code`、`three-phase-pmsm`、`motor-embedded-software-roadmap`
+- 关联文章：`pmsm-control-basics`、`dengfoc-control-code`、`three-phase-pmsm`、`motor-embedded-software-roadmap`、`encoder-pll-speed-estimation`
 - 原稿：`archive/original-posts/转速环PI参数整定.md`
 
 ### 半导体基础：PN 结与 MOSFET

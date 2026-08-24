@@ -1,8 +1,8 @@
 ---
 title: "DengFOC 常用控制代码与三环结构"
 date: 2026-08-01 22:17:00
-updated: 2026-08-22 19:14:00
-description: "覆盖 DengFOC 坐标变换与三环代码实现；PMSM 理论模型和 PI 参数推导由关联文章维护。"
+updated: 2026-08-24 19:56:00
+description: "覆盖 DengFOC 坐标变换与三环代码实现；PMSM 理论、PI 参数推导与编码器 PLL 由关联文章维护。"
 permalink: motor-control/dengfoc-control-code/
 categories:
   - 电机控制
@@ -22,6 +22,7 @@ related_posts:
   - stm32-clion-development
   - pmsm-parameter-measurement
   - motor-embedded-software-roadmap
+  - encoder-pll-speed-estimation
 source_docs:
   - "archive/original-posts/dengfoc学习笔记-常用foc代码.md"
 review_status: unverified

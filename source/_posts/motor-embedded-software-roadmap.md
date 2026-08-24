@@ -1,7 +1,7 @@
 ---
 title: "电机嵌入式软件实习路线：从 PMSM/FOC 到可交付固件"
 date: 2026-08-22 19:14:00
-updated: 2026-08-22 19:40:00
+updated: 2026-08-24 19:56:00
 description: "面向未来 12–16 周的电机嵌入式软件求职路线，基于现有 PMSM/FOC 与 STM32 笔记，覆盖 C、实时外设、同步采样、控制实现、保护、通信、测试、项目作品和面试验收。"
 permalink: embedded/motor-embedded-software-roadmap/
 categories:
@@ -29,6 +29,8 @@ related_posts:
   - pmsm-parameter-measurement
   - pmsm-speed-loop-pi-tuning
   - simulink-motor-simulation
+  - encoder-pll-speed-estimation
+  - git-daily-usage
 source_docs:
   - "archive/incoming/2026-08-22/motor-embedded-software-roadmap-research.md"
   - "archive/original-posts/嵌入式基础知识.md"

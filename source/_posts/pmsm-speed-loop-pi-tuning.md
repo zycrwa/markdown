@@ -1,8 +1,8 @@
 ---
 title: "PMSM 转速环 PI 参数整定推导"
 date: 2026-08-01 22:14:00
-updated: 2026-08-22 19:14:00
-description: "覆盖带有功阻尼的 PMSM 转速环 PI 推导；电流环、完整电机模型和代码实现由关联文章维护。"
+updated: 2026-08-24 19:56:00
+description: "覆盖带有功阻尼的 PMSM 转速环 PI 推导；电流环、完整电机模型、反馈估计和代码实现由关联文章维护。"
 permalink: motor-control/pmsm-speed-loop-pi-tuning/
 categories:
   - 电机控制
@@ -20,6 +20,7 @@ related_posts:
   - dengfoc-control-code
   - three-phase-pmsm
   - motor-embedded-software-roadmap
+  - encoder-pll-speed-estimation
 source_docs:
   - "archive/original-posts/转速环PI参数整定.md"
 review_status: unverified
