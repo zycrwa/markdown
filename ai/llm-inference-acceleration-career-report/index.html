@@ -20,35 +20,37 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"zycrwa.github.io","root":"/markdown/","images":"/markdown/images","scheme":"Gemini","darkmode":false,"version":"8.28.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"flat"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":true,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/markdown/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/markdown/js/config.js" defer></script>
 
-    <meta name="description" content="基于 2026-08-23 可核对的官方岗位样本、开源项目文档和论文，分析大模型推理加速的就业岗位族、技术栈、进入门槛、硬件与内存方向匹配度及 12 周验证路线。">
+    <meta name="description" content="面向非模型算法路线的 AI Infra 岗位地图，以及系统基础、推理运行时、训练系统、编译器后端与平台工程的学习资料和 24 周实践路线。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="大模型推理加速就业与技术方向调研报告（2026）">
+<meta property="og:title" content="AI Infra 就业与学习路线：从系统基础到推理运行时（2026）">
 <meta property="og:url" content="https://zycrwa.github.io/markdown/ai/llm-inference-acceleration-career-report/index.html">
 <meta property="og:site_name" content="ZY 的技术笔记">
-<meta property="og:description" content="基于 2026-08-23 可核对的官方岗位样本、开源项目文档和论文，分析大模型推理加速的就业岗位族、技术栈、进入门槛、硬件与内存方向匹配度及 12 周验证路线。">
+<meta property="og:description" content="面向非模型算法路线的 AI Infra 岗位地图，以及系统基础、推理运行时、训练系统、编译器后端与平台工程的学习资料和 24 周实践路线。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-08-22T16:40:00.000Z">
-<meta property="article:modified_time" content="2026-08-22T16:40:00.000Z">
+<meta property="article:modified_time" content="2026-08-23T16:00:59.000Z">
 <meta property="article:author" content="ZY">
+<meta property="article:tag" content="AI Infra">
 <meta property="article:tag" content="AI 编译器">
 <meta property="article:tag" content="C++">
 <meta property="article:tag" content="CUDA">
-<meta property="article:tag" content="GPU">
-<meta property="article:tag" content="KV Cache">
+<meta property="article:tag" content="分布式训练">
 <meta property="article:tag" content="大模型推理">
+<meta property="article:tag" content="学习路线">
 <meta property="article:tag" content="就业调研">
-<meta property="article:tag" content="推理加速">
-<meta property="article:tag" content="量化">
+<meta property="article:tag" content="推理系统">
+<meta property="article:tag" content="系统软件">
+<meta property="article:tag" content="边缘推理">
 <meta name="twitter:card" content="summary">
 
 
 <link rel="canonical" href="https://zycrwa.github.io/markdown/ai/llm-inference-acceleration-career-report/">
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://zycrwa.github.io/markdown/ai/llm-inference-acceleration-career-report/","path":"/ai/llm-inference-acceleration-career-report/","title":"大模型推理加速就业与技术方向调研报告（2026）"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://zycrwa.github.io/markdown/ai/llm-inference-acceleration-career-report/","path":"/ai/llm-inference-acceleration-career-report/","title":"AI Infra 就业与学习路线：从系统基础到推理运行时（2026）"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>大模型推理加速就业与技术方向调研报告（2026） | ZY 的技术笔记</title>
+<title>AI Infra 就业与学习路线：从系统基础到推理运行时（2026） | ZY 的技术笔记</title>
   
 
 
@@ -82,7 +84,6 @@
   <noscript>
     <link rel="stylesheet" href="/markdown/css/noscript.css">
   </noscript>
-<link rel="alternate" href="/markdown/atom.xml" title="ZY 的技术笔记" type="application/atom+xml">
 <style>mjx-container[jax="SVG"] {
   direction: ltr;
 }
@@ -195,7 +196,8 @@ mjx-container[display="true"] {
 mjx-container[display="true"] + br {
   display: none;
 }
-</style></head>
+</style><link rel="alternate" href="/markdown/atom.xml" title="ZY 的技术笔记" type="application/atom+xml">
+</head>
 
 <body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
   <div class="headband"></div>
@@ -231,7 +233,7 @@ mjx-container[display="true"] + br {
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/markdown/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/markdown/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">20</span></a></li><li class="menu-item menu-item-categories"><a href="/markdown/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">8</span></a></li><li class="menu-item menu-item-tags"><a href="/markdown/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">75</span></a></li><li class="menu-item menu-item-知识阅读器"><a href="/markdown/reader/" rel="section"><i class="fa fa-book-open fa-fw"></i>知识阅读器</a></li><li class="menu-item menu-item-about"><a href="/markdown/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/markdown/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/markdown/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">22</span></a></li><li class="menu-item menu-item-categories"><a href="/markdown/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">8</span></a></li><li class="menu-item menu-item-tags"><a href="/markdown/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">84</span></a></li><li class="menu-item menu-item-知识阅读器"><a href="/markdown/reader/" rel="section"><i class="fa fa-book-open fa-fw"></i>知识阅读器</a></li><li class="menu-item menu-item-about"><a href="/markdown/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -282,7 +284,7 @@ mjx-container[display="true"] + br {
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%88%E7%BB%99%E7%BB%93%E8%AE%BA"><span class="nav-number">1.</span> <span class="nav-text">先给结论</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E8%BF%99%E6%98%AF%E4%B8%80%E4%B8%AA%E7%9C%9F%E5%AE%9E%E7%9A%84%E5%B7%A5%E7%A8%8B%E5%B0%B1%E4%B8%9A%E6%96%B9%E5%90%91%EF%BC%8C%E4%BD%86%E4%B8%8D%E6%98%AF%E4%B8%80%E4%B8%AA%E5%B2%97%E4%BD%8D"><span class="nav-number">1.1.</span> <span class="nav-text">1. 这是一个真实的工程就业方向，但不是一个岗位</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E4%BD%A0%E6%9C%80%E5%80%BC%E5%BE%97%E4%BC%98%E5%85%88%E9%AA%8C%E8%AF%81%E7%9A%84%E6%98%AF%E2%80%9C%E6%8E%A8%E7%90%86%E8%BF%90%E8%A1%8C%E6%97%B6-%E5%86%85%E5%AD%98%E7%B3%BB%E7%BB%9F%E2%80%9D"><span class="nav-number">1.2.</span> <span class="nav-text">2. 你最值得优先验证的是“推理运行时 + 内存系统”</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E2%80%9C%E4%BC%9A-CUDA%E2%80%9D%E4%B8%8D%E6%98%AF%E5%AE%8C%E6%95%B4%E7%9A%84%E6%B1%82%E8%81%8C%E7%AD%94%E6%A1%88"><span class="nav-number">1.3.</span> <span class="nav-text">3. “会 CUDA”不是完整的求职答案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%87%A0%E4%B8%AA%E6%9C%88%E7%9A%84%E7%8E%B0%E5%AE%9E%E7%9B%AE%E6%A0%87%E5%BA%94%E6%98%AF%E5%B7%A5%E7%A8%8B%E5%B2%97%E4%BD%8D%EF%BC%8C%E4%B8%8D%E6%98%AF%E7%A0%94%E7%A9%B6%E5%B2%97%E4%BD%8D"><span class="nav-number">1.4.</span> <span class="nav-text">4. 几个月的现实目标应是工程岗位，不是研究岗位</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A0%94%E7%A9%B6%E8%AF%81%E6%8D%AE%E4%B8%8E%E8%BE%B9%E7%95%8C"><span class="nav-number">2.</span> <span class="nav-text">研究证据与边界</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%AC%E5%BC%80%E5%B2%97%E4%BD%8D%E6%A0%B7%E6%9C%AC%EF%BC%9A%E5%AD%97%E8%8A%82%E8%B7%B3%E5%8A%A8"><span class="nav-number">2.1.</span> <span class="nav-text">公开岗位样本：字节跳动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%AC%E5%BC%80%E5%B2%97%E4%BD%8D%E6%A0%B7%E6%9C%AC%EF%BC%9A%E8%85%BE%E8%AE%AF"><span class="nav-number">2.2.</span> <span class="nav-text">公开岗位样本：腾讯</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%81%E6%8D%AE%E4%B8%8D%E8%83%BD%E8%AF%B4%E6%98%8E%E4%BB%80%E4%B9%88"><span class="nav-number">2.3.</span> <span class="nav-text">证据不能说明什么</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%99%E4%B8%AA%E8%A1%8C%E4%B8%9A%E7%9A%84%E6%8A%80%E6%9C%AF%E5%9C%B0%E5%9B%BE"><span class="nav-number">3.</span> <span class="nav-text">这个行业的技术地图</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Prefill-%E4%B8%8E-Decode%EF%BC%9A%E5%85%88%E7%90%86%E8%A7%A3%E7%93%B6%E9%A2%88%E5%9C%A8%E5%93%AA%E9%87%8C"><span class="nav-number">3.1.</span> <span class="nav-text">1. Prefill 与 Decode：先理解瓶颈在哪里</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-KV-Cache%EF%BC%9A%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E5%85%B4%E8%B6%A3%E6%9C%80%E7%9B%B4%E6%8E%A5%E7%9A%84%E5%88%87%E5%85%A5%E5%8F%A3"><span class="nav-number">3.2.</span> <span class="nav-text">2. KV Cache：内存管理兴趣最直接的切入口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E8%BF%9E%E7%BB%AD%E6%89%B9%E5%A4%84%E7%90%86%E4%B8%8E%E8%B0%83%E5%BA%A6"><span class="nav-number">3.3.</span> <span class="nav-text">3. 连续批处理与调度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Kernel-%E4%B8%8E%E7%A1%AC%E4%BB%B6%E6%80%A7%E8%83%BD"><span class="nav-number">3.4.</span> <span class="nav-text">4. Kernel 与硬件性能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E9%87%8F%E5%8C%96%E3%80%81%E7%A8%80%E7%96%8F%E5%92%8C%E6%8A%95%E6%9C%BA%E8%A7%A3%E7%A0%81"><span class="nav-number">3.5.</span> <span class="nav-text">5. 量化、稀疏和投机解码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E8%BF%90%E8%A1%8C%E6%97%B6%E4%B8%8E%E4%B8%BB%E8%A6%81%E5%BC%80%E6%BA%90%E7%94%9F%E6%80%81"><span class="nav-number">3.6.</span> <span class="nav-text">6. 运行时与主要开源生态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-%E7%BC%96%E8%AF%91%E5%99%A8%E3%80%81NPU-%E5%92%8C%E5%90%8E%E7%AB%AF"><span class="nav-number">3.7.</span> <span class="nav-text">7. 编译器、NPU 和后端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-%E5%A4%9A-GPU-%E4%B8%8E%E5%88%86%E5%B8%83%E5%BC%8F%E6%8E%A8%E7%90%86"><span class="nav-number">3.8.</span> <span class="nav-text">8. 多 GPU 与分布式推理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-CPU%E3%80%81%E8%BE%B9%E7%BC%98-GPU-%E5%92%8C-NPU"><span class="nav-number">3.9.</span> <span class="nav-text">9. CPU、边缘 GPU 和 NPU</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B2%97%E4%BD%8D%E6%97%8F%E5%AF%B9%E6%AF%94%E4%B8%8E%E8%BF%9B%E5%85%A5%E9%97%A8%E6%A7%9B"><span class="nav-number">4.</span> <span class="nav-text">岗位族对比与进入门槛</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B1%E6%80%A7%E5%BA%95%E5%BA%A7"><span class="nav-number">4.1.</span> <span class="nav-text">共性底座</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%A0%E7%8E%B0%E6%9C%89%E8%83%8C%E6%99%AF%E8%83%BD%E8%BF%81%E7%A7%BB%E4%BB%80%E4%B9%88"><span class="nav-number">5.</span> <span class="nav-text">你现有背景能迁移什么</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E4%BB%A5%E8%BF%81%E7%A7%BB%E7%9A%84%E8%83%BD%E5%8A%9B"><span class="nav-number">5.1.</span> <span class="nav-text">可以迁移的能力</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8D%E8%83%BD%E7%9B%B4%E6%8E%A5%E7%AD%89%E5%90%8C%E7%9A%84%E9%83%A8%E5%88%86"><span class="nav-number">5.2.</span> <span class="nav-text">不能直接等同的部分</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%92%88%E5%AF%B9%E4%BD%A0%E7%9A%84%E6%8E%A8%E8%8D%90%E5%AE%9A%E4%BD%8D"><span class="nav-number">6.</span> <span class="nav-text">针对你的推荐定位</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E7%9B%AE%E6%A0%87%EF%BC%9A%E6%8E%A8%E7%90%86%E8%BF%90%E8%A1%8C%E6%97%B6-KV-Cache-%E6%80%A7%E8%83%BD%E5%B7%A5%E7%A8%8B"><span class="nav-number">6.1.</span> <span class="nav-text">主目标：推理运行时 &#x2F; KV Cache &#x2F; 性能工程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E7%9B%AE%E6%A0%87%EF%BC%9ACUDA-Triton-Kernel"><span class="nav-number">6.2.</span> <span class="nav-text">第二目标：CUDA&#x2F;Triton Kernel</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%87%E7%94%A8%E7%9B%AE%E6%A0%87%EF%BC%9AC-%E8%BE%B9%E7%BC%98%E6%8E%A8%E7%90%86"><span class="nav-number">6.3.</span> <span class="nav-text">备用目标：C++ 边缘推理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E6%9D%A1%E6%B1%82%E8%81%8C%E8%B7%AF%E7%BA%BF"><span class="nav-number">7.</span> <span class="nav-text">三条求职路线</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12-%E5%91%A8%E9%AA%8C%E8%AF%81%E8%B7%AF%E7%BA%BF"><span class="nav-number">8.</span> <span class="nav-text">12 周验证路线</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E4%B8%AA%E9%80%92%E8%BF%9B%E9%A1%B9%E7%9B%AE"><span class="nav-number">8.1.</span> <span class="nav-text">三个递进项目</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87%E4%B8%8E%E5%B7%A5%E5%85%B7"><span class="nav-number">9.</span> <span class="nav-text">性能指标与工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A1%AC%E4%BB%B6%E5%92%8C%E7%8E%AF%E5%A2%83%E7%8E%B0%E5%AE%9E"><span class="nav-number">10.</span> <span class="nav-text">硬件和环境现实</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9D%A2%E8%AF%95%E5%87%86%E5%A4%87%E6%B8%85%E5%8D%95"><span class="nav-number">11.</span> <span class="nav-text">面试准备清单</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#C-%E7%B3%BB%E7%BB%9F"><span class="nav-number">11.1.</span> <span class="nav-text">C++&#x2F;系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GPU-%E7%A1%AC%E4%BB%B6"><span class="nav-number">11.2.</span> <span class="nav-text">GPU&#x2F;硬件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A8%E7%90%86"><span class="nav-number">11.3.</span> <span class="nav-text">推理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%A5%E7%A8%8B%E6%8E%92%E9%9A%9C"><span class="nav-number">11.4.</span> <span class="nav-text">工程排障</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A3%8E%E9%99%A9%E4%B8%8E%E5%86%B3%E7%AD%96%E7%82%B9"><span class="nav-number">12.</span> <span class="nav-text">风险与决策点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A3%8E%E9%99%A9%E4%B8%80%EF%BC%9A%E6%8A%8A%E6%96%B9%E5%90%91%E5%AD%A6%E6%88%90%E2%80%9C%E6%A8%A1%E5%9E%8B%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91%E2%80%9D"><span class="nav-number">12.1.</span> <span class="nav-text">风险一：把方向学成“模型应用开发”</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A3%8E%E9%99%A9%E4%BA%8C%EF%BC%9A%E5%8F%AA%E5%88%B7-CUDA-%E7%A4%BA%E4%BE%8B"><span class="nav-number">12.2.</span> <span class="nav-text">风险二：只刷 CUDA 示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A3%8E%E9%99%A9%E4%B8%89%EF%BC%9A%E8%BF%87%E6%97%A9%E5%86%B2%E7%BC%96%E8%AF%91%E5%99%A8%E6%88%96%E9%87%8F%E5%8C%96%E8%AE%BA%E6%96%87"><span class="nav-number">12.3.</span> <span class="nav-text">风险三：过早冲编译器或量化论文</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A3%8E%E9%99%A9%E5%9B%9B%EF%BC%9A%E6%8A%8A%E5%8D%95%E7%82%B9-speedup-%E5%BD%93%E6%99%AE%E9%81%8D%E8%A7%84%E5%BE%8B"><span class="nav-number">12.4.</span> <span class="nav-text">风险四：把单点 speedup 当普遍规律</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E7%BB%88%E5%BB%BA%E8%AE%AE"><span class="nav-number">13.</span> <span class="nav-text">最终建议</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%85%88%E5%8C%BA%E5%88%86-AI-%E8%A1%8C%E4%B8%9A%E9%87%8C%E7%9A%84%E5%87%A0%E7%B1%BB%E5%B2%97%E4%BD%8D"><span class="nav-number">1.</span> <span class="nav-text">一、先区分 AI 行业里的几类岗位</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B2%97%E4%BD%8D%E5%9C%B0%E5%9B%BE"><span class="nav-number">1.1.</span> <span class="nav-text">岗位地图</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E4%BD%A0%E7%9A%84%E7%9B%AE%E6%A0%87%E5%BA%94%E8%AF%A5%E6%80%8E%E6%A0%B7%E5%AE%9A%E4%BD%8D"><span class="nav-number">2.</span> <span class="nav-text">二、你的目标应该怎样定位</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E9%80%89%E6%8B%A9%EF%BC%9AAI-%E7%B3%BB%E7%BB%9F%E8%BD%AF%E4%BB%B6-%E6%8E%A8%E7%90%86%E8%BF%90%E8%A1%8C%E6%97%B6"><span class="nav-number">2.1.</span> <span class="nav-text">第一选择：AI 系统软件 &#x2F; 推理运行时</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E9%80%89%E6%8B%A9%EF%BC%9AAI-%E7%BC%96%E8%AF%91%E5%99%A8-NPU-%E5%90%8E%E7%AB%AF-%E7%AE%97%E5%AD%90%E6%80%A7%E8%83%BD"><span class="nav-number">2.2.</span> <span class="nav-text">第二选择：AI 编译器 &#x2F; NPU 后端 &#x2F; 算子性能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E9%80%89%E6%8B%A9%EF%BC%9AAI-%E5%B9%B3%E5%8F%B0-Serving-%E8%B5%84%E6%BA%90%E8%B0%83%E5%BA%A6"><span class="nav-number">2.3.</span> <span class="nav-text">第三选择：AI 平台 &#x2F; Serving &#x2F; 资源调度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E5%9B%9B%E9%80%89%E6%8B%A9%EF%BC%9A%E5%88%86%E5%B8%83%E5%BC%8F%E8%AE%AD%E7%BB%83%E7%B3%BB%E7%BB%9F"><span class="nav-number">2.4.</span> <span class="nav-text">第四选择：分布式训练系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BE%85%E5%8A%A9%E9%80%89%E6%8B%A9%EF%BC%9AC-%E8%BE%B9%E7%BC%98%E6%8E%A8%E7%90%86"><span class="nav-number">2.5.</span> <span class="nav-text">辅助选择：C++ 边缘推理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A8%E8%8D%90%E7%9A%84%E4%B8%AA%E4%BA%BA%E6%A0%87%E7%AD%BE"><span class="nav-number">2.6.</span> <span class="nav-text">推荐的个人标签</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81AI-Infra-%E7%9A%84%E5%85%B1%E5%90%8C%E5%9F%BA%E7%A1%80"><span class="nav-number">3.</span> <span class="nav-text">三、AI Infra 的共同基础</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8B"><span class="nav-number">3.1.</span> <span class="nav-text">1. 系统编程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Linux-%E4%B8%8E%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F"><span class="nav-number">3.2.</span> <span class="nav-text">2. Linux 与操作系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-AI-%E6%8E%A8%E7%90%86%E6%9C%80%E5%B0%8F%E7%9F%A5%E8%AF%86"><span class="nav-number">3.3.</span> <span class="nav-text">3. AI 推理最小知识</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E6%80%A7%E8%83%BD%E5%B7%A5%E7%A8%8B"><span class="nav-number">3.4.</span> <span class="nav-text">4. 性能工程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E5%85%B7%E4%BD%93%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99"><span class="nav-number">4.</span> <span class="nav-text">四、具体学习资料</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#A-C-%E3%80%81Linux-%E4%B8%8E%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%EF%BC%9A%E7%AC%AC%E4%B8%80%E4%BC%98%E5%85%88%E7%BA%A7"><span class="nav-number">4.1.</span> <span class="nav-text">A. C++、Linux 与系统基础：第一优先级</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#B-%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E6%80%A7%E8%83%BD%EF%BC%9A%E7%AC%AC%E4%BA%8C%E4%BC%98%E5%85%88%E7%BA%A7"><span class="nav-number">4.2.</span> <span class="nav-text">B. 计算机体系结构与性能：第二优先级</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#C-AI-%E4%B8%8E%E6%8E%A8%E7%90%86%E5%9F%BA%E7%A1%80%EF%BC%9A%E7%AC%AC%E4%B8%89%E4%BC%98%E5%85%88%E7%BA%A7"><span class="nav-number">4.3.</span> <span class="nav-text">C. AI 与推理基础：第三优先级</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#D-%E6%8E%A8%E7%90%86-Runtime-%E4%B8%8E%E6%9C%8D%E5%8A%A1%EF%BC%9A%E4%B8%BB%E6%96%B9%E5%90%91%E8%B5%84%E6%96%99"><span class="nav-number">4.4.</span> <span class="nav-text">D. 推理 Runtime 与服务：主方向资料</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#E-GPU%E3%80%81Kernel-%E4%B8%8E%E5%BC%82%E6%9E%84%E7%A1%AC%E4%BB%B6%EF%BC%9A%E4%B8%BB%E6%96%B9%E5%90%91%E7%9A%84%E8%BF%9B%E9%98%B6%E8%B5%84%E6%96%99"><span class="nav-number">4.5.</span> <span class="nav-text">E. GPU、Kernel 与异构硬件：主方向的进阶资料</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#F-AI-%E7%BC%96%E8%AF%91%E5%99%A8%E4%B8%8E%E5%90%8E%E7%AB%AF%EF%BC%9A%E7%AC%AC%E4%BA%8C%E6%9D%A1%E8%BF%9B%E9%98%B6%E8%B7%AF%E7%BA%BF"><span class="nav-number">4.6.</span> <span class="nav-text">F. AI 编译器与后端：第二条进阶路线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#G-%E5%88%86%E5%B8%83%E5%BC%8F%E8%AE%AD%E7%BB%83%E4%B8%8E%E9%9B%86%E7%BE%A4%EF%BC%9A%E5%8F%AF%E9%80%89%E8%BF%9B%E9%98%B6%E8%B7%AF%E7%BA%BF"><span class="nav-number">4.7.</span> <span class="nav-text">G. 分布式训练与集群：可选进阶路线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#H-AI-%E5%B9%B3%E5%8F%B0%E3%80%81%E8%A7%82%E6%B5%8B%E4%B8%8E%E7%BB%9F%E4%B8%80%E5%9F%BA%E5%87%86%EF%BC%9A%E5%B9%B3%E5%8F%B0%E5%88%86%E6%94%AF%E8%B5%84%E6%96%99"><span class="nav-number">4.8.</span> <span class="nav-text">H. AI 平台、观测与统一基准：平台分支资料</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%8124-%E5%91%A8%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF"><span class="nav-number">5.</span> <span class="nav-text">五、24 周学习路线</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC-1%E2%80%9312-%E5%91%A8%EF%BC%9A%E5%85%B1%E5%90%8C%E5%9F%BA%E7%A1%80"><span class="nav-number">5.1.</span> <span class="nav-text">第 1–12 周：共同基础</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC-13%E2%80%9320-%E5%91%A8%EF%BC%9A%E5%8F%AA%E9%80%89%E4%B8%80%E6%9D%A1%E4%B8%BB%E7%BA%BF"><span class="nav-number">5.2.</span> <span class="nav-text">第 13–20 周：只选一条主线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC-21%E2%80%9322-%E5%91%A8%EF%BC%9A%E5%8E%8B%E5%8A%9B%E3%80%81%E6%95%85%E9%9A%9C%E4%B8%8E%E6%80%A7%E8%83%BD%E9%AA%8C%E8%AF%81"><span class="nav-number">5.3.</span> <span class="nav-text">第 21–22 周：压力、故障与性能验证</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC-23%E2%80%9324-%E5%91%A8%EF%BC%9A%E5%B7%A5%E7%A8%8B%E5%8C%96%E5%92%8C%E6%B1%82%E8%81%8C"><span class="nav-number">5.4.</span> <span class="nav-text">第 23–24 周：工程化和求职</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E4%B8%80%EF%BC%9AAI-Runtime-Mini"><span class="nav-number">5.5.</span> <span class="nav-text">项目一：AI Runtime Mini</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E4%BA%8C%EF%BC%9A%E6%80%A7%E8%83%BD%E4%B8%8E%E5%90%8E%E7%AB%AF%E5%AE%9E%E9%AA%8C"><span class="nav-number">5.6.</span> <span class="nav-text">项目二：性能与后端实验</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E4%B8%89%EF%BC%9AAI-%E5%B9%B3%E5%8F%B0%E5%B0%8F%E7%B3%BB%E7%BB%9F"><span class="nav-number">5.7.</span> <span class="nav-text">项目三：AI 平台小系统</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AD%E3%80%81%E5%A6%82%E4%BD%95%E9%80%89%E6%8B%A9%E5%B2%97%E4%BD%8D%E6%96%B9%E5%90%91"><span class="nav-number">6.</span> <span class="nav-text">六、如何选择岗位方向</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%82%E5%90%88%E4%BC%98%E5%85%88%E6%8A%95%E9%80%92%E7%9A%84%E5%B2%97%E4%BD%8D%E5%85%B3%E9%94%AE%E8%AF%8D"><span class="nav-number">6.1.</span> <span class="nav-text">适合优先投递的岗位关键词</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%A2%E8%AF%95%E6%9C%80%E4%BD%8E%E5%87%86%E5%A4%87%E7%BA%BF"><span class="nav-number">6.2.</span> <span class="nav-text">面试最低准备线</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%83%E3%80%81%E6%9C%AA%E6%9D%A5%E5%8F%91%E5%B1%95%E4%B8%8E%E8%96%AA%E8%B5%84%E8%BE%B9%E7%95%8C"><span class="nav-number">7.</span> <span class="nav-text">七、未来发展与薪资边界</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%AA%E6%9D%A5%E5%8F%91%E5%B1%95"><span class="nav-number">7.1.</span> <span class="nav-text">未来发展</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%96%AA%E8%B5%84%E5%8F%82%E8%80%83"><span class="nav-number">7.2.</span> <span class="nav-text">薪资参考</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AB%E3%80%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%92%8C%E4%BB%A3%E7%A0%81%E5%A6%82%E4%BD%95%E6%94%BE%E8%BF%9B%E4%BB%93%E5%BA%93"><span class="nav-number">8.</span> <span class="nav-text">八、学习笔记和代码如何放进仓库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B9%9D%E3%80%81%E5%B2%97%E4%BD%8D%E6%A0%B7%E6%9C%AC%E4%B8%8E%E8%B5%84%E6%96%99%E8%BE%B9%E7%95%8C"><span class="nav-number">9.</span> <span class="nav-text">九、岗位样本与资料边界</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%81%E3%80%81%E6%9C%80%E7%BB%88%E5%BB%BA%E8%AE%AE"><span class="nav-number">10.</span> <span class="nav-text">十、最终建议</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -297,7 +299,7 @@ mjx-container[display="true"] + br {
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/markdown/archives/">
-          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-count">22</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -308,7 +310,7 @@ mjx-container[display="true"] + br {
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/markdown/tags/">
-        <span class="site-state-item-count">75</span>
+        <span class="site-state-item-count">84</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -353,12 +355,12 @@ mjx-container[display="true"] + br {
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="大模型推理加速就业与技术方向调研报告（2026） | ZY 的技术笔记">
-      <meta itemprop="description" content="基于 2026-08-23 可核对的官方岗位样本、开源项目文档和论文，分析大模型推理加速的就业岗位族、技术栈、进入门槛、硬件与内存方向匹配度及 12 周验证路线。">
+      <meta itemprop="name" content="AI Infra 就业与学习路线：从系统基础到推理运行时（2026） | ZY 的技术笔记">
+      <meta itemprop="description" content="面向非模型算法路线的 AI Infra 岗位地图，以及系统基础、推理运行时、训练系统、编译器后端与平台工程的学习资料和 24 周实践路线。">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          大模型推理加速就业与技术方向调研报告（2026）
+          AI Infra 就业与学习路线：从系统基础到推理运行时（2026）
         </h1>
 
         <div class="post-meta-container">
@@ -373,6 +375,13 @@ mjx-container[display="true"] + br {
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-08-24 00:00:59" itemprop="dateModified" datetime="2026-08-24T00:00:59+08:00">2026-08-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
       </span>
       <span class="post-meta-item-text">分类于</span>
@@ -384,538 +393,814 @@ mjx-container[display="true"] + br {
   
 </div>
 
-            <div class="post-description">基于 2026-08-23 可核对的官方岗位样本、开源项目文档和论文，分析大模型推理加速的就业岗位族、技术栈、进入门槛、硬件与内存方向匹配度及 12 周验证路线。</div>
+            <div class="post-description">面向非模型算法路线的 AI Infra 岗位地图，以及系统基础、推理运行时、训练系统、编译器后端与平台工程的学习资料和 24 周实践路线。</div>
         </div>
       </header>
 
     
     
     
-    <div class="post-body" itemprop="articleBody"><p>这是一份独立的就业与技术方向调研，不把“会调用模型 API”“会部署一个聊天机器人”和“会做推理加速”混为一谈。报告基于 2026-08-23 访问到的字节跳动、腾讯官方招聘资料，以及 vLLM、SGLang、TensorRT-LLM、CUDA、Triton、MLIR 等官方项目资料和论文，重点回答：这个方向实际招聘什么岗位、日常工作是什么、门槛在哪里，以及一名有电气&#x2F;硬件基础、喜欢内存管理的学生应如何验证自己是否适合。</p>
+    <div class="post-body" itemprop="articleBody"><p>本文面向这样一种选择：不把主要精力放在训练新模型、设计网络结构或发表模型算法论文，而是学习 AI 系统中更基础、更通用的工程岗位。</p>
+<p>这里的 <strong>AI Infra</strong> 是 AI Infrastructure 的缩写，指支撑模型训练、部署和运行的基础设施，包括资源调度、推理服务、运行时、编译器、算子库、GPU&#x2F;NPU 适配、监控和成本优化。它不是一个单独岗位，而是一组岗位的总称。</p>
+<p>本文根据 2026-08-23 核对的字节跳动、腾讯官方招聘页面，以及开源项目官方文档和论文，重新整理岗位边界、学习顺序和作品要求。岗位状态、薪资和技术栈会变化，文中的判断属于未验证的求职参考。</p>
 <span id="more"></span>
 
-<h2 id="先给结论"><a href="#先给结论" class="headerlink" title="先给结论"></a>先给结论</h2><h3 id="1-这是一个真实的工程就业方向，但不是一个岗位"><a href="#1-这是一个真实的工程就业方向，但不是一个岗位" class="headerlink" title="1. 这是一个真实的工程就业方向，但不是一个岗位"></a>1. 这是一个真实的工程就业方向，但不是一个岗位</h3><p>招聘名称通常不会统一写成“大模型推理加速工程师”，而会拆成：</p>
-<ul>
-<li>推理框架&#x2F;运行时工程师；</li>
-<li>GPU CUDA&#x2F;Triton 算子或 Kernel 优化工程师；</li>
-<li>推理引擎、异构芯片适配和性能调优工程师；</li>
-<li>AI 编译器、NPU 编译器和后端工程师；</li>
-<li>量化、稀疏化、投机解码等模型优化工程师；</li>
-<li>推理平台、GPU 调度和分布式系统工程师；</li>
-<li>CPU&#x2F;边缘 AI 部署、设备运行时和硬件协同工程师。</li>
-</ul>
-<p>它们共享一部分基础，但日常工作和进入门槛差别很大。</p>
-<h3 id="2-你最值得优先验证的是“推理运行时-内存系统”"><a href="#2-你最值得优先验证的是“推理运行时-内存系统”" class="headerlink" title="2. 你最值得优先验证的是“推理运行时 + 内存系统”"></a>2. 你最值得优先验证的是“推理运行时 + 内存系统”</h3><p>你的硬件背景和内存管理兴趣，最自然地对应：</p>
-<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">C++/Linux → KV Cache 内存分配与回收 → 请求调度/连续批处理</span><br><span class="line">         → CUDA/Triton 基础 Kernel → vLLM/SGLang 等运行时</span><br></pre></td></tr></table></figure>
+<h2 id="一、先区分-AI-行业里的几类岗位"><a href="#一、先区分-AI-行业里的几类岗位" class="headerlink" title="一、先区分 AI 行业里的几类岗位"></a>一、先区分 AI 行业里的几类岗位</h2><p>很多人把“AI 工作”理解成训练模型，其实模型只是整个系统的一层。一个模型从代码变成用户可用的服务，会涉及下面这些层。它们是系统分层，不是严格的单向执行顺序：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">模型与权重</span><br><span class="line">   ↓</span><br><span class="line">编译、图优化、算子和后端适配</span><br><span class="line">   ↓</span><br><span class="line">推理运行时、内存、调度和批处理</span><br><span class="line">   ↓</span><br><span class="line">服务接口、资源调度、监控和故障处理</span><br><span class="line">   ↓</span><br><span class="line">GPU/NPU/CPU/边缘设备上的实际部署</span><br></pre></td></tr></table></figure>
 
-<p>这条路线能同时使用系统软件、内存、并发、硬件性能分析和模型推理知识；相比直接冲 AI 编译器研究或纯量化算法，几个月内做出可验证作品的概率更高。</p>
-<h3 id="3-“会-CUDA”不是完整的求职答案"><a href="#3-“会-CUDA”不是完整的求职答案" class="headerlink" title="3. “会 CUDA”不是完整的求职答案"></a>3. “会 CUDA”不是完整的求职答案</h3><p>真正有说服力的项目必须同时回答：</p>
-<ul>
-<li>哪个工作负载是瓶颈，是计算、显存带宽、容量、调度还是通信？</li>
-<li>优化前后的 TTFT、TPOT、吞吐、p95&#x2F;p99 和显存是多少？</li>
-<li>数值误差或模型质量有没有回归？</li>
-<li>在什么模型、序列长度、并发、精度和硬件条件下测得？</li>
-<li>发生 OOM、非法 shape、超时或 GPU 错误时如何处理？</li>
-</ul>
-<p>只展示“模型启动成功”或单个 Kernel 的加速百分比，不能证明理解推理系统。</p>
-<h3 id="4-几个月的现实目标应是工程岗位，不是研究岗位"><a href="#4-几个月的现实目标应是工程岗位，不是研究岗位" class="headerlink" title="4. 几个月的现实目标应是工程岗位，不是研究岗位"></a>4. 几个月的现实目标应是工程岗位，不是研究岗位</h3><p>本次核到的工程型毕业岗位中，已有 Bachelor&#x2F;Master 入口；而 GPU&#x2F;AI 平台研究实习、部分推理基础设施研究岗位明确偏 PhD 或要求生产&#x2F;研究经验。对本科生或刚转方向的学生，优先级应是：</p>
-<ol>
-<li>推理运行时、边缘部署或异构适配的工程实习；</li>
-<li>CUDA&#x2F;Triton Kernel 与性能工程实习；</li>
-<li>在基础扎实后再尝试编译器后端、量化研究和硬件架构研究。</li>
-</ol>
-<p>这不是学历定论，而是基于本次岗位样本的进入风险判断。</p>
-<h2 id="研究证据与边界"><a href="#研究证据与边界" class="headerlink" title="研究证据与边界"></a>研究证据与边界</h2><h3 id="公开岗位样本：字节跳动"><a href="#公开岗位样本：字节跳动" class="headerlink" title="公开岗位样本：字节跳动"></a>公开岗位样本：字节跳动</h3><p>官方入口：<a target="_blank" rel="noopener" href="https://joinbytedance.com/search">ByteDance Jobs</a>，公开接口为 <code>https://jobs.bytedance.com/api/v1/public/supplier/search/job/posts</code>。以下岗位和要求于 2026-08-23 从官方公开数据核对；岗位可能随时下线、改名或改变地点。</p>
-<table>
-<thead>
-<tr>
-<th>岗位</th>
-<th>地点与学历</th>
-<th>公开要求中最有代表性的能力</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><a target="_blank" rel="noopener" href="https://joinbytedance.com/search/7663392067718039813">Backend Inference Framework Engineer Graduate</a>（ID <code>7663392067718039813</code>）</td>
-<td>新加坡；Bachelor&#x2F;Master</td>
-<td>Linux、C&#x2F;C++、数据结构、多线程同步&#x2F;线程池、高并发分布式服务、延迟和资源优化；GPU 资源管理为加分项</td>
-</tr>
-<tr>
-<td><a target="_blank" rel="noopener" href="https://joinbytedance.com/search/7669789046777940229">Backend Inference Runtime Engineer Graduate</a>（ID <code>7669789046777940229</code>）</td>
-<td>圣何塞；Bachelor&#x2F;Master</td>
-<td>C&#x2F;C++、Python、CUDA、GPU 架构、GPU 内存模型&#x2F;调度&#x2F;通信、矩阵&#x2F;归一化&#x2F;激活等算子和访存优化</td>
-</tr>
-<tr>
-<td><a target="_blank" rel="noopener" href="https://joinbytedance.com/search/7667726338627356933">Large Language Model Inference System Engineer Graduate</a>（ID <code>7667726338627356933</code>）</td>
-<td>圣何塞；Bachelor&#x2F;Master</td>
-<td>操作系统、体系结构、C++&#x2F;Python、CUDA 和 GPU 性能分析、分布式推理；偏好 PD 分离、KV Cache 等经验</td>
-</tr>
-<tr>
-<td><a target="_blank" rel="noopener" href="https://joinbytedance.com/search/7642171416270260485">Machine Learning Engineer – AI Compiler Optimization</a>（ID <code>7642171416270260485</code>）</td>
-<td>圣何塞</td>
-<td>Triton、MLIR 或 TVM 的编译优化&#x2F;Pass，GPU&#x2F;NPU 编译、循环&#x2F;内存&#x2F;算子优化和瓶颈分析</td>
-</tr>
-<tr>
-<td><a target="_blank" rel="noopener" href="https://joinbytedance.com/search/7626484869123836165">Research Engineer – LLM&#x2F;VLM Inference Optimization</a>（ID <code>7626484869123836165</code>）</td>
-<td>圣何塞；Bachelor 及以上</td>
-<td>C&#x2F;C++、Python、PyTorch&#x2F;TensorFlow、生产规模推理、GPU 架构、FlashAttention&#x2F;GEMM、CUDA&#x2F;OpenCL；研究和生产经验门槛较高</td>
-</tr>
-</tbody></table>
-<p>这些样本证明岗位族存在，但本次直接核到的字节推理岗位多数在海外，不能推导出中国大陆岗位数量或录用概率。字节岗位搜索页面和职位状态应在实际投递前重新核对。</p>
-<h3 id="公开岗位样本：腾讯"><a href="#公开岗位样本：腾讯" class="headerlink" title="公开岗位样本：腾讯"></a>公开岗位样本：腾讯</h3><p>官方入口：<a target="_blank" rel="noopener" href="https://careers.tencent.com/search.html">腾讯招聘搜索</a>，职位详情使用 <code>https://careers.tencent.com/jobdesc.html?postId=</code>。以下是 2026-08-23 通过腾讯官方招聘 API 核对的大陆样本；API 地点字段与职位标题列出的城市有时不完全一致，因此只把它们作为岗位画像证据，不作为地点承诺。</p>
-<table>
-<thead>
-<tr>
-<th>岗位</th>
-<th>地点&#x2F;经验线索</th>
-<th>公开要求中最有代表性的能力</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><a target="_blank" rel="noopener" href="https://careers.tencent.com/jobdesc.html?postId=2037411502792798208">微信-AI Infra 工程师-大模型推理方向</a>（ID <code>2037411502792798208</code>）</td>
-<td>API 地点北京；经验不限；更新 2026-07-31</td>
-<td>C&#x2F;C++&#x2F;Python、体系结构与性能调优、CUDA&#x2F;OpenCL、cuBLAS&#x2F;cuDNN&#x2F;CUTLASS、TensorRT&#x2F;TensorRT-LLM&#x2F;vLLM&#x2F;SGLang、异构瓶颈和分布式推理</td>
-</tr>
-<tr>
-<td><a target="_blank" rel="noopener" href="https://careers.tencent.com/jobdesc.html?postId=2021416952777568256">大模型异构芯片推理适配调优工程师</a>（ID <code>2021416952777568256</code>）</td>
-<td>城市列深圳&#x2F;北京&#x2F;上海&#x2F;杭州；经验一年以上；更新 2026-08-14</td>
-<td>CUDA&#x2F;Triton&#x2F;TileLang&#x2F;AscendC&#x2F;BangC、vLLM&#x2F;SGLang、DeepSeek&#x2F;Qwen、NCCL&#x2F;NVLink&#x2F;RoCE、PD 分离、算子精度与性能调优</td>
-</tr>
-<tr>
-<td><a target="_blank" rel="noopener" href="https://careers.tencent.com/jobdesc.html?postId=2074414767455518720">大模型推理引擎研发工程师</a>（ID <code>2074414767455518720</code>）</td>
-<td>城市列深圳&#x2F;北京&#x2F;上海&#x2F;杭州；经验一年以上；更新 2026-07-07</td>
-<td>C&#x2F;C++&#x2F;Python、CUDA&#x2F;OpenCL&#x2F;Ascend C、CUTLASS、vLLM&#x2F;SGLang&#x2F;TensorRT-LLM&#x2F;FasterTransformer、并行和 NVLink</td>
-</tr>
-<tr>
-<td><a target="_blank" rel="noopener" href="https://careers.tencent.com/jobdesc.html?postId=1958073231227375616">异构加速框架工程师</a>（ID <code>1958073231227375616</code>）</td>
-<td>城市列深圳&#x2F;北京&#x2F;上海；经验一年以上；更新 2026-08-05</td>
-<td>CUDA&#x2F;Triton&#x2F;Ascend C、cuBLAS&#x2F;CUTLASS&#x2F;CK、Torch-Compile、KV Cache、动态 batching、Attention、内存和通信优化</td>
-</tr>
-<tr>
-<td><a target="_blank" rel="noopener" href="https://careers.tencent.com/jobdesc.html?postId=2020723060671414272">微信-WeLM 推理优化工程师</a>（ID <code>2020723060671414272</code>）</td>
-<td>城市列深圳&#x2F;上海；经验两年以上；本科及以上；更新 2026-08-14</td>
-<td>C++&#x2F;Python、PyTorch&#x2F;JAX、CUDA&#x2F;Nsight、Transformer&#x2F;Attention&#x2F;KV Cache、量化、稀疏、投机解码和分布式</td>
-</tr>
-</tbody></table>
-<p>腾讯样本给出的信号很集中：岗位不是只招模型算法，而是把 C++、GPU&#x2F;NPU、内存、算子、运行时、通信和性能测试组合在一起。经验要求从“经验不限”到“一年以上&#x2F;两年以上”不等，说明实习或校招入口存在，但项目证据仍然重要。</p>
-<h3 id="证据不能说明什么"><a href="#证据不能说明什么" class="headerlink" title="证据不能说明什么"></a>证据不能说明什么</h3><ul>
-<li>没有可靠的官方公开数据支持本报告给出薪资、岗位总量或未来增长百分比，因此不编造这些数字。</li>
-<li>一个职位页面只能说明某团队某时点的需求，不能代表整个公司或行业。</li>
-<li>技术项目的成熟度会随版本、模型、GPU&#x2F;NPU 和驱动变化；报告中的“成熟”表示生态已有可用官方实现，不等于任何硬件都能达到同样效果。</li>
-</ul>
-<h2 id="这个行业的技术地图"><a href="#这个行业的技术地图" class="headerlink" title="这个行业的技术地图"></a>这个行业的技术地图</h2><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Transformer 模型与张量</span><br><span class="line">        ↓</span><br><span class="line">Prefill / Decode 工作负载</span><br><span class="line">        ↓</span><br><span class="line">KV Cache、分页分配、Prefix Cache</span><br><span class="line">        ↓</span><br><span class="line">连续批处理、请求调度、流式服务</span><br><span class="line">        ↓</span><br><span class="line">Attention/GEMM/Norm 等 Kernel 与量化</span><br><span class="line">        ↓</span><br><span class="line">CUDA/Triton/CUTLASS 或 CPU/NPU 后端</span><br><span class="line">        ↓</span><br><span class="line">单卡运行时 → 多卡并行/NCCL → 监控、成本和可靠性</span><br></pre></td></tr></table></figure>
-
-<h3 id="1-Prefill-与-Decode：先理解瓶颈在哪里"><a href="#1-Prefill-与-Decode：先理解瓶颈在哪里" class="headerlink" title="1. Prefill 与 Decode：先理解瓶颈在哪里"></a>1. Prefill 与 Decode：先理解瓶颈在哪里</h3><ul>
-<li><strong>Prefill</strong> 一次处理整段输入提示词，矩阵乘和 Attention 可以做较大规模并行，通常更接近计算吞吐和 GEMM 瓶颈。</li>
-<li><strong>Decode</strong> 每轮生成一个或少量 token，每个请求长度不同，需要反复读取模型权重和 KV Cache，通常更受显存带宽、缓存容量、Kernel 启动和尾延迟影响。</li>
-<li>同一模型在不同 batch、上下文长度和并发下，瓶颈可能变化；“这个算子永远受带宽限制”不是可靠结论，必须用 profiler 验证。</li>
-</ul>
-<h3 id="2-KV-Cache：内存管理兴趣最直接的切入口"><a href="#2-KV-Cache：内存管理兴趣最直接的切入口" class="headerlink" title="2. KV Cache：内存管理兴趣最直接的切入口"></a>2. KV Cache：内存管理兴趣最直接的切入口</h3><p>每层保存 Attention 的 Key 和 Value。粗略占用可按下面的关系估算（忽略实现额外开销）：</p>
-<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">KV bytes ≈ 2 × layers × KV_heads × sequence_length × head_dim × dtype_bytes × batch</span><br></pre></td></tr></table></figure>
-
-<p>GQA&#x2F;MQA 减少 KV 头数；滑动窗口和 KV 量化减少长期容量；分页 KV 把 Cache 切成固定 block，再用 block table 映射逻辑序列位置和物理显存位置。它解决的不是“把显存变大”，而是减少连续分配要求、内部碎片和并发请求之间的浪费，并支持共享前缀、复制和回收。</p>
-<p>日常工作可能包括：</p>
-<ul>
-<li>block allocator、free list、引用计数和所有权设计；</li>
-<li>prefix cache、copy-on-write、请求取消和 OOM 回收；</li>
-<li>多线程&#x2F;多请求下的竞态、碎片和泄漏测试；</li>
-<li>KV layout、量化格式与 GPU Kernel 的接口；</li>
-<li>在真实 workload 下报告显存峰值、命中率、p95&#x2F;p99 和吞吐。</li>
-</ul>
-<p>这部分与“内存管理”高度相关，但需要从 MCU 的静态内存和 DMA 思维，升级到 Linux 进程、并发所有权、GPU 显存池和异步执行。</p>
-<h3 id="3-连续批处理与调度"><a href="#3-连续批处理与调度" class="headerlink" title="3. 连续批处理与调度"></a>3. 连续批处理与调度</h3><p>传统静态 batch 等待一批请求都完成；连续批处理在迭代级别动态加入新请求、移除已完成请求，让 Decode 资源更持续地被利用。工程问题包括：</p>
-<ul>
-<li>长 Prefill 是否饿死 Decode；</li>
-<li>新请求准入、队列背压、优先级和公平性；</li>
-<li>chunked prefill 如何切分；</li>
-<li>流式输出、取消、超时和故障重试；</li>
-<li>TTFT 与吞吐之间怎样取舍。</li>
-</ul>
-<p>这条方向更像高性能后端&#x2F;分布式系统，C++、并发和可观测性比复杂模型数学更重要。</p>
-<h3 id="4-Kernel-与硬件性能"><a href="#4-Kernel-与硬件性能" class="headerlink" title="4. Kernel 与硬件性能"></a>4. Kernel 与硬件性能</h3><p>常见优化对象包括 QKV 投影、GEMM&#x2F;GEMV、RMSNorm、RoPE、SwiGLU、Softmax、Flash&#x2F;Paged Attention，以及反量化与矩阵乘融合。需要理解：</p>
-<ul>
-<li>CUDA 的 grid&#x2F;block&#x2F;warp&#x2F;thread 层次；</li>
-<li>coalesced memory access、L2&#x2F;shared memory&#x2F;register；</li>
-<li>occupancy、launch overhead、同步和分支发散；</li>
-<li>Tensor Core、矩阵 tile、算术强度和 Roofline；</li>
-<li>数值稳定性、不同 dtype 和动态 shape。</li>
-</ul>
-<p>Triton 适合快速写出可读 Kernel；CUDA C++ 和 CUTLASS 更接近极致性能、复杂布局和硬件控制。写出一个 Kernel 不等于优化成功，必须有正确性测试和不同形状下的 benchmark。</p>
-<h3 id="5-量化、稀疏和投机解码"><a href="#5-量化、稀疏和投机解码" class="headerlink" title="5. 量化、稀疏和投机解码"></a>5. 量化、稀疏和投机解码</h3><table>
-<thead>
-<tr>
-<th>方向</th>
-<th>做什么</th>
-<th>当前工程判断</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>FP16&#x2F;BF16&#x2F;FP8&#x2F;INT8</td>
-<td>降低带宽和显存，利用低精度硬件</td>
-<td>数据中心后端相对成熟，但要检查硬件、驱动和算子覆盖</td>
-</tr>
-<tr>
-<td>INT4&#x2F;GPTQ&#x2F;AWQ</td>
-<td>权重低比特存储，常需反量化与 GEMM 融合</td>
-<td>生态活跃，收益依模型、分组尺度和后端实现而变</td>
-</tr>
-<tr>
-<td>KV Cache 量化</td>
-<td>降低长上下文的 Cache 占用</td>
-<td>仍需严谨质量和长上下文回归，不能只看显存下降</td>
-</tr>
-<tr>
-<td>稀疏化</td>
-<td>减少计算或存储</td>
-<td>只有硬件和 Kernel 真正利用结构时才有收益</td>
-</tr>
-<tr>
-<td>投机解码</td>
-<td>Draft 模型提出候选，Target 一次验证多个 token</td>
-<td>收益依 Draft 成本、接受率、batch 和请求分布，不能保证普遍加速</td>
-</tr>
-</tbody></table>
-<p>量化工程既有系统成分也有数值分析成分：校准数据、尺度粒度、异常值、精度指标和部署后端都要同时记录。</p>
-<h3 id="6-运行时与主要开源生态"><a href="#6-运行时与主要开源生态" class="headerlink" title="6. 运行时与主要开源生态"></a>6. 运行时与主要开源生态</h3><table>
-<thead>
-<tr>
-<th>项目</th>
-<th>主要价值</th>
-<th>适合用来学什么</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><a target="_blank" rel="noopener" href="https://docs.vllm.ai/en/latest/">vLLM</a></td>
-<td>高吞吐 LLM 服务、PagedAttention、连续批处理、OpenAI 兼容服务和多种并行&#x2F;量化路径</td>
-<td>KV Cache、调度器、异步执行、服务 benchmark</td>
-</tr>
-<tr>
-<td><a target="_blank" rel="noopener" href="https://docs.sglang.ai/">SGLang</a></td>
-<td>结构化生成、Radix&#x2F;Prefix Cache、快速服务和程序化调用</td>
-<td>前缀复用、请求调度、结构化工作负载</td>
-</tr>
-<tr>
-<td><a target="_blank" rel="noopener" href="https://nvidia.github.io/TensorRT-LLM/">TensorRT-LLM</a></td>
-<td>NVIDIA GPU 上的优化 Engine、量化、in-flight batching 和多 GPU 运行时</td>
-<td>硬件绑定的 Kernel、Engine 构建、性能&#x2F;精度权衡</td>
-</tr>
-<tr>
-<td><a target="_blank" rel="noopener" href="https://github.com/ggml-org/llama.cpp">llama.cpp</a></td>
-<td>C&#x2F;C++ 推理、GGUF、CPU SIMD、Metal&#x2F;Vulkan 等多后端</td>
-<td>内存映射、量化、线程、低资源和边缘部署</td>
-</tr>
-<tr>
-<td><a target="_blank" rel="noopener" href="https://onnxruntime.ai/docs/">ONNX Runtime</a> &#x2F; <a target="_blank" rel="noopener" href="https://docs.openvino.ai/">OpenVINO</a> &#x2F; <a target="_blank" rel="noopener" href="https://pytorch.org/executorch/">ExecuTorch</a></td>
-<td>跨硬件模型导出和端侧运行时</td>
-<td>模型转换、算子覆盖、设备内存和部署工程</td>
-</tr>
-</tbody></table>
-<p>不要同时通读所有框架。先选一个运行时，读懂一个子系统，再用另一个框架做对照。</p>
-<h3 id="7-编译器、NPU-和后端"><a href="#7-编译器、NPU-和后端" class="headerlink" title="7. 编译器、NPU 和后端"></a>7. 编译器、NPU 和后端</h3><p>AI 编译器通常经历图捕获、IR 表示、算子融合、layout&#x2F;shape 变换、调度、自动调优和目标代码生成。相关生态包括 <a target="_blank" rel="noopener" href="https://mlir.llvm.org/">MLIR</a>、<a target="_blank" rel="noopener" href="https://tvm.apache.org/docs/">Apache TVM</a>、<a target="_blank" rel="noopener" href="https://openxla.org/xla">OpenXLA</a> 和 PyTorch Inductor&#x2F;Triton。</p>
-<p>NPU&#x2F;异构芯片岗位还会涉及厂商编程模型、算子覆盖、内存层次、编译器后端、通信和精度适配。腾讯样本中同时出现 CUDA、Triton、TileLang、Ascend C、BangC，说明中国岗位可能要求“跨硬件适配”，而不是只会 NVIDIA API。</p>
-<p>这条方向长期上限高，但需要补编译原理、SSA&#x2F;IR、LLVM&#x2F;C++ 和硬件 ISA；几个月内不适合把“实现一个完整 AI 编译器”作为唯一作品目标。</p>
-<h3 id="8-多-GPU-与分布式推理"><a href="#8-多-GPU-与分布式推理" class="headerlink" title="8. 多 GPU 与分布式推理"></a>8. 多 GPU 与分布式推理</h3><ul>
-<li>Tensor Parallel（TP）：切分矩阵或 Attention，通常需要高频 collective 通信。</li>
-<li>Pipeline Parallel（PP）：把层分到不同设备，涉及流水和气泡。</li>
-<li>Data Parallel（DP）：复制模型处理不同请求，吞吐较好但占用更多显存。</li>
-<li>Expert Parallel（EP）：MoE 专家之间需要 all-to-all。</li>
-<li>Prefill&#x2F;Decode disaggregation：把两种工作负载拆到不同资源池，换取资源和延迟控制。</li>
-</ul>
-<p><a target="_blank" rel="noopener" href="https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/overview.html">NCCL</a> 的拓扑、NVLink&#x2F;PCIe&#x2F;InfiniBand&#x2F;RoCE、通信计算重叠和故障恢复，是这一族群的核心。没有多 GPU 环境时，可以先理解通信模型和做单机模拟，不要伪造分布式性能数据。</p>
-<h3 id="9-CPU、边缘-GPU-和-NPU"><a href="#9-CPU、边缘-GPU-和-NPU" class="headerlink" title="9. CPU、边缘 GPU 和 NPU"></a>9. CPU、边缘 GPU 和 NPU</h3><p>服务器 GPU 是最显眼的方向，但不是唯一入口。CPU SIMD&#x2F;NUMA、Jetson 等边缘 GPU、手机&#x2F;嵌入式 NPU 都需要在有限内存、功耗和带宽下部署模型。<code>llama.cpp + GGUF</code>、ONNX Runtime、OpenVINO、ExecuTorch 是较容易搭建可复现实验的入口。</p>
-<p>这条路线与硬件背景结合最好：你会处理内存预算、DMA&#x2F;数据搬运类比、缓存、线程亲和、算子覆盖、功耗和设备联调；但仍需 Linux&#x2F;C++、模型转换和性能工具，不能只停留在 MCU 外设。</p>
-<h2 id="岗位族对比与进入门槛"><a href="#岗位族对比与进入门槛" class="headerlink" title="岗位族对比与进入门槛"></a>岗位族对比与进入门槛</h2><table>
+<h3 id="岗位地图"><a href="#岗位地图" class="headerlink" title="岗位地图"></a>岗位地图</h3><table>
 <thead>
 <tr>
 <th>岗位族</th>
-<th>日常工作</th>
-<th>核心能力</th>
-<th>几个月实习可达性</th>
-<th>与你的匹配</th>
+<th>主要工作</th>
+<th>常见技术</th>
+<th>岗位性质</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>Serving runtime &#x2F; KV allocator</td>
-<td>调度、Paged KV、Prefix Cache、内存池、并发、OOM、尾延迟和服务接口</td>
-<td>C++&#x2F;Python&#x2F;Linux、并发、数据结构、内存所有权、GPU 基础</td>
-<td>高于研究型方向</td>
-<td>很高</td>
+<td>模型算法&#x2F;训练研发</td>
+<td>结构设计、训练、微调、损失函数、数据和论文</td>
+<td>PyTorch、数学、分布式训练、实验设计</td>
+<td>是；不是本文主线</td>
 </tr>
 <tr>
-<td>CUDA&#x2F;Triton Kernel</td>
-<td>写&#x2F;调 Attention、Norm、GEMM、反量化融合，分析访存和占用率</td>
-<td>C++、CUDA、线代、GPU 内存层次、Nsight</td>
-<td>中等，需要 GPU 或云 GPU</td>
-<td>高</td>
+<td>AI 应用开发</td>
+<td>调 API、RAG、Agent、业务流程和前端接口</td>
+<td>Python、Web、数据库、模型 API</td>
+<td>不是底层 Infra</td>
+</tr>
+<tr>
+<td>AI Infra&#x2F;ML 平台</td>
+<td>训练或推理平台、资源调度、任务编排、监控、权限和成本</td>
+<td>Linux、Python&#x2F;Go&#x2F;C++、RPC、容器、Kubernetes、分布式系统</td>
+<td>是基础设施</td>
+</tr>
+<tr>
+<td>推理运行时&#x2F;推理引擎</td>
+<td>模型加载、图执行、动态批处理、内存、并发、延迟和吞吐</td>
+<td>C++、Python、CUDA、ONNX、TensorRT、vLLM、SGLang</td>
+<td>是基础设施</td>
+</tr>
+<tr>
+<td>分布式训练系统</td>
+<td>数据&#x2F;张量&#x2F;流水并行、通信、Checkpoint、容错和集群效率</td>
+<td>PyTorch Distributed、NCCL、DeepSpeed、Megatron、CUDA</td>
+<td>是基础设施，不负责设计模型结构</td>
+</tr>
+<tr>
+<td>AI 编译器&#x2F;后端</td>
+<td>图优化、算子融合、layout、IR、代码生成和自动调优</td>
+<td>C++、LLVM、MLIR、TVM、Triton、硬件 ISA</td>
+<td>是基础设施</td>
+</tr>
+<tr>
+<td>GPU&#x2F;NPU Runtime 与算子库</td>
+<td>设备内存、Kernel、通信、算子实现和芯片适配</td>
+<td>C&#x2F;C++、CUDA、CANN&#x2F;Ascend C 或其他 NPU SDK</td>
+<td>是基础设施</td>
+</tr>
+<tr>
+<td>AI 性能工程</td>
+<td>定位 CPU&#x2F;GPU&#x2F;NPU 瓶颈，优化带宽、Kernel、调度、功耗和尾延迟</td>
+<td>Profiler、体系结构、CUDA、perf、benchmark</td>
+<td>是基础设施</td>
 </tr>
 <tr>
 <td>C++ 边缘推理</td>
-<td>模型转换、量化、CPU&#x2F;NPU&#x2F;GPU 后端、内存&#x2F;功耗&#x2F;设备联调</td>
-<td>C++&#x2F;Python&#x2F;Linux、ONNX&#x2F;Runtime、SIMD&#x2F;设备 SDK</td>
-<td>中等偏高</td>
-<td>很高</td>
+<td>在手机、机器人、汽车、工业设备上做模型转换和运行时部署</td>
+<td>C++、ONNX Runtime、llama.cpp、OpenVINO、NPU SDK</td>
+<td>是端侧基础设施</td>
 </tr>
 <tr>
-<td>推理平台&#x2F;分布式</td>
-<td>GPU 调度、RPC、容器、监控、资源隔离、TP&#x2F;PP</td>
-<td>C++&#x2F;Go&#x2F;Python、Linux、网络、容器、分布式</td>
-<td>中等</td>
-<td>中等</td>
-</tr>
-<tr>
-<td>量化&#x2F;压缩&#x2F;投机</td>
-<td>校准、误差分析、低精度 Kernel、接受率和质量回归</td>
-<td>PyTorch、线代&#x2F;数值、CUDA、实验设计</td>
-<td>中等偏低；研究岗更高</td>
-<td>中等</td>
-</tr>
-<tr>
-<td>AI 编译器&#x2F;NPU 后端</td>
-<td>IR&#x2F;Pass、融合、layout、codegen、自动调优和芯片适配</td>
-<td>C++、编译原理、MLIR&#x2F;TVM&#x2F;LLVM、硬件 ISA</td>
-<td>偏低但长期价值高</td>
-<td>中等偏高</td>
-</tr>
-<tr>
-<td>GPU&#x2F;AI 硬件架构与驱动</td>
-<td>显存&#x2F;缓存&#x2F;互联、驱动&#x2F;runtime、虚拟化和软硬件协同</td>
-<td>C&#x2F;C++、OS、体系结构、PCIe&#x2F;NVLink、驱动</td>
-<td>偏低，常需更强学历或项目</td>
-<td>高但需长期准备</td>
+<td>MLOps&#x2F;平台运维</td>
+<td>发布、训练任务、镜像、监控、弹性和服务可靠性</td>
+<td>Python&#x2F;Go、Kubernetes、云平台、Prometheus</td>
+<td>偏平台工程</td>
 </tr>
 </tbody></table>
-<h3 id="共性底座"><a href="#共性底座" class="headerlink" title="共性底座"></a>共性底座</h3><p>从官方岗位样本看，反复出现的能力可以分为五层：</p>
-<ol>
-<li><strong>语言和系统</strong>：C++（通常至少 C++17 思维）、Python、Linux、CMake、Git、调试和性能分析。</li>
-<li><strong>内存与并发</strong>：RAII、allocator、生命周期、线程&#x2F;锁&#x2F;线程池、异步任务、队列、backpressure、数据竞争和 OOM。</li>
-<li><strong>模型与框架</strong>：PyTorch、Transformer、Attention、KV Cache、量化和模型导出。</li>
-<li><strong>硬件与 Kernel</strong>：CUDA&#x2F;GPU memory model、Tensor Core、Triton&#x2F;CUTLASS、CPU SIMD 或 NPU 编程模型。</li>
-<li><strong>系统指标</strong>：TTFT、TPOT&#x2F;ITL、端到端延迟、吞吐、p50&#x2F;p95&#x2F;p99、显存、带宽、精度和功耗。</li>
-</ol>
-<h2 id="你现有背景能迁移什么"><a href="#你现有背景能迁移什么" class="headerlink" title="你现有背景能迁移什么"></a>你现有背景能迁移什么</h2><h3 id="可以迁移的能力"><a href="#可以迁移的能力" class="headerlink" title="可以迁移的能力"></a>可以迁移的能力</h3><ul>
-<li>C 语言、指针、静态内存、结构体和接口设计；</li>
-<li>DMA、环形缓冲、数据流水、采样时序和实时预算形成的硬件直觉；</li>
-<li>电机控制里的离散化、定点&#x2F;浮点、滤波、坐标变换和数值误差意识；</li>
-<li>硬件—软件联调、故障注入、波形&#x2F;trace 观察和性能复盘；</li>
-<li>对缓存、搬运、带宽和资源约束的兴趣。</li>
-</ul>
-<h3 id="不能直接等同的部分"><a href="#不能直接等同的部分" class="headerlink" title="不能直接等同的部分"></a>不能直接等同的部分</h3><ul>
-<li>MCU ISR 的确定性不等于 GPU SIMT Kernel 的吞吐优化；</li>
-<li>MCU 的静态数组和 DMA 缓冲不等于 Linux 多线程下的所有权、异步显存和 allocator；</li>
-<li>会写 C 外设驱动不等于会写 CUDA、理解 Warp&#x2F;Tensor Core 或调 NCCL；</li>
-<li>PMSM 的线性代数不自动覆盖 Transformer、Attention、量化误差和采样分布；</li>
-<li>电机实验室的实时控制经验不能替代容器、RPC、服务 SLO 和多 GPU 系统经验。</li>
-</ul>
-<p>可以把这种迁移理解为：你已经熟悉“数据搬运—计算—同步—保护”的系统思维，但要换一套执行模型和软件工具。</p>
-<h2 id="针对你的推荐定位"><a href="#针对你的推荐定位" class="headerlink" title="针对你的推荐定位"></a>针对你的推荐定位</h2><h3 id="主目标：推理运行时-KV-Cache-性能工程"><a href="#主目标：推理运行时-KV-Cache-性能工程" class="headerlink" title="主目标：推理运行时 &#x2F; KV Cache &#x2F; 性能工程"></a>主目标：推理运行时 &#x2F; KV Cache &#x2F; 性能工程</h3><p>推荐简历定位：<strong>偏底层的推理系统或边缘 AI 工程师</strong>，而不是笼统写“大模型工程师”。第一阶段聚焦：</p>
-<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">C++17 与 Linux</span><br><span class="line">  → CPU 版 paged KV allocator 和并发测试</span><br><span class="line">  → PyTorch/Transformer 推理基线</span><br><span class="line">  → CUDA/Triton 简单 Kernel</span><br><span class="line">  → vLLM 或 llama.cpp 一个子系统</span><br><span class="line">  → 固定条件下的端到端 benchmark</span><br></pre></td></tr></table></figure>
-
-<h3 id="第二目标：CUDA-Triton-Kernel"><a href="#第二目标：CUDA-Triton-Kernel" class="headerlink" title="第二目标：CUDA&#x2F;Triton Kernel"></a>第二目标：CUDA&#x2F;Triton Kernel</h3><p>完成运行时和内存实验后，再做一个小而深的 Kernel，例如 RMSNorm、Softmax、RoPE、Tiled MatMul 或 Attention 子集。重点不是选最炫的算子，而是能解释：</p>
+<p>因此，<strong>AI Infra 不是“只做大模型”的岗位</strong>。它的核心能力是系统软件、计算机体系结构、并发、内存、编译器、设备和性能工程，这些能力也能服务于不同模型和不同硬件。</p>
+<h2 id="二、你的目标应该怎样定位"><a href="#二、你的目标应该怎样定位" class="headerlink" title="二、你的目标应该怎样定位"></a>二、你的目标应该怎样定位</h2><p>你明确表示对模型开发兴趣不大，更想做 AI 中重要、基础的岗位。比较适合的定位顺序是：</p>
+<h3 id="第一选择：AI-系统软件-推理运行时"><a href="#第一选择：AI-系统软件-推理运行时" class="headerlink" title="第一选择：AI 系统软件 &#x2F; 推理运行时"></a>第一选择：AI 系统软件 &#x2F; 推理运行时</h3><p>这是最适合作为主线的方向。日常工作可能包括：</p>
 <ul>
-<li>为什么原实现受限于访存或 Kernel launch；</li>
-<li>如何改变 tile、布局、线程映射或融合策略；</li>
-<li>正确性误差如何测；</li>
-<li>在多种 shape、dtype、batch 下是否仍然有效。</li>
+<li>设计模型执行器和请求处理流程；</li>
+<li>管理 CPU&#x2F;GPU&#x2F;NPU 内存和异步任务；</li>
+<li>实现动态批处理、请求队列、取消、超时和 OOM 处理；</li>
+<li>分析首 token 延迟、token 间隔、吞吐和 p99 尾延迟；</li>
+<li>修改 vLLM、SGLang、TensorRT-LLM、ONNX Runtime 或自研 Runtime；</li>
+<li>把模型、编译器、算子和设备后端连接起来。</li>
 </ul>
-<h3 id="备用目标：C-边缘推理"><a href="#备用目标：C-边缘推理" class="headerlink" title="备用目标：C++ 边缘推理"></a>备用目标：C++ 边缘推理</h3><p>如果暂时没有 NVIDIA GPU，先用 <code>llama.cpp + GGUF</code> 或 ONNX Runtime&#x2F;OpenVINO 做 CPU&#x2F;边缘部署。它能形成真实的 C++、量化、内存映射、线程和设备性能作品；未来仍可转服务器推理运行时。</p>
-<h2 id="三条求职路线"><a href="#三条求职路线" class="headerlink" title="三条求职路线"></a>三条求职路线</h2><table>
+<p>这里会接触 KV Cache、分页内存、Prefix Cache 等知识，但它们只是运行时中的组成部分，不需要把个人职业方向命名成“KV allocator”。</p>
+<p><strong>KV allocator 是什么？</strong> 大模型逐 token 生成时，会保存历史 token 的 Key&#x2F;Value 张量，避免每一步重新计算，这块内存称为 KV Cache。KV allocator 就是负责给不同请求分配、复用和回收这些内存块的模块，可以把它理解成“推理运行时内部专门管理 KV Cache 的内存池”。它是 Runtime 的一个子系统，不是通常意义上的独立岗位。PagedAttention 使用分页组织和访问 KV Cache，allocator 负责管理相应的物理块；二者有关联，但不是同一个概念。</p>
+<h3 id="第二选择：AI-编译器-NPU-后端-算子性能"><a href="#第二选择：AI-编译器-NPU-后端-算子性能" class="headerlink" title="第二选择：AI 编译器 &#x2F; NPU 后端 &#x2F; 算子性能"></a>第二选择：AI 编译器 &#x2F; NPU 后端 &#x2F; 算子性能</h3><p>这是更偏底层、长期价值较高的路线：</p>
+<ul>
+<li>把模型计算图转换成适合目标硬件的 IR；</li>
+<li>做算子融合、layout 变换、内存规划和代码生成；</li>
+<li>维护 CPU&#x2F;GPU&#x2F;NPU 算子实现和精度测试；</li>
+<li>分析硬件带宽、缓存、并行度和指令执行效率。</li>
+</ul>
+<p>它的门槛高于一般模型部署，需要 C++、编译原理、体系结构和一定数学基础。适合在系统基础稳定后进入，不建议一开始就把“实现完整 AI 编译器”作为目标。</p>
+<h3 id="第三选择：AI-平台-Serving-资源调度"><a href="#第三选择：AI-平台-Serving-资源调度" class="headerlink" title="第三选择：AI 平台 &#x2F; Serving &#x2F; 资源调度"></a>第三选择：AI 平台 &#x2F; Serving &#x2F; 资源调度</h3><p>这条路线更接近分布式系统和平台工程：</p>
+<ul>
+<li>GPU 资源池、任务调度和隔离；</li>
+<li>RPC、服务发现、限流、重试和故障转移；</li>
+<li>Docker&#x2F;Kubernetes、监控、日志和告警；</li>
+<li>模型服务发布、灰度、扩缩容、成本和 SLO。</li>
+</ul>
+<p>它对 C++ 的要求可能不如 Runtime 岗稳定，常见语言还包括 Go 和 Python；但系统设计、网络、容器和分布式能力很重要。</p>
+<p>可以用“数据面&#x2F;控制面”区分它与推理 Runtime：数据面执行模型、批处理请求并管理推理内存；控制面负责模型部署、路由、配额、扩缩容、资源调度和故障恢复。不同公司的岗位边界可能重叠，但这两个视角有助于读懂 JD。</p>
+<h3 id="第四选择：分布式训练系统"><a href="#第四选择：分布式训练系统" class="headerlink" title="第四选择：分布式训练系统"></a>第四选择：分布式训练系统</h3><p>不做模型算法也可以参与训练系统。该方向关注如何让已有模型在多机多卡上稳定、高效地训练：</p>
+<ul>
+<li>Data&#x2F;Tensor&#x2F;Pipeline&#x2F;Expert Parallel 的切分与通信；</li>
+<li>NCCL collective、通信与计算重叠；</li>
+<li>显存优化、混合精度、Checkpoint 和故障恢复；</li>
+<li>训练任务调度、弹性和集群利用率。</li>
+</ul>
+<p>这也是重要的 AI Infra 岗位，但通常依赖多 GPU 环境，短期个人项目的验证成本高于单机推理 Runtime。可以先学 PyTorch Distributed 和 NCCL 的基本模型，再根据实验室或实习条件深入。</p>
+<h3 id="辅助选择：C-边缘推理"><a href="#辅助选择：C-边缘推理" class="headerlink" title="辅助选择：C++ 边缘推理"></a>辅助选择：C++ 边缘推理</h3><p>边缘推理是很好的实践入口，也可以作为求职备选：</p>
+<ul>
+<li>没有高端 GPU 时可以用 CPU、llama.cpp 或 ONNX Runtime 开始；</li>
+<li>能训练模型加载、量化、内存、线程和性能测试能力；</li>
+<li>将来可转向 NPU 后端、设备 Runtime 或服务器推理。</li>
+</ul>
+<p>但要区分“核心推理引擎&#x2F;后端开发”和“配置厂商 SDK 做业务接入”。前者属于 AI Infra，后者可能更接近应用集成。</p>
+<h3 id="推荐的个人标签"><a href="#推荐的个人标签" class="headerlink" title="推荐的个人标签"></a>推荐的个人标签</h3><p>不要笼统写“大模型工程师”，可以根据项目选择：</p>
+<ul>
+<li>AI Infra &#x2F; ML Systems Engineer；</li>
+<li>Inference Runtime Engineer；</li>
+<li>Inference Engine &#x2F; Performance Engineer；</li>
+<li>AI Compiler &#x2F; NPU Backend Engineer；</li>
+<li>GPU&#x2F;NPU Runtime Engineer；</li>
+<li>AI Platform &#x2F; Model Serving Engineer；</li>
+<li>Edge AI Runtime Engineer。</li>
+</ul>
+<h2 id="三、AI-Infra-的共同基础"><a href="#三、AI-Infra-的共同基础" class="headerlink" title="三、AI Infra 的共同基础"></a>三、AI Infra 的共同基础</h2><h3 id="1-系统编程"><a href="#1-系统编程" class="headerlink" title="1. 系统编程"></a>1. 系统编程</h3><p>必须能独立写、测、调一个中小型 C++ 系统：</p>
+<ul>
+<li>C++17：RAII、移动语义、对象生命周期、模板、容器和 allocator；</li>
+<li>内存：对齐、缓存局部性、内存映射、池化、碎片和所有权；</li>
+<li>并发：线程、锁、条件变量、线程池、取消和超时；先保证正确性，再把原子和无锁结构作为进阶内容；</li>
+<li>工程：CMake、Git、单元测试、日志、错误处理和可重复构建；</li>
+<li>调试：GDB、AddressSanitizer、ThreadSanitizer、perf。</li>
+</ul>
+<h3 id="2-Linux-与操作系统"><a href="#2-Linux-与操作系统" class="headerlink" title="2. Linux 与操作系统"></a>2. Linux 与操作系统</h3><p>需要理解进程、虚拟内存、文件描述符、系统调用、调度、I&#x2F;O、NUMA 和基本网络，而不是只会在 Linux 上执行 Python 脚本。</p>
+<h3 id="3-AI-推理最小知识"><a href="#3-AI-推理最小知识" class="headerlink" title="3. AI 推理最小知识"></a>3. AI 推理最小知识</h3><p>不需要先成为模型研究员，但要能解释：</p>
+<ul>
+<li>Transformer、Attention、RoPE、GQA&#x2F;MQA 的基本张量形状；</li>
+<li>矩阵乘、Softmax、数据类型和计算量&#x2F;访存量的基本关系；</li>
+<li>Prefill 和 Decode 为什么有不同的计算&#x2F;访存特征；</li>
+<li>模型权重、临时 workspace 和 KV Cache 如何占用内存；</li>
+<li>量化如何影响带宽、显存、精度和算子覆盖；</li>
+<li>TTFT、TPOT&#x2F;ITL、吞吐、p50&#x2F;p95&#x2F;p99 的含义。</li>
+</ul>
+<h3 id="4-性能工程"><a href="#4-性能工程" class="headerlink" title="4. 性能工程"></a>4. 性能工程</h3><p>任何“加速”都需要回答：</p>
+<ul>
+<li>瓶颈是计算、内存带宽、容量、Kernel 启动、调度还是通信？</li>
+<li>基线是什么，测试模型、shape、dtype、batch 和硬件是什么？</li>
+<li>结果是否在多个输入和多个并发下成立？</li>
+<li>精度、功耗、稳定性和尾延迟是否变差？</li>
+</ul>
+<h2 id="四、具体学习资料"><a href="#四、具体学习资料" class="headerlink" title="四、具体学习资料"></a>四、具体学习资料</h2><p>下面按学习顺序列资料，不建议一次性全部通读。每个阶段只选一本主教材配合官方文档，其余资料用于查缺补漏；24 周路线是入门验证，不代表半年后已经掌握整个 AI Infra。</p>
+<ul>
+<li><strong>必学</strong>：C++ 基础、Linux&#x2F;操作系统、并发、CMake&#x2F;测试、最小 Python&#x2F;PyTorch、一个推理 Runtime；</li>
+<li><strong>查阅</strong>：cppreference、Core Guidelines、GDB&#x2F;perf&#x2F;Sanitizer 和各项目官方文档；</li>
+<li><strong>选方向后进阶</strong>：CUDA、MLIR&#x2F;TVM、Kubernetes、NCCL 和多 GPU。</li>
+</ul>
+<p>当前开发机是 Windows，建议使用 WSL2 完成 Linux&#x2F;C++&#x2F;ONNX Runtime 的日常实验；<code>perf</code>、TSan、vLLM、Triton 和 CUDA 工具优先在原生 Linux、WSL2 支持的环境或远程 Linux GPU 机器上运行。不同工具在 Windows&#x2F;WSL2 的支持程度会变化，实验前应核对官方要求。</p>
+<h3 id="A-C-、Linux-与系统基础：第一优先级"><a href="#A-C-、Linux-与系统基础：第一优先级" class="headerlink" title="A. C++、Linux 与系统基础：第一优先级"></a>A. C++、Linux 与系统基础：第一优先级</h3><table>
 <thead>
 <tr>
-<th>路线</th>
-<th>目标</th>
-<th>学习投入</th>
-<th>作品</th>
-<th>风险</th>
+<th>主题</th>
+<th>资料</th>
+<th>使用方式</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>保守：边缘部署</td>
-<td>C++&#x2F;CPU&#x2F;NPU&#x2F;端侧推理</td>
-<td>60% 系统软件，40% 模型部署</td>
-<td>ONNX&#x2F;llama.cpp&#x2F;Runtime 部署、INT8&#x2F;INT4 对比、内存&#x2F;延迟&#x2F;精度报告</td>
-<td>岗位名称分散，部分职位偏应用集成</td>
+<td>C++ 语言参考</td>
+<td><a target="_blank" rel="noopener" href="https://en.cppreference.com/">cppreference</a></td>
+<td>遇到语言、容器、并发库问题时查，不建议从头背</td>
 </tr>
 <tr>
-<td>平衡：运行时 + Kernel</td>
-<td>vLLM&#x2F;SGLang、KV Cache、CUDA&#x2F;Triton</td>
-<td>先系统和运行时，再 GPU</td>
-<td>CPU paged allocator、Triton Kernel、运行时 benchmark</td>
-<td>方向较宽，必须限制项目范围；最推荐</td>
+<td>C++ 工程规范</td>
+<td><a target="_blank" rel="noopener" href="https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines">C++ Core Guidelines</a></td>
+<td>重点看资源管理、接口、并发和错误处理</td>
 </tr>
 <tr>
-<td>激进：编译器&#x2F;量化&#x2F;架构</td>
-<td>MLIR&#x2F;TVM、低比特算法、GPU&#x2F;NPU 后端</td>
-<td>C++、编译原理、线代数值和硬件架构</td>
-<td>编译 Pass、后端 Kernel 或论文复现</td>
-<td>门槛高、研究岗竞争强，不适合几个月唯一押注</td>
+<td>C++ 并发</td>
+<td>《C++ Concurrency in Action》</td>
+<td>重点掌握线程、锁、原子、条件变量和线程池</td>
+</tr>
+<tr>
+<td>C++ 设计</td>
+<td>《Effective Modern C++》</td>
+<td>重点掌握移动语义、类型推导、智能指针和接口设计</td>
+</tr>
+<tr>
+<td>数据结构与算法</td>
+<td><a target="_blank" rel="noopener" href="https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-fall-2011/">MIT 6.006</a></td>
+<td>掌握数组、哈希、树、堆、图和复杂度，不以刷题数量代替实现能力</td>
+</tr>
+<tr>
+<td>最小 Python</td>
+<td><a target="_blank" rel="noopener" href="https://docs.python.org/3/tutorial/">Python 官方教程</a></td>
+<td>能读写实验脚本、处理数据、调用 PyTorch 和编写测试</td>
+</tr>
+<tr>
+<td>操作系统</td>
+<td><a target="_blank" rel="noopener" href="https://pages.cs.wisc.edu/~remzi/OSTEP/">OSTEP</a></td>
+<td>先读进程、虚拟内存、并发和文件系统章节</td>
+</tr>
+<tr>
+<td>系统底层</td>
+<td><a target="_blank" rel="noopener" href="https://csapp.cs.cmu.edu/">CS:APP</a></td>
+<td>重点读机器表示、链接、异常控制流、虚拟内存和并发</td>
+</tr>
+<tr>
+<td>CMake</td>
+<td><a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/guide/tutorial/">CMake 官方教程</a></td>
+<td>让项目可以在干净环境一键构建</td>
+</tr>
+<tr>
+<td>单元测试</td>
+<td><a target="_blank" rel="noopener" href="https://google.github.io/googletest/">GoogleTest</a></td>
+<td>给内存池、队列、调度器建立回归测试</td>
+</tr>
+<tr>
+<td>调试</td>
+<td><a target="_blank" rel="noopener" href="https://sourceware.org/gdb/documentation/">GDB 文档</a></td>
+<td>能定位崩溃、死锁和生命周期问题</td>
+</tr>
+<tr>
+<td>内存&#x2F;竞态检查</td>
+<td>Clang <a target="_blank" rel="noopener" href="https://clang.llvm.org/docs/AddressSanitizer.html">ASan</a>、<a target="_blank" rel="noopener" href="https://clang.llvm.org/docs/UndefinedBehaviorSanitizer.html">UBSan</a>、<a target="_blank" rel="noopener" href="https://clang.llvm.org/docs/ThreadSanitizer.html">TSan</a></td>
+<td>使用工具检查越界、未定义行为和数据竞争，而不是只靠打印日志</td>
+</tr>
+<tr>
+<td>CPU 性能</td>
+<td><a target="_blank" rel="noopener" href="https://perf.wiki.kernel.org/">Linux perf</a> 与 <code>man perf</code></td>
+<td>查看 CPU 时间、调用栈、缓存和热点</td>
+</tr>
+<tr>
+<td>网络编程</td>
+<td><a target="_blank" rel="noopener" href="https://beej.us/guide/bgnet/">Beej’s Guide to Network Programming</a></td>
+<td>理解 socket、TCP 和客户端&#x2F;服务端的最小实现</td>
 </tr>
 </tbody></table>
-<h2 id="12-周验证路线"><a href="#12-周验证路线" class="headerlink" title="12 周验证路线"></a>12 周验证路线</h2><p>默认每周 15–20 小时。每周都要有代码、测试数据和一段复盘；如果第 4 周仍不喜欢 Linux&#x2F;C++&#x2F;Profiler，应及时改走边缘部署或回到更熟悉的嵌入式，而不是盲目购买硬件。</p>
-<table>
+<p>配套作品：C++ ring buffer、线程池、固定大小内存池、生产者消费者队列。每个作品都要有单测、压力测试、Sanitizer 和 benchmark。</p>
+<h3 id="B-计算机体系结构与性能：第二优先级"><a href="#B-计算机体系结构与性能：第二优先级" class="headerlink" title="B. 计算机体系结构与性能：第二优先级"></a>B. 计算机体系结构与性能：第二优先级</h3><table>
+<thead>
+<tr>
+<th>主题</th>
+<th>资料</th>
+<th>重点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>体系结构（Kernel&#x2F;编译器分支选读）</td>
+<td>《Computer Architecture: A Quantitative Approach》</td>
+<td>Cache、带宽、流水、SIMD、GPU 和性能估算</td>
+</tr>
+<tr>
+<td>系统性能（按问题查阅）</td>
+<td>《Systems Performance》</td>
+<td>以指标和工具定位瓶颈，而不是凭感觉优化</td>
+</tr>
+<tr>
+<td>Linux 性能</td>
+<td>Brendan Gregg 的 <a target="_blank" rel="noopener" href="https://www.brendangregg.com/linuxperf.html">Linux Performance</a></td>
+<td>perf、火焰图、I&#x2F;O、CPU 和内存分析</td>
+</tr>
+<tr>
+<td>分布式系统（平台分支选读）</td>
+<td>《Designing Data-Intensive Applications》</td>
+<td>复制、一致性、消息、故障和可扩展性</td>
+</tr>
+<tr>
+<td>RPC</td>
+<td><a target="_blank" rel="noopener" href="https://grpc.io/docs/">gRPC 官方文档</a></td>
+<td>为后续模型服务和调度器建立服务接口</td>
+</tr>
+<tr>
+<td>容器平台</td>
+<td><a target="_blank" rel="noopener" href="https://kubernetes.io/docs/home/">Kubernetes 官方文档</a></td>
+<td>后续学习 GPU 调度、部署、扩缩容和监控</td>
+</tr>
+</tbody></table>
+<p>不需要一开始把 Kubernetes 学成集群管理员。先理解 Pod、Service、Deployment、资源限制、探针和滚动发布即可。</p>
+<h3 id="C-AI-与推理基础：第三优先级"><a href="#C-AI-与推理基础：第三优先级" class="headerlink" title="C. AI 与推理基础：第三优先级"></a>C. AI 与推理基础：第三优先级</h3><table>
+<thead>
+<tr>
+<th>主题</th>
+<th>资料</th>
+<th>重点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>PyTorch 张量</td>
+<td><a target="_blank" rel="noopener" href="https://pytorch.org/tutorials/">PyTorch Tutorials</a></td>
+<td>重点掌握 shape、dtype&#x2F;device、<code>inference_mode</code>、Profiler 和模型导出；autograd 只需理解基本作用</td>
+</tr>
+<tr>
+<td>Transformer</td>
+<td><a target="_blank" rel="noopener" href="https://arxiv.org/abs/1706.03762">原始论文</a></td>
+<td>读懂 Attention、位置编码和层结构，不追求复现大模型</td>
+</tr>
+<tr>
+<td>NLP&#x2F;模型基础</td>
+<td><a target="_blank" rel="noopener" href="https://huggingface.co/learn/llm-course">Hugging Face LLM Course</a></td>
+<td>模型加载、Tokenizer、推理和评测基础</td>
+</tr>
+<tr>
+<td>ML 系统全景</td>
+<td><a target="_blank" rel="noopener" href="https://www.mlsysbook.ai/">Machine Learning Systems</a></td>
+<td>建立数据、模型、服务、硬件和可靠性的整体位置感</td>
+</tr>
+<tr>
+<td>深度学习系统</td>
+<td><a target="_blank" rel="noopener" href="https://dlsyscourse.org/">CMU 10-414&#x2F;714</a></td>
+<td>选读张量、自动微分、算子和执行系统，不必完成全部训练作业</td>
+</tr>
+<tr>
+<td>推理性能</td>
+<td><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2309.06180">vLLM PagedAttention 论文</a></td>
+<td>理解推理服务中的内存和批处理问题</td>
+</tr>
+<tr>
+<td>连续批处理</td>
+<td><a target="_blank" rel="noopener" href="https://www.usenix.org/conference/osdi22/presentation/yu">Orca 论文</a></td>
+<td>理解请求级调度与迭代级调度</td>
+</tr>
+</tbody></table>
+<p>学习目标是能看懂 Runtime 的输入输出和瓶颈，不是转去做模型结构研究。</p>
+<h3 id="D-推理-Runtime-与服务：主方向资料"><a href="#D-推理-Runtime-与服务：主方向资料" class="headerlink" title="D. 推理 Runtime 与服务：主方向资料"></a>D. 推理 Runtime 与服务：主方向资料</h3><table>
+<thead>
+<tr>
+<th>项目</th>
+<th>官方资料</th>
+<th>建议读法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>llama.cpp</td>
+<td><a target="_blank" rel="noopener" href="https://github.com/ggml-org/llama.cpp">GitHub</a></td>
+<td>先运行，再看模型加载、量化、线程和后端抽象</td>
+</tr>
+<tr>
+<td>ONNX Runtime</td>
+<td><a target="_blank" rel="noopener" href="https://onnxruntime.ai/docs/">官方文档</a></td>
+<td>了解模型导出、Execution Provider 和算子覆盖</td>
+</tr>
+<tr>
+<td>OpenVINO</td>
+<td><a target="_blank" rel="noopener" href="https://docs.openvino.ai/">官方文档</a></td>
+<td>作为 CPU&#x2F;Intel&#x2F;边缘部署的对照后端</td>
+</tr>
+<tr>
+<td>TensorRT-LLM</td>
+<td><a target="_blank" rel="noopener" href="https://nvidia.github.io/TensorRT-LLM/">官方文档</a></td>
+<td>有 NVIDIA GPU 后学习 Engine、量化和批处理</td>
+</tr>
+<tr>
+<td>vLLM</td>
+<td><a target="_blank" rel="noopener" href="https://docs.vllm.ai/en/latest/">官方文档</a></td>
+<td>重点看 scheduler、worker、KV 管理和 benchmark</td>
+</tr>
+<tr>
+<td>SGLang</td>
+<td><a target="_blank" rel="noopener" href="https://docs.sglang.ai/">官方文档</a></td>
+<td>对照 Prefix&#x2F;Radix Cache 和结构化请求调度</td>
+</tr>
+<tr>
+<td>ExecuTorch</td>
+<td><a target="_blank" rel="noopener" href="https://pytorch.org/executorch/">官方文档</a></td>
+<td>了解 PyTorch 模型到端侧 Runtime 的路线</td>
+</tr>
+<tr>
+<td>ncnn</td>
+<td><a target="_blank" rel="noopener" href="https://github.com/Tencent/ncnn">GitHub</a></td>
+<td>了解移动端 C++ 推理、ARM 优化和轻量部署</td>
+</tr>
+<tr>
+<td>MNN</td>
+<td><a target="_blank" rel="noopener" href="https://github.com/alibaba/MNN">GitHub</a></td>
+<td>了解移动&#x2F;边缘多后端、模型转换和设备部署</td>
+</tr>
+<tr>
+<td>LiteRT</td>
+<td><a target="_blank" rel="noopener" href="https://ai.google.dev/edge/litert">官方文档</a></td>
+<td>了解移动端模型部署、硬件加速和平台集成</td>
+</tr>
+</tbody></table>
+<p>建议先选 <code>llama.cpp</code> 或 ONNX Runtime 做本地项目，再选择 vLLM 或 SGLang 做服务 Runtime 源码阅读。不要同时通读所有项目。</p>
+<h3 id="E-GPU、Kernel-与异构硬件：主方向的进阶资料"><a href="#E-GPU、Kernel-与异构硬件：主方向的进阶资料" class="headerlink" title="E. GPU、Kernel 与异构硬件：主方向的进阶资料"></a>E. GPU、Kernel 与异构硬件：主方向的进阶资料</h3><table>
+<thead>
+<tr>
+<th>主题</th>
+<th>资料</th>
+<th>进入时机</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CUDA 编程</td>
+<td><a target="_blank" rel="noopener" href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/">CUDA C++ Programming Guide</a></td>
+<td>完成 CPU Runtime 基线后</td>
+</tr>
+<tr>
+<td>GPU 教材</td>
+<td>《Programming Massively Parallel Processors》</td>
+<td>配合 CUDA Guide 理解线程层次、访存、同步和优化</td>
+</tr>
+<tr>
+<td>CUDA 示例</td>
+<td><a target="_blank" rel="noopener" href="https://github.com/NVIDIA/cuda-samples">CUDA Samples</a></td>
+<td>从 vector、reduction、transpose 开始</td>
+</tr>
+<tr>
+<td>GPU 时间线</td>
+<td><a target="_blank" rel="noopener" href="https://developer.nvidia.com/nsight-systems">Nsight Systems</a></td>
+<td>分析端到端调度和 CPU&#x2F;GPU 重叠</td>
+</tr>
+<tr>
+<td>Kernel 细节</td>
+<td><a target="_blank" rel="noopener" href="https://developer.nvidia.com/nsight-compute">Nsight Compute</a></td>
+<td>分析访存、占用率、寄存器和吞吐</td>
+</tr>
+<tr>
+<td>Triton</td>
+<td><a target="_blank" rel="noopener" href="https://triton-lang.org/main/getting-started/tutorials/index.html">Triton Tutorials</a></td>
+<td>快速实现 RMSNorm、Softmax 或矩阵乘小实验</td>
+</tr>
+<tr>
+<td>Kernel 模板</td>
+<td><a target="_blank" rel="noopener" href="https://docs.nvidia.com/cutlass/latest/">CUTLASS</a></td>
+<td>理解 tile、layout 和 Tensor Core</td>
+</tr>
+<tr>
+<td>多 GPU 通信</td>
+<td><a target="_blank" rel="noopener" href="https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/overview.html">NCCL 文档</a></td>
+<td>进入分布式推理或训练平台后</td>
+</tr>
+</tbody></table>
+<p>没有 NVIDIA GPU 时，先做 CPU Runtime、ONNX&#x2F;llama.cpp 和编译器基础，不要用几张 Vector Add 截图代替系统项目。</p>
+<h3 id="F-AI-编译器与后端：第二条进阶路线"><a href="#F-AI-编译器与后端：第二条进阶路线" class="headerlink" title="F. AI 编译器与后端：第二条进阶路线"></a>F. AI 编译器与后端：第二条进阶路线</h3><table>
+<thead>
+<tr>
+<th>主题</th>
+<th>资料</th>
+<th>可交付练习</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>PyTorch 图与编译入口</td>
+<td><a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/torch.compiler.html">torch.compile</a> &#x2F; <a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/fx.html">FX</a></td>
+<td>观察 Python 模型如何变成图并进入后端</td>
+</tr>
+<tr>
+<td>MLIR</td>
+<td><a target="_blank" rel="noopener" href="https://mlir.llvm.org/docs/Tutorials/Toy/">Toy Tutorial</a></td>
+<td>观察 Dialect、Pass、Lowering 和代码生成</td>
+</tr>
+<tr>
+<td>Apache TVM</td>
+<td><a target="_blank" rel="noopener" href="https://tvm.apache.org/docs/">官方文档</a></td>
+<td>完成一个 TensorIR 或算子调度示例</td>
+</tr>
+<tr>
+<td>Triton&#x2F;CUDA</td>
+<td><a target="_blank" rel="noopener" href="https://triton-lang.org/main/getting-started/tutorials/index.html">Triton Tutorials</a> &#x2F; <a target="_blank" rel="noopener" href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/">CUDA Guide</a></td>
+<td>把图变换与实际 Kernel、layout 和硬件约束连接起来</td>
+</tr>
+<tr>
+<td>LLVM（选读）</td>
+<td><a target="_blank" rel="noopener" href="https://llvm.org/docs/tutorial/MyFirstLanguageFrontend/">Kaleidoscope Tutorial</a></td>
+<td>理解 LLVM IR 和代码生成；它是通用编译器入门，不是 AI 编译链本身</td>
+</tr>
+<tr>
+<td>OpenXLA</td>
+<td><a target="_blank" rel="noopener" href="https://openxla.org/xla">官方文档</a></td>
+<td>了解图编译和硬件后端的整体位置</td>
+</tr>
+</tbody></table>
+<p>编译器路线不要求第一阶段实现完整编译器。先做一个 ONNX&#x2F;MLIR 小 Pass、算子融合或 layout 变换，并用正确性测试验证。</p>
+<h3 id="G-分布式训练与集群：可选进阶路线"><a href="#G-分布式训练与集群：可选进阶路线" class="headerlink" title="G. 分布式训练与集群：可选进阶路线"></a>G. 分布式训练与集群：可选进阶路线</h3><table>
+<thead>
+<tr>
+<th>主题</th>
+<th>资料</th>
+<th>重点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>PyTorch 分布式</td>
+<td><a target="_blank" rel="noopener" href="https://pytorch.org/tutorials/beginner/dist_overview.html">Distributed Overview</a></td>
+<td>先理解进程组、collective、DDP、FSDP 和并行边界</td>
+</tr>
+<tr>
+<td>FSDP</td>
+<td><a target="_blank" rel="noopener" href="https://pytorch.org/tutorials/intermediate/FSDP_tutorial.html">PyTorch FSDP Tutorial</a></td>
+<td>参数、梯度和优化器状态如何分片</td>
+</tr>
+<tr>
+<td>DeepSpeed</td>
+<td><a target="_blank" rel="noopener" href="https://www.deepspeed.ai/tutorials/">官方教程</a></td>
+<td>ZeRO、训练内存和大规模训练工程</td>
+</tr>
+<tr>
+<td>Megatron-Core</td>
+<td><a target="_blank" rel="noopener" href="https://docs.nvidia.com/megatron-core/developer-guide/latest/">官方文档</a></td>
+<td>Tensor&#x2F;Pipeline&#x2F;Expert Parallel 的工程实现</td>
+</tr>
+<tr>
+<td>通信</td>
+<td><a target="_blank" rel="noopener" href="https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/overview.html">NCCL 文档</a></td>
+<td>collective、拓扑、通信错误和性能</td>
+</tr>
+<tr>
+<td>批任务调度</td>
+<td><a target="_blank" rel="noopener" href="https://kueue.sigs.k8s.io/">Kueue</a> &#x2F; <a target="_blank" rel="noopener" href="https://volcano.sh/en/docs/">Volcano</a></td>
+<td>了解 Kubernetes 上的队列、配额和批任务调度</td>
+</tr>
+</tbody></table>
+<p>没有多 GPU 环境时，只做单机小实验和通信模型分析，不要把模拟数据写成真实集群性能。</p>
+<h3 id="H-AI-平台、观测与统一基准：平台分支资料"><a href="#H-AI-平台、观测与统一基准：平台分支资料" class="headerlink" title="H. AI 平台、观测与统一基准：平台分支资料"></a>H. AI 平台、观测与统一基准：平台分支资料</h3><table>
+<thead>
+<tr>
+<th>主题</th>
+<th>资料</th>
+<th>重点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>推理服务</td>
+<td><a target="_blank" rel="noopener" href="https://docs.nvidia.com/deeplearning/triton-inference-server/user-guide/docs/">NVIDIA Triton Inference Server</a></td>
+<td>模型仓库、动态批处理、实例组和服务指标</td>
+</tr>
+<tr>
+<td>Kubernetes 模型服务</td>
+<td><a target="_blank" rel="noopener" href="https://kserve.github.io/website/latest/">KServe</a></td>
+<td>模型部署、路由、自动扩缩容和推理图</td>
+</tr>
+<tr>
+<td>指标</td>
+<td><a target="_blank" rel="noopener" href="https://prometheus.io/docs/introduction/overview/">Prometheus</a></td>
+<td>Counter、Gauge、Histogram、告警和查询</td>
+</tr>
+<tr>
+<td>Trace&#x2F;日志</td>
+<td><a target="_blank" rel="noopener" href="https://opentelemetry.io/docs/">OpenTelemetry</a></td>
+<td>跨服务追踪、指标和日志关联</td>
+</tr>
+<tr>
+<td>标准基准</td>
+<td><a target="_blank" rel="noopener" href="https://mlcommons.org/benchmarks/inference/">MLPerf Inference</a></td>
+<td>学习固定场景、质量约束和可比较结果的设计</td>
+</tr>
+<tr>
+<td>LLM 服务基准</td>
+<td><a target="_blank" rel="noopener" href="https://github.com/vllm-project/vllm/tree/main/benchmarks">vLLM benchmarks</a> &#x2F; <a target="_blank" rel="noopener" href="https://github.com/triton-inference-server/perf_analyzer/tree/main/genai-perf">GenAI-Perf</a></td>
+<td>测 TTFT、TPOT、吞吐和并发，避免只给单次延迟截图</td>
+</tr>
+</tbody></table>
+<h2 id="五、24-周学习路线"><a href="#五、24-周学习路线" class="headerlink" title="五、24 周学习路线"></a>五、24 周学习路线</h2><p>默认每周投入 15–20 小时。每周必须有代码、测试数据和复盘；从第 9 周开始浏览真实 JD、修正技能差距，有可复现作品后再逐步投递实习或初级岗位。</p>
+<h3 id="第-1–12-周：共同基础"><a href="#第-1–12-周：共同基础" class="headerlink" title="第 1–12 周：共同基础"></a>第 1–12 周：共同基础</h3><table>
 <thead>
 <tr>
 <th>周次</th>
 <th>主题</th>
-<th>可验证交付</th>
+<th>学习资料</th>
+<th>交付物</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>1</td>
-<td>Ubuntu&#x2F;WSL2、Git、CMake、C++17、RAII、智能指针、线程</td>
-<td>C++ ring buffer、allocator 小库，至少 20 个单测；能解释生命周期和数据竞争</td>
+<td>1–2</td>
+<td>C++17、CMake、Git、GDB、RAII</td>
+<td>cppreference、Core Guidelines、CMake Tutorial</td>
+<td>可构建的 C++ 小库和单测</td>
 </tr>
 <tr>
-<td>2</td>
-<td>Python&#x2F;PyTorch、Transformer 基本张量、模型加载</td>
-<td>Toy Transformer 或 0.5B–3B 小模型推理；输出 TTFT、TPOT、吞吐、峰值内存</td>
+<td>3–4</td>
+<td>数据结构、内存、移动语义、缓存局部性</td>
+<td>MIT 6.006、Effective Modern C++、CS:APP</td>
+<td>内存池、ring buffer 和 benchmark</td>
 </tr>
 <tr>
-<td>3</td>
-<td>Prefill&#x2F;Decode、KV Cache、Attention、RoPE、GQA&#x2F;MQA</td>
-<td>CPU 参考实现；用固定输入核对 KV shape、生命周期和内存估算</td>
-</tr>
-<tr>
-<td>4</td>
-<td>C++ Paged KV allocator、block table、并发回收、OOM</td>
-<td>100k 次 alloc&#x2F;free 压测、无泄漏；报告碎片、峰值内存和并发行为</td>
-</tr>
-<tr>
-<td>5</td>
-<td>CUDA 线程层次、显存&#x2F;共享内存、同步、错误检查</td>
-<td>Vector add、reduction、简单 matmul；使用 Compute Sanitizer 检查错误</td>
-</tr>
-<tr>
-<td>6</td>
-<td>Nsight Systems&#x2F;Compute、Roofline、带宽&#x2F;占用率</td>
-<td>对一个 Kernel 做优化前后对照；同时报告 shape、dtype、硬件和误差</td>
+<td>5–6</td>
+<td>线程、锁、条件变量、线程池和错误处理</td>
+<td>C++ Concurrency in Action、Sanitizers</td>
+<td>线程池、队列、ASan&#x2F;TSan 检查报告</td>
 </tr>
 <tr>
 <td>7</td>
-<td>Triton 编程</td>
-<td>实现 RMSNorm、Softmax 或 RoPE；与 PyTorch 随机输入逐点比较</td>
+<td>Linux、虚拟内存、进程和 perf</td>
+<td>OSTEP、Linux perf</td>
+<td>进程&#x2F;内存小实验和 CPU 热点报告</td>
 </tr>
 <tr>
 <td>8</td>
-<td>Fused Kernel 或 Attention 子集</td>
-<td>在多种 batch&#x2F;sequence&#x2F;dtype 下 benchmark；只在数据支持时声称加速</td>
+<td>TCP、HTTP&#x2F;RPC 和服务基础</td>
+<td>Beej、gRPC</td>
+<td>简单服务、结构化日志、指标和压测</td>
 </tr>
 <tr>
-<td>9</td>
-<td>vLLM&#x2F;SGLang&#x2F;llama.cpp 源码选读</td>
-<td>画出请求、scheduler、KV 和执行器时序；提交一个小修复或最小复现</td>
+<td>9–10</td>
+<td>Python&#x2F;PyTorch、Transformer 推理最小知识</td>
+<td>Python&#x2F;PyTorch Tutorials、Hugging Face、Transformer 论文</td>
+<td>CPU 参考实验、shape&#x2F;dtype 和内存说明</td>
 </tr>
 <tr>
-<td>10</td>
-<td>连续批处理、prefix cache 或简化请求队列</td>
-<td>测并发下 p50&#x2F;p95 TTFT、TPOT、吞吐、显存；注入取消、超时和 OOM</td>
-</tr>
-<tr>
-<td>11</td>
-<td>INT8&#x2F;INT4 或 FP16&#x2F;BF16 部署</td>
-<td>固定评测集比较精度&#x2F;困惑度、显存、TTFT&#x2F;TPOT；写明后端和校准条件</td>
-</tr>
-<tr>
-<td>12</td>
-<td>工程化和求职包装</td>
-<td>一键构建、Docker&#x2F;环境锁定、CI、Profiler 截图、架构图、3–5 分钟演示和已知限制</td>
+<td>11–12</td>
+<td>llama.cpp 或 ONNX Runtime</td>
+<td>对应官方文档和源码</td>
+<td>C++ 推理 CLI，固定模型、输入和性能基线</td>
 </tr>
 </tbody></table>
-<h3 id="三个递进项目"><a href="#三个递进项目" class="headerlink" title="三个递进项目"></a>三个递进项目</h3><p><strong>项目 A：Paged KV Memory Lab</strong></p>
-<ul>
-<li>先在 CPU&#x2F;C++ 实现固定 block 的 KV 分配器、block table、引用计数、回收和并发测试；</li>
-<li>模拟 prefix sharing、请求取消、OOM 和碎片；</li>
-<li>输出 API、单测、压力测试、内存曲线和设计取舍。</li>
-</ul>
-<p>这是最适合验证你是否真正喜欢“内存管理 + 推理系统”的项目，不依赖高端 GPU。</p>
-<p><strong>项目 B：Kernel Performance Lab</strong></p>
-<ul>
-<li>选择 RMSNorm、Softmax、RoPE、Tiled MatMul 或 Attention 子集之一；</li>
-<li>用 Triton 或 CUDA 实现，与 PyTorch baseline 做正确性和多 shape benchmark；</li>
-<li>用 Nsight 解释访存、占用率、Kernel launch 或 Tensor Core 瓶颈。</li>
-</ul>
-<p>建议验收：随机输入误差阈值明确；至少覆盖 3 组 shape 和 2 种 dtype；如果没有稳定加速，保留失败数据并解释原因，不人为挑选单点结果。</p>
-<p><strong>项目 C：Inference Runtime Benchmark</strong></p>
-<ul>
-<li>选择 vLLM、SGLang 或 llama.cpp 一个子模块，做小范围可复现改动，例如 prefix cache 统计、调度策略、KV 内存监控或量化路径；</li>
-<li>固定模型、上下文长度、并发、采样、驱动和版本；</li>
-<li>报告 TTFT、TPOT、吞吐、p50&#x2F;p95&#x2F;p99、显存、质量和失败场景。</li>
-</ul>
-<p>这份报告和源码应让面试官能在干净环境中复现，而不是只能看视频。</p>
-<h2 id="性能指标与工具"><a href="#性能指标与工具" class="headerlink" title="性能指标与工具"></a>性能指标与工具</h2><table>
+<h3 id="第-13–20-周：只选一条主线"><a href="#第-13–20-周：只选一条主线" class="headerlink" title="第 13–20 周：只选一条主线"></a>第 13–20 周：只选一条主线</h3><table>
 <thead>
 <tr>
-<th>指标</th>
-<th>含义</th>
-<th>使用提醒</th>
+<th>主线</th>
+<th>第 13–16 周</th>
+<th>第 17–20 周</th>
+<th>主要交付</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>TTFT</td>
-<td>首个输出 token 的时间</td>
-<td>对排队、Prefill 和冷启动敏感</td>
+<td>推理 Runtime（首选）</td>
+<td>用现有后端实现请求队列、并发、取消、超时和指标</td>
+<td>学习动态批处理、Cache&#x2F;内存子模块，并对照 vLLM&#x2F;SGLang</td>
+<td>可压测的 Runtime 服务和性能报告</td>
 </tr>
 <tr>
-<td>TPOT&#x2F;ITL</td>
-<td>后续 token 的平均间隔</td>
-<td>Decode 体验和带宽瓶颈的重要指标</td>
+<td>AI 编译器&#x2F;NPU 后端</td>
+<td>完成 LLVM Kaleidoscope 或 MLIR Toy，理解 IR&#x2F;Pass&#x2F;Lowering</td>
+<td>做一个小 Pass、layout&#x2F;算子变换或后端实验</td>
+<td>正确性测试、IR 前后对照和性能说明</td>
 </tr>
 <tr>
-<td>E2E latency</td>
-<td>整个请求完成时间</td>
-<td>必须说明输入&#x2F;输出 token 数</td>
+<td>AI 平台&#x2F;Serving</td>
+<td>学习 Docker、gRPC、监控、限流和健康检查</td>
+<td>学习 Kubernetes 部署、资源限制、滚动更新或批任务调度</td>
+<td>可观测、可部署的小型模型服务平台</td>
 </tr>
 <tr>
-<td>Throughput</td>
-<td>token&#x2F;s、request&#x2F;s 或 goodput</td>
-<td>说明 batch、并发和是否包含排队</td>
-</tr>
-<tr>
-<td>p50&#x2F;p95&#x2F;p99</td>
-<td>延迟分位数</td>
-<td>不能只报告平均值</td>
-</tr>
-<tr>
-<td>显存&#x2F;KV</td>
-<td>峰值、碎片、命中和 OOM</td>
-<td>记录模型、dtype、上下文和 batch</td>
-</tr>
-<tr>
-<td>GPU&#x2F;Kernel</td>
-<td>SM、Tensor Core、DRAM&#x2F;L2、occupancy、launch</td>
-<td>用 profiler 解释，而非只看 <code>nvidia-smi</code> 利用率</td>
-</tr>
-<tr>
-<td>质量</td>
-<td>perplexity、任务准确率或生成一致性</td>
-<td>量化&#x2F;投机优化必须做回归</td>
-</tr>
-<tr>
-<td>成本&#x2F;功耗</td>
-<td>功耗&#x2F;token、请求成本、设备占用</td>
-<td>服务工程岗位常关心总拥有成本</td>
+<td>分布式训练系统</td>
+<td>学习 PyTorch Distributed、DDP&#x2F;FSDP 和 collective</td>
+<td>有多 GPU 条件时做通信&#x2F;显存实验；否则做单机代码与模型分析</td>
+<td>并行策略、显存和通信实验报告</td>
 </tr>
 </tbody></table>
-<p>推荐工具：GPU 用 <a target="_blank" rel="noopener" href="https://developer.nvidia.com/nsight-systems">Nsight Systems</a> 看端到端时间线，用 <a target="_blank" rel="noopener" href="https://developer.nvidia.com/nsight-compute">Nsight Compute</a> 看 Kernel；模型层用 PyTorch Profiler；服务层用 vLLM&#x2F;SGLang benchmark；CPU 用 <code>perf</code> 或 VTune；AMD 用 <code>rocprof</code>。每次 benchmark 固定 warmup、模型版本、精度、序列长度、并发和采样参数。</p>
-<h2 id="硬件和环境现实"><a href="#硬件和环境现实" class="headerlink" title="硬件和环境现实"></a>硬件和环境现实</h2><ul>
-<li><strong>没有 NVIDIA GPU 也可以开始</strong>：项目 A 可完全 CPU 完成；项目 C 可用 <code>llama.cpp</code>、ONNX Runtime 或 OpenVINO；CUDA 部分可使用实验室&#x2F;云 GPU。</li>
-<li><strong>需要 CUDA 作品时</strong>：必须能访问 NVIDIA GPU 或云 GPU；8–16 GB 显存足以做小模型和 Kernel 学习，但不代表能运行任意 7B&#x2F;长上下文配置。</li>
-<li><strong>不要先买高端卡</strong>：先完成第 1–4 周，确认自己喜欢 Linux、C++、并发、Profiler 和实验记录，再决定租云、用实验室资源或购买显卡。</li>
-<li><strong>大模型运行内存不只看权重</strong>：还要加 KV Cache、临时 workspace、运行时和 batch；“4-bit 权重能放进显存”不等于整个服务能稳定运行。</li>
-<li><strong>硬件基础的真正价值</strong>：理解带宽、缓存、DMA&#x2F;搬运、时序、功耗和软硬件边界；仍需补 GPU SIMT、Linux 虚拟内存、异步执行和分布式通信。</li>
+<h3 id="第-21–22-周：压力、故障与性能验证"><a href="#第-21–22-周：压力、故障与性能验证" class="headerlink" title="第 21–22 周：压力、故障与性能验证"></a>第 21–22 周：压力、故障与性能验证</h3><ul>
+<li>修复测试、内存、竞态和异常路径；</li>
+<li>固定环境、模型、输入、基线和 benchmark 脚本；</li>
+<li>加入并发、超时、取消、资源耗尽和异常输入测试；</li>
+<li>使用统一指标报告吞吐、延迟分位数、内存和质量边界；</li>
+<li>选择一个上游项目提交小修复、测试、文档或最小复现；</li>
 </ul>
-<h2 id="面试准备清单"><a href="#面试准备清单" class="headerlink" title="面试准备清单"></a>面试准备清单</h2><h3 id="C-系统"><a href="#C-系统" class="headerlink" title="C++&#x2F;系统"></a>C++&#x2F;系统</h3><p>能解释 RAII、移动语义、智能指针、allocator、内存对齐、缓存局部性、线程安全、锁&#x2F;无锁队列、线程池、异步回调、Linux I&#x2F;O、CMake 和 GDB。</p>
-<h3 id="GPU-硬件"><a href="#GPU-硬件" class="headerlink" title="GPU&#x2F;硬件"></a>GPU&#x2F;硬件</h3><p>能画出 thread&#x2F;block&#x2F;warp 层次，说明 coalescing、shared memory、register pressure、occupancy、Tensor Core、同步和 launch overhead；能用 Nsight 解释一条时间线。</p>
-<h3 id="推理"><a href="#推理" class="headerlink" title="推理"></a>推理</h3><p>能解释 Prefill&#x2F;Decode、KV Cache、PagedAttention、连续批处理、Prefix Cache、TTFT&#x2F;TPOT、量化误差、投机解码接受率和 TP&#x2F;PP&#x2F;EP 的基本取舍。</p>
-<h3 id="工程排障"><a href="#工程排障" class="headerlink" title="工程排障"></a>工程排障</h3><p>面对“吞吐下降、p99 抖动、显存逐渐上涨、Kernel 变慢、量化质量下降”，按“复现条件 → 指标分解 → profiler&#x2F;日志 → 最小修复 → 回归测试”回答。不要只说“换更大的 GPU”。</p>
-<h2 id="风险与决策点"><a href="#风险与决策点" class="headerlink" title="风险与决策点"></a>风险与决策点</h2><h3 id="风险一：把方向学成“模型应用开发”"><a href="#风险一：把方向学成“模型应用开发”" class="headerlink" title="风险一：把方向学成“模型应用开发”"></a>风险一：把方向学成“模型应用开发”</h3><p>调用 API、写 Web UI 或部署 Docker 可以作为入门，但不能证明推理加速能力。第 4 周必须有 allocator、内存曲线或明确的性能实验。</p>
-<h3 id="风险二：只刷-CUDA-示例"><a href="#风险二：只刷-CUDA-示例" class="headerlink" title="风险二：只刷 CUDA 示例"></a>风险二：只刷 CUDA 示例</h3><p>Vector add 和矩阵乘是必要练习，不是最终作品。第 9 周前要把 Kernel 放回真实推理工作负载或至少放入有明确 shape&#x2F;指标的端到端实验。</p>
-<h3 id="风险三：过早冲编译器或量化论文"><a href="#风险三：过早冲编译器或量化论文" class="headerlink" title="风险三：过早冲编译器或量化论文"></a>风险三：过早冲编译器或量化论文</h3><p>如果 C++、Linux、并发和 profiler 尚不熟，直接读 MLIR Pass 或复现复杂量化论文容易变成术语收集。先做一个能测量的运行时子系统，再决定是否转研究方向。</p>
-<h3 id="风险四：把单点-speedup-当普遍规律"><a href="#风险四：把单点-speedup-当普遍规律" class="headerlink" title="风险四：把单点 speedup 当普遍规律"></a>风险四：把单点 speedup 当普遍规律</h3><p>所有加速都要写清测试条件、基线、统计方法、质量影响和失败 shape；未复测的结果标记为待验证。</p>
-<h2 id="最终建议"><a href="#最终建议" class="headerlink" title="最终建议"></a>最终建议</h2><p>对你而言，最合理的职业假设是：</p>
+<h3 id="第-23–24-周：工程化和求职"><a href="#第-23–24-周：工程化和求职" class="headerlink" title="第 23–24 周：工程化和求职"></a>第 23–24 周：工程化和求职</h3><ul>
+<li>增加 CI、Docker、README、架构图、性能报告和已知限制；</li>
+<li>根据目标 JD 修改简历和面试准备，不再同时扩展其他主线。</li>
+</ul>
+<p>第 13–20 周只选择下面一个主项目；如果时间允许，再做一个不超过一周的小型对照实验，不要同时铺开三套技术栈。</p>
+<h3 id="项目一：AI-Runtime-Mini"><a href="#项目一：AI-Runtime-Mini" class="headerlink" title="项目一：AI Runtime Mini"></a>项目一：AI Runtime Mini</h3><p>这是 Runtime 主线项目，目标是展示基础设施能力，而不是展示模型效果。以 llama.cpp、ONNX Runtime 或 OpenVINO 作为真实推理后端，自己实现其外部的服务、调度和观测层，不要求从零实现完整模型算子：</p>
+<ul>
+<li>C++ 封装现有后端的模型加载和推理接口；</li>
+<li>用线程池和请求队列处理多个请求；</li>
+<li>实现简单动态批处理或迭代调度；</li>
+<li>增加取消、超时、错误和资源上限；</li>
+<li>统计 TTFT、TPOT、吞吐、p50&#x2F;p95&#x2F;p99 和峰值内存；</li>
+<li>选择一个小模块与 llama.cpp、ONNX Runtime 或 vLLM 的设计对照。</li>
+</ul>
+<p>分页 KV、内存池或 Cache 管理可以放在这个项目中，但它们只是项目子模块，不需要单独包装成职业方向。没有合适模型或 GPU 时，可以先用 trace-driven 模拟器输入不同长度和到达时间的请求，验证调度、队列和内存策略，再接真实后端。</p>
+<h3 id="项目二：性能与后端实验"><a href="#项目二：性能与后端实验" class="headerlink" title="项目二：性能与后端实验"></a>项目二：性能与后端实验</h3><p>根据硬件条件选一种：</p>
+<ul>
+<li>有 NVIDIA GPU：CUDA&#x2F;Triton 实现 RMSNorm、Softmax、transpose 或小型矩阵乘，使用 Nsight 分析；</li>
+<li>没有 NVIDIA GPU：用 perf 优化 CPU 线程、SIMD、内存映射或 ONNX Execution Provider；</li>
+<li>有 NPU&#x2F;边缘设备：完成模型导出、算子覆盖、内存占用和功耗&#x2F;延迟测试。</li>
+</ul>
+<p>要求至少覆盖三组 shape、两种 dtype 或两种线程配置，并记录失败结果。没有稳定加速时，解释原因本身也是有效成果。</p>
+<h3 id="项目三：AI-平台小系统"><a href="#项目三：AI-平台小系统" class="headerlink" title="项目三：AI 平台小系统"></a>项目三：AI 平台小系统</h3><p>如果想投 AI Platform&#x2F;Serving 岗，可以做一个小型服务平台：</p>
+<ul>
+<li>gRPC&#x2F;HTTP 请求接口；</li>
+<li>模型服务进程和任务队列；</li>
+<li>限流、超时、重试和健康检查；</li>
+<li>Prometheus 指标或结构化日志；</li>
+<li>Docker 部署，之后再尝试 Kubernetes Deployment、Service、资源限制和滚动更新。</li>
+</ul>
+<p>它不需要一开始搭建真正的 GPU 集群，重点是把可靠性、观测和资源管理讲清楚。项目一、项目二、项目三代表不同主线，半年内选择一个做深即可，不要求全部完成。</p>
+<h2 id="六、如何选择岗位方向"><a href="#六、如何选择岗位方向" class="headerlink" title="六、如何选择岗位方向"></a>六、如何选择岗位方向</h2><h3 id="适合优先投递的岗位关键词"><a href="#适合优先投递的岗位关键词" class="headerlink" title="适合优先投递的岗位关键词"></a>适合优先投递的岗位关键词</h3><p>系统和 Runtime：</p>
+<ul>
+<li>AI Infra Engineer；</li>
+<li>ML Systems Engineer；</li>
+<li>Inference Runtime&#x2F;Engine Engineer；</li>
+<li>Model Serving Engineer；</li>
+<li>Inference Performance Engineer；</li>
+<li>C++&#x2F;CUDA 推理优化工程师。</li>
+</ul>
+<p>编译器和硬件后端：</p>
+<ul>
+<li>AI Compiler Engineer；</li>
+<li>MLIR&#x2F;TVM&#x2F;LLVM 后端工程师；</li>
+<li>NPU Compiler&#x2F;Backend Engineer；</li>
+<li>GPU&#x2F;NPU Runtime Engineer；</li>
+<li>算子开发与异构适配工程师。</li>
+</ul>
+<p>平台和服务：</p>
+<ul>
+<li>AI Platform Engineer；</li>
+<li>GPU Resource Scheduler；</li>
+<li>模型服务平台工程师；</li>
+<li>MLOps&#x2F;Model Deployment Engineer。</li>
+</ul>
+<p>边缘方向：</p>
+<ul>
+<li>Edge AI Runtime Engineer；</li>
+<li>C++ 推理引擎工程师；</li>
+<li>ONNX&#x2F;TensorRT&#x2F;OpenVINO&#x2F;NPU 适配工程师。</li>
+</ul>
+<p>不要只搜索“KV allocator”，因为它通常不是独立职位名称。</p>
+<h3 id="面试最低准备线"><a href="#面试最低准备线" class="headerlink" title="面试最低准备线"></a>面试最低准备线</h3><p>应该能用自己的项目回答：</p>
+<ul>
+<li>C++ 的对象生命周期、移动语义、内存对齐和异常路径；</li>
+<li>线程池、队列、锁、数据竞争、取消和超时；</li>
+<li>Linux 虚拟内存、文件描述符、进程&#x2F;线程和性能分析；</li>
+<li>Transformer 推理中 Prefill、Decode、Cache 和批处理的差异；</li>
+<li>如何定义吞吐、TTFT、TPOT、p95&#x2F;p99 和峰值内存；</li>
+<li>看到服务变慢、内存上涨或请求超时后，如何复现、测量、定位和回归；</li>
+<li>如果是编译器岗位，还要能解释 IR、Pass、算子融合、layout 和 lowering；</li>
+<li>如果是平台岗位，还要能解释 RPC、限流、重试、监控和资源隔离。</li>
+</ul>
+<h2 id="七、未来发展与薪资边界"><a href="#七、未来发展与薪资边界" class="headerlink" title="七、未来发展与薪资边界"></a>七、未来发展与薪资边界</h2><h3 id="未来发展"><a href="#未来发展" class="headerlink" title="未来发展"></a>未来发展</h3><p>AI Infra 的价值不依赖某一个模型名称：模型会变化，硬件会变化，但模型仍然需要被编译、部署、调度、执行、监控和优化。</p>
+<ul>
+<li><strong>推理 Runtime&#x2F;系统软件</strong>：直接影响延迟、吞吐、显存和服务成本，持续受到降本增效需求推动；</li>
+<li><strong>分布式训练系统</strong>：基础模型训练仍依赖通信、并行、容错和集群效率，岗位核心但通常需要多卡实践条件；</li>
+<li><strong>编译器&#x2F;NPU 后端</strong>：硬件越来越多，模型到硬件之间需要稳定的编译和适配层，长期稀缺但门槛高；</li>
+<li><strong>GPU&#x2F;NPU 性能工程</strong>：算力增长后，带宽、内存和通信瓶颈更突出，技术上限高；</li>
+<li><strong>AI 平台&#x2F;Serving</strong>：模型服务会长期需要资源调度、可靠性、扩缩容和成本控制，技能更接近云原生和分布式系统；</li>
+<li><strong>边缘 Runtime</strong>：受隐私、低时延、功耗和设备成本推动，入口较宽，但岗位质量差异较大。</li>
+</ul>
+<h3 id="薪资参考"><a href="#薪资参考" class="headerlink" title="薪资参考"></a>薪资参考</h3><p>公开招聘页面通常不显示完整薪资，以下只是中国大陆一线&#x2F;新一线城市、税前固定月薪的粗略范围，不是统计中位数，也不包含不确定的奖金和股权：</p>
+<table>
+<thead>
+<tr>
+<th>岗位族</th>
+<th>初级常见参考</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>普通 MLOps&#x2F;模型部署</td>
+<td>12–22k&#x2F;月</td>
+<td>更偏平台配置和业务交付</td>
+</tr>
+<tr>
+<td>C++ 边缘推理&#x2F;Runtime</td>
+<td>15–30k&#x2F;月</td>
+<td>核心引擎、NPU 和性能岗可能更高</td>
+</tr>
+<tr>
+<td>AI Infra&#x2F;Serving&#x2F;推理系统</td>
+<td>20–35k&#x2F;月</td>
+<td>初级岗位较少，通常要求 C++、Linux、并发和服务指标</td>
+</tr>
+<tr>
+<td>CUDA&#x2F;GPU&#x2F;NPU&#x2F;编译器后端</td>
+<td>20–40k&#x2F;月</td>
+<td>需要硬件、编译器或 Kernel 作品</td>
+</tr>
+</tbody></table>
+<p>没有相关实习时，应按区间下沿甚至普通 C++ 岗位评估；有高质量开源贡献、可复现性能项目或相关实习，才更有机会接近上沿。公司的城市、学历、业务阶段和是否包含奖金会造成很大差异；CUDA、NPU SDK 和编译器后端还可能形成厂商绑定，应持续保留通用的 C++、系统和性能分析能力。</p>
+<h2 id="八、学习笔记和代码如何放进仓库"><a href="#八、学习笔记和代码如何放进仓库" class="headerlink" title="八、学习笔记和代码如何放进仓库"></a>八、学习笔记和代码如何放进仓库</h2><p>建议把原始记录、可发布文章和代码实验分开：</p>
+<ol>
+<li>每天的命令、错误日志和草稿先放 <code>inbox/</code>；</li>
+<li>经过验证的知识整理到 <code>source/_posts/</code>，补充来源、条件、指标和 <code>review_status</code>；</li>
+<li>实验代码和 benchmark 放在会被 Git 跟踪的项目目录，不要放进当前被忽略的 <code>app/</code>；</li>
+<li>原始资料处理完成后归档到 <code>archive/incoming/YYYY-MM-DD/</code>；</li>
+<li>每份实验至少记录环境、版本、模型、输入 shape、基线、指标、结果、失败原因和可复现命令。</li>
+</ol>
+<p>推荐笔记模板：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># 目标</span><br><span class="line"># 背景与原理</span><br><span class="line"># 环境与版本</span><br><span class="line"># 最小实现</span><br><span class="line"># 基线与测试条件</span><br><span class="line"># 结果：延迟 / 吞吐 / 内存 / 精度 / 功耗</span><br><span class="line"># 失败与限制</span><br><span class="line"># 可复现命令</span><br><span class="line"># 下一步</span><br></pre></td></tr></table></figure>
+
+<p>看完论文或课程不是交付物。能够在干净环境中构建、运行、测量、解释失败，并把结果写下来，才是可以用于面试的学习证据。</p>
+<h2 id="九、岗位样本与资料边界"><a href="#九、岗位样本与资料边界" class="headerlink" title="九、岗位样本与资料边界"></a>九、岗位样本与资料边界</h2><p>本次核对的官方岗位显示，AI Infra 招聘经常把 C&#x2F;C++、Linux、并发、GPU&#x2F;NPU、内存、算子、运行时、分布式和性能测试组合在一起，而不是只要求会调用模型 API。代表性页面包括：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://joinbytedance.com/search/7663392067718039813">字节跳动：Backend Inference Framework Engineer Graduate</a></li>
+<li><a target="_blank" rel="noopener" href="https://joinbytedance.com/search/7669789046777940229">字节跳动：Backend Inference Runtime Engineer Graduate</a></li>
+<li><a target="_blank" rel="noopener" href="https://joinbytedance.com/search/7667726338627356933">字节跳动：Large Language Model Inference System Engineer Graduate</a></li>
+<li><a target="_blank" rel="noopener" href="https://careers.tencent.com/jobdesc.html?postId=2037411502792798208">腾讯：微信-AI Infra 工程师-大模型推理方向</a></li>
+<li><a target="_blank" rel="noopener" href="https://careers.tencent.com/jobdesc.html?postId=2021416952777568256">腾讯：大模型异构芯片推理适配调优工程师</a></li>
+<li><a target="_blank" rel="noopener" href="https://careers.tencent.com/jobdesc.html?postId=1958073231227375616">腾讯：异构加速框架工程师</a></li>
+</ul>
+<p>岗位页面是动态的，不能据此推导行业总岗位数、录用概率或薪资中位数。完整的岗位、论文和官方资料链接保留在 <code>source_docs</code> 指向的研究底稿中。</p>
+<h2 id="十、最终建议"><a href="#十、最终建议" class="headerlink" title="十、最终建议"></a>十、最终建议</h2><p>你的目标可以明确为：</p>
 <blockquote>
-<p><strong>软件优先、硬件敏感的推理系统工程师；先做 KV Cache&#x2F;运行时，再补 CUDA&#x2F;Triton，最后按兴趣选择边缘部署、NPU&#x2F;编译器或多 GPU。</strong></p>
+<p><strong>不做模型算法研究，先成为懂 C++&#x2F;Linux&#x2F;并发&#x2F;性能的 AI 系统工程师，再根据兴趣进入推理 Runtime、AI 编译器&#x2F;NPU 后端、分布式训练系统或 AI 平台。</strong></p>
 </blockquote>
-<p>先用四周做低成本验证：C++ allocator、Transformer 推理基线、KV Cache 实验和一次 profiler 分析。如果这四周让你对内存布局、并发、瓶颈定位和数据复盘越来越有兴趣，再投入 CUDA&#x2F;Triton 和 vLLM；如果更喜欢设备资源约束和 C++ 部署，则转向 llama.cpp&#x2F;ONNX Runtime&#x2F;ExecuTorch 的边缘推理。无论选哪条，最终作品都应以可复现代码和性能&#x2F;质量证据为中心。</p>
-<p>本报告是 AI 基于公开岗位和官方资料整理的未验证调研；岗位状态、地点、版本支持和性能指标须在实际投递与目标硬件上重新确认。</p>
+<p>最合理的顺序是：</p>
+<ol>
+<li>用 8 周建立 C++、Linux、操作系统、并发和性能工具基础；</li>
+<li>用 4 周掌握推理最小知识，并完成一个可复现的 Runtime&#x2F;部署基线；</li>
+<li>用 8 周在推理 Runtime、编译器&#x2F;NPU 后端、分布式训练或 AI 平台中只选一条深入；</li>
+<li>用 2 周完成压力、故障和性能验证，再用 2 周整理工程、开源贡献和简历；</li>
+<li>第 9 周开始浏览真实 JD，完成 Runtime 基线后再逐步投递相关实习或初级岗位。</li>
+</ol>
+<p>不需要现在就决定自己是“KV allocator 工程师”。先把系统基础和一个完整的 AI Runtime 项目做出来，岗位方向会比现在清晰得多。</p>
 
     </div>
 
@@ -925,14 +1210,16 @@ mjx-container[display="true"] + br {
 
     <footer class="post-footer">
           <div class="post-tags">
+              <a href="/markdown/tags/ai-infra/" rel="tag"># AI Infra</a>
               <a href="/markdown/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E6%8E%A8%E7%90%86/" rel="tag"># 大模型推理</a>
-              <a href="/markdown/tags/%E6%8E%A8%E7%90%86%E5%8A%A0%E9%80%9F/" rel="tag"># 推理加速</a>
-              <a href="/markdown/tags/cuda/" rel="tag"># CUDA</a>
-              <a href="/markdown/tags/gpu/" rel="tag"># GPU</a>
+              <a href="/markdown/tags/%E6%8E%A8%E7%90%86%E7%B3%BB%E7%BB%9F/" rel="tag"># 推理系统</a>
+              <a href="/markdown/tags/%E7%B3%BB%E7%BB%9F%E8%BD%AF%E4%BB%B6/" rel="tag"># 系统软件</a>
               <a href="/markdown/tags/c/" rel="tag"># C++</a>
-              <a href="/markdown/tags/kv-cache/" rel="tag"># KV Cache</a>
+              <a href="/markdown/tags/cuda/" rel="tag"># CUDA</a>
               <a href="/markdown/tags/ai-%E7%BC%96%E8%AF%91%E5%99%A8/" rel="tag"># AI 编译器</a>
-              <a href="/markdown/tags/%E9%87%8F%E5%8C%96/" rel="tag"># 量化</a>
+              <a href="/markdown/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E8%AE%AD%E7%BB%83/" rel="tag"># 分布式训练</a>
+              <a href="/markdown/tags/%E8%BE%B9%E7%BC%98%E6%8E%A8%E7%90%86/" rel="tag"># 边缘推理</a>
+              <a href="/markdown/tags/%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/" rel="tag"># 学习路线</a>
               <a href="/markdown/tags/%E5%B0%B1%E4%B8%9A%E8%B0%83%E7%A0%94/" rel="tag"># 就业调研</a>
           </div>
 

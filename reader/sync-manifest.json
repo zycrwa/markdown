@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "revision": "0d1e77b363dc9dd4e8f27c54939ecb088f1e9330918449e47981ed019a827d2c",
-  "generatedAt": "2026-08-23T16:15:33.319Z",
+  "revision": "6e9116c7827fd1b2ef94f20eb698e608f90477e77ab336dbe60a381ce672a41d",
+  "generatedAt": "2026-08-29T15:32:19.298Z",
   "siteRoot": "/markdown/",
-  "postCount": 20,
-  "fileCount": 144,
-  "totalBytes": 19149380,
+  "postCount": 22,
+  "fileCount": 146,
+  "totalBytes": 19437722,
   "files": [
     {
       "path": "images/posts/altium-designer-notes/001-7d12c0486a.png",
@@ -624,8 +624,8 @@
     },
     {
       "path": "reader/data/posts.json",
-      "bytes": 190688,
-      "sha256": "e911be59df092acbe6c2a42b845c676ec14f96cbe45140112e3e3a4ef5ef05b6"
+      "bytes": 214403,
+      "sha256": "46c99d66c99156237c6681ec5a738b12c67c867421a80c3b4fe9025d91ee3a2a"
     },
     {
       "path": "reader/data/posts/altium-designer-notes.html",
@@ -663,9 +663,19 @@
       "sha256": "a74dac10d0d1e1bd7f1161cab51b3add99eb0222e7edfd7538743214fc7b5431"
     },
     {
+      "path": "reader/data/posts/encoder-pll-speed-estimation.html",
+      "bytes": 227317,
+      "sha256": "ecfd0ede4986b9fec1edd2b8f3bd420d050dbb5843f53c39942613318cc1dfc8"
+    },
+    {
+      "path": "reader/data/posts/git-daily-usage.html",
+      "bytes": 32644,
+      "sha256": "3b60983ced6b02f9084fbe288ad12e33d003a224b380883a2cd2a1c5a56b2bc8"
+    },
+    {
       "path": "reader/data/posts/llm-inference-acceleration-career-report.html",
-      "bytes": 42288,
-      "sha256": "0eb2a1bc44b23f8982922bff586154ab961a02b30d91dc5459de876197afe319"
+      "bytes": 46954,
+      "sha256": "76774847da82812acfddb7a150142e74eb752bc924dfa7d0a85713c1c98bd64e"
     },
     {
       "path": "reader/data/posts/motor-drive-pcb-layout.html",
