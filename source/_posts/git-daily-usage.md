@@ -18,8 +18,6 @@ aliases:
   - Git CI 排错
 related_posts:
   - motor-embedded-software-roadmap
-source_docs:
-  - "archive/incoming/2026-08-24/Git分支、提交与CI问题整理.md"
 review_status: unverified
 toc: true
 mathjax: false

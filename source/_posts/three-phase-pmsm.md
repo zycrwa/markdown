@@ -28,9 +28,6 @@ related_posts:
   - dengfoc-control-code
   - simulink-motor-simulation
   - motor-embedded-software-roadmap
-source_docs:
-  - "archive/original-posts/三相永磁同步电机.md"
-  - "archive/incoming/2026-08-10/pmsm_mathematical_model.md"
 review_status: human-verified
 toc: true
 mathjax: true

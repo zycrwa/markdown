@@ -20,8 +20,6 @@ related_posts:
   - dengfoc-control-code
   - simulink-motor-simulation
   - motor-embedded-software-roadmap
-source_docs:
-  - "archive/original-posts/电机疑问讨论.md"
 review_status: unverified
 toc: true
 mathjax: true

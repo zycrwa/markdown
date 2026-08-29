@@ -20,8 +20,6 @@ related_posts:
   - embedded-system-basics
   - motor-drive-pcb-layout
   - semiconductor-basics
-source_docs:
-  - "archive/original-posts/电机电源.md"
 review_status: unverified
 toc: true
 mathjax: true

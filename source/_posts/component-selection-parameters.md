@@ -19,8 +19,6 @@ related_posts:
   - motor-drive-power-supply
   - motor-drive-pcb-layout
   - altium-designer-notes
-source_docs:
-  - "archive/original-posts/元器件关键参数.md"
 review_status: unverified
 toc: true
 mathjax: true

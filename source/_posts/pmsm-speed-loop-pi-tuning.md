@@ -21,8 +21,6 @@ related_posts:
   - three-phase-pmsm
   - motor-embedded-software-roadmap
   - encoder-pll-speed-estimation
-source_docs:
-  - "archive/original-posts/转速环PI参数整定.md"
 review_status: unverified
 toc: true
 mathjax: true

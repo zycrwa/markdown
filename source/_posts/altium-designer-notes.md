@@ -17,8 +17,6 @@ aliases:
 related_posts:
   - motor-drive-pcb-layout
   - component-selection-parameters
-source_docs:
-  - "archive/original-posts/AD使用.md"
 review_status: unverified
 toc: true
 ---

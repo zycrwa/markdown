@@ -21,8 +21,6 @@ related_posts:
   - component-selection-parameters
   - motor-drive-power-supply
   - semiconductor-basics
-source_docs:
-  - "archive/original-posts/电机驱动PCB-翻译总结.md"
 review_status: unverified
 toc: true
 ---

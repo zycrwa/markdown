@@ -18,8 +18,6 @@ aliases:
 related_posts:
   - pmsm-control-basics
   - motor-drive-pcb-layout
-source_docs:
-  - "archive/original-posts/滤波器设计.md"
 review_status: unverified
 toc: true
 ---

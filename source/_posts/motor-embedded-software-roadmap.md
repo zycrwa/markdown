@@ -31,16 +31,6 @@ related_posts:
   - simulink-motor-simulation
   - encoder-pll-speed-estimation
   - git-daily-usage
-source_docs:
-  - "archive/incoming/2026-08-22/motor-embedded-software-roadmap-research.md"
-  - "archive/original-posts/嵌入式基础知识.md"
-  - "archive/original-posts/嵌入式.md"
-  - "archive/original-posts/STM32_CLION.md"
-  - "archive/original-posts/三相永磁同步电机.md"
-  - "archive/original-posts/dengfoc学习笔记-常用foc代码.md"
-  - "archive/original-posts/转速环PI参数整定.md"
-  - "archive/original-posts/电机疑问讨论.md"
-  - "archive/original-posts/simulink仿真.md"
 review_status: unverified
 toc: true
 ---

@@ -25,8 +25,6 @@ aliases:
   - AI Infra 学习路线
   - 推理系统工程师路线
 related_posts: []
-source_docs:
-  - "archive/incoming/2026-08-23/llm-inference-acceleration-career-report-research.md"
 review_status: unverified
 toc: true
 ---

@@ -20,11 +20,10 @@ const REQUIRED_FIELDS = [
   'tags',
   'aliases',
   'related_posts',
-  'source_docs',
   'review_status',
   'toc'
 ];
-const ARRAY_FIELDS = ['categories', 'tags', 'aliases', 'related_posts', 'source_docs'];
+const ARRAY_FIELDS = ['categories', 'tags', 'aliases', 'related_posts'];
 const REVIEW_STATUSES = new Set(['unverified', 'partially-verified', 'human-verified']);
 
 const errors = [];
@@ -97,7 +96,7 @@ function checkMetadata(file, id, data, permalinks) {
   }
 
   for (const field of ARRAY_FIELDS) data[field] = uniqueStrings(file, field, data[field]);
-  for (const field of ['categories', 'tags', 'source_docs']) {
+  for (const field of ['categories', 'tags']) {
     if (!data[field]?.length) report(errors, file, 1, `${field} 至少需要一项`);
   }
 

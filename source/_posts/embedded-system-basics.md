@@ -19,8 +19,6 @@ related_posts:
   - stm32-clion-development
   - motor-drive-power-supply
   - motor-embedded-software-roadmap
-source_docs:
-  - "archive/original-posts/嵌入式基础知识.md"
 review_status: unverified
 toc: true
 mathjax: true

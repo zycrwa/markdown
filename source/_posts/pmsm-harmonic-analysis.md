@@ -20,8 +20,6 @@ related_posts:
   - dual-three-phase-pmsm
   - three-phase-pmsm
   - simulink-motor-simulation
-source_docs:
-  - "archive/original-posts/永磁同步电机谐波分析.md"
 review_status: unverified
 toc: true
 mathjax: true

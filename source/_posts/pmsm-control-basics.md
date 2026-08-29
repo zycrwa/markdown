@@ -21,8 +21,6 @@ related_posts:
   - pmsm-speed-loop-pi-tuning
   - motor-embedded-software-roadmap
   - encoder-pll-speed-estimation
-source_docs:
-  - "archive/original-posts/pmsm自动控制原理.md"
 review_status: unverified
 toc: true
 mathjax: true

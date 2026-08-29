@@ -23,8 +23,6 @@ related_posts:
   - pmsm-parameter-measurement
   - motor-embedded-software-roadmap
   - encoder-pll-speed-estimation
-source_docs:
-  - "archive/original-posts/dengfoc学习笔记-常用foc代码.md"
 review_status: unverified
 toc: true
 ---

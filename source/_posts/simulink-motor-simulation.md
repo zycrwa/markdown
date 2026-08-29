@@ -19,8 +19,6 @@ related_posts:
   - pmsm-harmonic-analysis
   - pmsm-parameter-measurement
   - motor-embedded-software-roadmap
-source_docs:
-  - "archive/original-posts/simulink仿真.md"
 review_status: unverified
 toc: true
 ---

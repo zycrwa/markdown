@@ -20,8 +20,6 @@ related_posts:
   - dengfoc-control-code
   - pmsm-speed-loop-pi-tuning
   - motor-embedded-software-roadmap
-source_docs:
-  - "archive/incoming/2026-08-03/编码器PLL理论分析.md"
 review_status: unverified
 toc: true
 mathjax: true

@@ -16,8 +16,6 @@ aliases:
 related_posts:
   - three-phase-pmsm
   - pmsm-harmonic-analysis
-source_docs:
-  - "archive/original-posts/双三相永磁同步电机.md"
 review_status: unverified
 toc: true
 mathjax: true

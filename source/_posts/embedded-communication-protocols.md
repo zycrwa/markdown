@@ -18,8 +18,6 @@ related_posts:
   - embedded-system-basics
   - stm32-clion-development
   - motor-embedded-software-roadmap
-source_docs:
-  - "archive/original-posts/嵌入式.md"
 review_status: unverified
 toc: true
 ---

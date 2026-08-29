@@ -18,8 +18,6 @@ related_posts:
   - component-selection-parameters
   - motor-drive-power-supply
   - motor-drive-pcb-layout
-source_docs:
-  - "archive/original-posts/基础元器件.md"
 review_status: unverified
 toc: true
 mathjax: true

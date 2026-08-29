@@ -14,8 +14,6 @@ aliases:
   - Word 公式排版
   - 中文论文格式
 related_posts: []
-source_docs:
-  - "archive/original-posts/word使用.md"
 review_status: unverified
 toc: true
 ---

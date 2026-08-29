@@ -20,8 +20,6 @@ related_posts:
   - embedded-communication-protocols
   - dengfoc-control-code
   - motor-embedded-software-roadmap
-source_docs:
-  - "archive/original-posts/STM32_CLION.md"
 review_status: unverified
 toc: true
 ---

@@ -65,10 +65,12 @@ function buildIndex(posts = loadPosts()) {
       `- 范围：${post.description}`,
       `- 别名：${inline(post.aliases)}`,
       `- 标签：${inline(post.tags)}`,
-      `- 关联文章：${post.relatedPosts.length ? post.relatedPosts.map(id => `\`${id}\``).join('、') : '无'}`,
-      `- 原稿：${post.sourceDocs.length ? post.sourceDocs.map(file => `\`${file}\``).join('、') : '无'}`,
-      ''
+      `- 关联文章：${post.relatedPosts.length ? post.relatedPosts.map(id => `\`${id}\``).join('、') : '无'}`
     );
+    if (post.sourceDocs.length) {
+      lines.push(`- 原稿：${post.sourceDocs.map(file => `\`${file}\``).join('、')}`);
+    }
+    lines.push('');
   }
 
   return `${lines.join('\n')}\n`;
