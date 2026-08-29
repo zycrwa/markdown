@@ -17,7 +17,7 @@ AI 处理新资料时，应先在本索引中按标题、别名、标签和范�
 | `embedded-system-basics` | 嵌入式基础：GPIO 输出、Keil 工程与自举电荷泵 | 嵌入式开发 | `unverified` |
 | `encoder-pll-speed-estimation` | 编码器 PLL 位置跟踪与速度估计 | 电机控制 | `unverified` |
 | `git-daily-usage` | Git 日常使用指南 | 开发工具 | `unverified` |
-| `llm-inference-acceleration-career-report` | 大模型推理加速就业与技术方向调研报告（2026） | 人工智能 | `unverified` |
+| `llm-inference-acceleration-career-report` | AI Infra 就业与学习路线：从系统基础到推理运行时（2026） | 人工智能 | `unverified` |
 | `motor-drive-pcb-layout` | 电机驱动 PCB 布局与布线要点 | 硬件设计 | `unverified` |
 | `motor-drive-power-supply` | 电机驱动电源与保护器件设计笔记 | 硬件设计 | `unverified` |
 | `motor-embedded-software-roadmap` | 电机嵌入式软件实习路线：从 PMSM/FOC 到可交付固件 | 学习路线 | `unverified` |
@@ -123,13 +123,13 @@ AI 处理新资料时，应先在本索引中按标题、别名、标签和范�
 - 关联文章：`motor-embedded-software-roadmap`
 - 原稿：`archive/incoming/2026-08-24/Git分支、提交与CI问题整理.md`
 
-### 大模型推理加速就业与技术方向调研报告（2026）
+### AI Infra 就业与学习路线：从系统基础到推理运行时（2026）
 
 - ID：`llm-inference-acceleration-career-report`
 - 文件：`source/_posts/llm-inference-acceleration-career-report.md`
-- 范围：基于 2026-08-23 可核对的官方岗位样本、开源项目文档和论文，分析大模型推理加速的就业岗位族、技术栈、进入门槛、硬件与内存方向匹配度及 12 周验证路线。
-- 别名：大模型推理加速就业报告、LLM Inference 加速方向、推理系统工程师路线
-- 标签：大模型推理、推理加速、CUDA、GPU、C++、KV Cache、AI 编译器、量化、就业调研
+- 范围：面向非模型算法路线的 AI Infra 岗位地图，以及系统基础、推理运行时、训练系统、编译器后端与平台工程的学习资料和 24 周实践路线。
+- 别名：大模型推理加速就业与技术方向调研报告（2026）、大模型推理加速就业报告、LLM Inference 加速方向、AI Infra 学习路线、推理系统工程师路线
+- 标签：AI Infra、大模型推理、推理系统、系统软件、C++、CUDA、AI 编译器、分布式训练、边缘推理、学习路线、就业调研
 - 关联文章：无
 - 原稿：`archive/incoming/2026-08-23/llm-inference-acceleration-career-report-research.md`
 
