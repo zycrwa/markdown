@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": "6e9116c7827fd1b2ef94f20eb698e608f90477e77ab336dbe60a381ce672a41d",
-  "generatedAt": "2026-08-29T15:32:19.298Z",
+  "revision": "94afc6ac07b5583bd68fd6752c0522fa1cdb332060d90dd8340095b17a08fae7",
+  "generatedAt": "2026-08-29T23:37:38.895Z",
   "siteRoot": "/markdown/",
   "postCount": 22,
   "fileCount": 146,
@@ -625,7 +625,7 @@
     {
       "path": "reader/data/posts.json",
       "bytes": 214403,
-      "sha256": "46c99d66c99156237c6681ec5a738b12c67c867421a80c3b4fe9025d91ee3a2a"
+      "sha256": "a57f88909d5a646716106df1b50640fc5d7872ea4a7a6b721d04afdde7c61e6a"
     },
     {
       "path": "reader/data/posts/altium-designer-notes.html",
